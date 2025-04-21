@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory Management | Harmony Haven</title>
+    <link rel="stylesheet" href="../css/admin.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="admin-layout">
+        <aside class="admin-sidebar">
+            <div class="admin-logo">
+                <h2>Harmony Haven</h2>
+                <p>Admin Panel</p>
+            </div>
+            <nav class="admin-nav">
+                <ul>
+                    <li><a href="index.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                    <li class="active"><a href="inventory.html"><i class="fas fa-box"></i> Inventory</a></li>
+                    <li><a href="customers.html"><i class="fas fa-users"></i> Customers</a></li>
+                    <li><a href="orders.html"><i class="fas fa-shopping-cart"></i> Orders</a></li>
+                    <li><a href="#"><i class="fas fa-chart-bar"></i> Analytics</a></li>
+                    <li><a href="#"><i class="fas fa-cog"></i> Settings</a></li>
+                </ul>
+            </nav>
+            <div class="admin-logout">
+                <a href="#"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            </div>
+        </aside>
+        
+        <main class="admin-main">
+            <header class="admin-header">
+                <div class="admin-search">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search inventory...">
+                </div>
+                <div class="admin-user">
+                    <div class="notifications">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-count">3</span>
+                    </div>
+                    <div class="user-info">
+                        <span>Admin User</span>
+                        <img src="/placeholder.svg?height=40&width=40" alt="Admin User">
+                    </div>
+                </div>
+            </header>
+            
+            <div class="admin-content">
+                <div class="inventory-header">
+                    <h1>Inventory Management</h1>
+                    <div class="inventory-actions">
+                        <button class="btn btn-primary"><i class="fas fa-plus"></i> Add New Product</button>
+                        <button class="btn btn-outline"><i class="fas fa-file-export"></i> Export</button>
+                        <button class="btn btn-outline"><i class="fas fa-file-import"></i> Import</button>
+                    </div>
+                </div>
+                
+                <div class="inventory-filters">
+                    <div class="filter-group">
+                        <label for="category-filter">Category:</label>
+                        <select id="category-filter">
+                            <option value="all">All Categories</option>
+                            <option value="string">String Instruments</option>
+                            <option value="percussion">Percussion</option>
+                            <option value="wind">Wind Instruments</option>
+                            <option value="electronic">Electronic</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="stock-filter">Stock Status:</label>
+                        <select id="stock-filter">
+                            <option value="all">All</option>
+                            <option value="in-stock">In Stock</option>
+                            <option value="low-stock">Low Stock</option>
+                            <option value="out-of-stock">Out of Stock</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="sort-filter">Sort By:</label>
+                        <select id="sort-filter">
+                            <option value="name-asc">Name (A-Z)</option>
+                            <option value="name-desc">Name (Z-A)</option>
+                            <option value="price-low">Price (Low to High)</option>
+                            <option value="price-high">Price (High to Low)</option>
+                            <option value="stock-low">Stock (Low to High)</option>
+                            <option value="stock-high">Stock (High to Low)</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="inventory-table-container">
+                    <table class="admin-table inventory-table">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <input type="checkbox" id="select-all">
+                                </th>
+                                <th>Image</th>
+                                <th>Product Name</th>
+                                <th>SKU</th>
+                                <th>Category</th>
+                                <th>Price</th>
+                                <th>Stock</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><input type="checkbox" class="select-item"></td>
+                                <td><img src="/placeholder.svg?height=50&width=50" alt="Acoustic Guitar" class="product-thumbnail"></td>
+                                <td>Harmony Acoustic Guitar</td>
+                                <td>HH-AG-001</td>
+                                <td>String Instruments</td>
+                                <td>$599.99</td>
+                                <td>24</td>
+                                <td><span class="status-badge in-stock">In Stock</span></td>
+                                <td>
+                                    <div class="table-actions">
+                                        <button class="action-btn"><i class="fas fa-eye"></i></button>
+                                        <button class="action-btn"><i class="fas fa-edit"></i></button>
+                                        <button class="action-btn"><i class="fas fa-trash"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox" class="select-item"></td>
+                                <td><img src="/placeholder.svg?height=50&width=50" alt="Electric Guitar" class="product-thumbnail"></td>
+                                <td>Virtuoso Electric Guitar</td>
+                                <td>HH-EG-002</td>
+                                <td>String Instruments</td>
+                                <td>$1,299.99</td>
+                                <td>18</td>
+                                <td><span class="status-badge in-stock">In Stock</span></td>
+                                <td>
+                                    <div class="table-actions">
+                                        <button class="action-btn"><i class="fas fa-eye"></i></button>
+                                        <button class="action-btn"><i class="fas fa-edit"></i></button>
+                                        <button class="action-btn"><i class="fas fa-trash"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox" class="select-item"></td>
+                                <td><img src="/placeholder.svg?height=50&width=50" alt="Drum Set" class="product-thumbnail"></td>
+                                <td>Professional Drum Set</td>
+                                <td>HH-DS-003</td>
+                                <td>Percussion</td>
+                                <td>$1,899.99</td>
+                                <td>5</td>
+                                <td><span class="status-badge low-stock">Low Stock</span></td>
+                                <td>
+                                    <div class="table-actions">
+                                        <button class="action-btn"><i class="fas fa-eye"></i></button>
+                                        <button class="action-btn"><i class="fas fa-edit"></i></button>
+                                        <button class="action-btn"><i class="fas fa-trash"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox" class="select-item"></td>
+                                <td><img src="/placeholder.svg?height=50&width=50" alt="Digital Piano" class="product-thumbnail"></td>
+                                <td>Concert Digital Piano</td>
+                                <td>HH-DP-004</td>
+                                <td>Electronic</td>
+                                <td>$2,499.99</td>
+                                <td>12</td>
+                                <td><span class="status-badge in-stock">In Stock</span></td>
+                                <td>
+                                    <div class="table-actions">
+                                        <button class="action-btn"><i class="fas fa-eye"></i></button>
+                                        <button class="action-btn"><i class="fas fa-edit"></i></button>
+                                        <button class="action-btn"><i class="fas fa-trash"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox" class="select-item"></td>
+                                <td><img src="/placeholder.svg?height=50&width=50" alt="Saxophone" class="product-thumbnail"></td>
+                                <td>Professional Alto Saxophone</td>
+                                <td>HH-SX-005</td>
+                                <td>Wind Instruments</td>
+                                <td>$1,199.99</td>
+                                <td>0</td>
+                                <td><span class="status-badge out-of-stock">Out of Stock</span></td>
+                                <td>
+                                    <div class="table-actions">
+                                        <button class="action-btn"><i class="fas fa-eye"></i></button>
+                                        <button class="action-btn"><i class="fas fa-edit"></i></button>
+                                        <button class="action-btn"><i class="fas fa-trash"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox" class="select-item"></td>
+                                <td><img src="/placeholder.svg?height=50&width=50" alt="Violin" class="product-thumbnail"></td>
+                                <td>Classic Violin</td>
+                                <td>HH-VL-006</td>
+                                <td>String Instruments</td>
+                                <td>$849.99</td>
+                                <td>9</td>
+                                <td><span class="status-badge in-stock">In Stock</span></td>
+                                <td>
+                                    <div class="table-actions">
+                                        <button class="action-btn"><i class="fas fa-eye"></i></button>
+                                        <button class="action-btn"><i class="fas fa-edit"></i></button>
+                                        <button class="action-btn"><i class="fas fa-trash"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="pagination">
+                    <button class="pagination-btn" disabled><i class="fas fa-chevron-left"></i></button>
+                    <div class="page-numbers">
+                        <span class="page-number active">1</span>
+                        <span class="page-number">2</span>
+                        <span class="page-number">3</span>
+                    </div>
+                    <button class="pagination-btn"><i class="fas fa-chevron-right"></i></button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../js/admin.js"></script>
+</body>
+</html>

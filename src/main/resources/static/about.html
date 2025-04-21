@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Us - Harmony Haven</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700;800&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <link rel="stylesheet" href="css/about.css">
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="container header-container">
+      <div class="logo">
+        <h1>Harmony Haven</h1>
+      </div>
+      
+      <button class="mobile-menu-button">
+        <i class="fas fa-bars"></i>
+      </button>
+      
+      <nav class="nav">
+        <button class="nav-close">
+          <i class="fas fa-times"></i>
+        </button>
+        <ul class="nav-list">
+          <li class="nav-item">
+            <a href="index.html" class="nav-link">Home</a>
+          </li>
+          <li class="nav-item">
+            <a href="shop.html" class="nav-link">Shop</a>
+          </li>
+          <li class="nav-item">
+            <a href="about.html" class="nav-link active">About</a>
+          </li>
+          <li class="nav-item">
+            <a href="contact.html" class="nav-link">Contact</a>
+          </li>
+        </ul>
+      </nav>
+      
+      <div class="header-actions">
+        <form class="search-form">
+          <input type="text" class="search-input" placeholder="Search...">
+          <button type="submit" class="search-button">
+            <i class="fas fa-search"></i>
+          </button>
+        </form>
+        
+        <a href="cart.html" class="cart-button">
+          <i class="fas fa-shopping-cart"></i>
+          <span class="cart-count">0</span>
+        </a>
+        
+        <div class="profile-dropdown">
+          <button class="profile-button">
+            <i class="fas fa-user"></i>
+          </button>
+          <div class="dropdown-content">
+            <div class="dropdown-header">
+              <h3>Account</h3>
+            </div>
+            <div class="dropdown-body">
+              <form id="login-form" class="dropdown-form">
+                <div class="form-group">
+                  <label for="dropdown-email">Email</label>
+                  <input type="email" id="dropdown-email" class="form-input" placeholder="Enter your email">
+                </div>
+                <div class="form-group">
+                  <label for="dropdown-password">Password</label>
+                  <input type="password" id="dropdown-password" class="form-input" placeholder="Enter your password">
+                </div>
+                <div class="form-group form-actions">
+                  <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+                </div>
+                <div class="form-footer">
+                  <p>Don't have an account? <a href="#" class="register-link">Register</a></p>
+                  <a href="#" class="forgot-password">Forgot Password?</a>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+  
+  <div class="overlay"></div>
+  
+  <!-- About Hero Section -->
+  <section class="about-hero">
+    <div class="container">
+      <div class="hero-content">
+        <h1 class="page-title">Our Story</h1>
+        <p class="page-subtitle">Passionate about music since 2005</p>
+        <div class="breadcrumb">
+          <a href="index.html">Home</a>
+          <span class="separator">/</span>
+          <span class="current">About Us</span>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- About Section -->
+  <section class="about-section">
+    <div class="container">
+      <div class="about-content">
+        <div class="about-image-container" data-aos="fade-right">
+          <img src="images/instruments/About.jpg" alt="Harmony Haven Store" class="about-main-image">
+          <div class="about-experience">
+            <span class="years">18</span>
+            <span class="text">Years of Excellence</span>
+          </div>
+        </div>
+        
+        <div class="about-text-container" data-aos="fade-left">
+          <div class="section-subtitle">About Harmony Haven</div>
+          <h2 class="section-title">Your Trusted Music Instrument Partner Since 2005</h2>
+          
+          <p class="about-description">Welcome to Harmony Haven, where passion for music meets exceptional quality. For over 18 years, we've been providing musicians of all levels with the finest instruments and accessories.</p>
+          
+          <p>Our journey began with a simple vision: to create a space where musicians could find instruments that inspire them to create beautiful music. Today, we're proud to be one of the leading music instrument retailers, serving customers worldwide.</p>
+          
+          <div class="about-stats">
+            <div class="stat-item">
+              <span class="stat-number">5000+</span>
+              <span class="stat-text">Happy Customers</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-number">1200+</span>
+              <span class="stat-text">Instruments</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-number">150+</span>
+              <span class="stat-text">Brands</span>
+            </div>
+          </div>
+          
+          <div class="about-features">
+            <div class="feature-item">
+              <div class="feature-icon">
+                <i class="fas fa-check-circle"></i>
+              </div>
+              <div class="feature-text">
+                <h3>Quality Assurance</h3>
+                <p>All our instruments undergo rigorous quality checks before they reach our customers.</p>
+              </div>
+            </div>
+            
+            <div class="feature-item">
+              <div class="feature-icon">
+                <i class="fas fa-truck"></i>
+              </div>
+              <div class="feature-text">
+                <h3>Fast & Secure Shipping</h3>
+                <p>We ensure your instruments arrive safely and on time, no matter where you are.</p>
+              </div>
+            </div>
+            
+            <div class="feature-item">
+              <div class="feature-icon">
+                <i class="fas fa-headset"></i>
+              </div>
+              <div class="feature-text">
+                <h3>Expert Support</h3>
+                <p>Our team of music enthusiasts is always ready to help you find the perfect instrument.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Mission & Vision Section -->
+  <section class="mission-vision">
+    <div class="container">
+      <div class="section-header text-center">
+        <div class="section-subtitle">Our Purpose</div>
+        <h2 class="section-title">Mission, Vision & Values</h2>
+        <p class="section-description">What drives us every day to provide the best musical instruments and service.</p>
+      </div>
+      
+      <div class="mission-vision-grid">
+        <div class="mission-box" data-aos="fade-up" data-aos-delay="100">
+          <div class="icon-container">
+            <i class="fas fa-bullseye"></i>
+          </div>
+          <h3>Our Mission</h3>
+          <p>To provide musicians of all levels with high-quality instruments that inspire creativity and musical excellence, while offering exceptional customer service and expert guidance.</p>
+        </div>
+        
+        <div class="vision-box" data-aos="fade-up" data-aos-delay="200">
+          <div class="icon-container">
+            <i class="fas fa-eye"></i>
+          </div>
+          <h3>Our Vision</h3>
+          <p>To be the most trusted destination for musical instruments worldwide, fostering a global community of musicians and contributing to the advancement of musical culture and education.</p>
+        </div>
+        
+        <div class="values-box" data-aos="fade-up" data-aos-delay="300">
+          <div class="icon-container">
+            <i class="fas fa-heart"></i>
+          </div>
+          <h3>Our Values</h3>
+          <p>Quality, integrity, passion for music, customer satisfaction, and continuous improvement guide everything we do at Harmony Haven.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Our Team Section -->
+  <section class="team-section">
+    <div class="container">
+      <div class="section-header text-center">
+        <div class="section-subtitle">The People Behind Harmony Haven</div>
+        <h2 class="section-title">Meet Our Team</h2>
+        <p class="section-description">Our team of music enthusiasts is dedicated to providing you with the best musical instruments and exceptional service.</p>
+      </div>
+      
+      <div class="team-grid">
+        <div class="team-member" data-aos="fade-up" data-aos-delay="100">
+          <div class="team-member-image">
+            <img src="images/instruments/john-doe.jpg" alt="John Doe - Founder & CEO" loading="lazy">
+            <div class="team-social">
+              <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+              <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+              <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+            </div>
+          </div>
+          <div class="team-member-info">
+            <h3>John Doe</h3>
+            <p class="position">Founder & CEO</p>
+            <p class="bio">With over 20 years of experience as a professional guitarist, John founded Harmony Haven to share his passion for quality instruments.</p>
+          </div>
+        </div>
+        
+        <div class="team-member" data-aos="fade-up" data-aos-delay="200">
+          <div class="team-member-image">
+            <img src="images/instruments/jane-smith.jpg" alt="Jane Smith - Head of Product Selection" loading="lazy">
+            <div class="team-social">
+              <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+              <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+              <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+            </div>
+          </div>
+          <div class="team-member-info">
+            <h3>Jane Smith</h3>
+            <p class="position">Head of Product Selection</p>
+            <p class="bio">Jane is a classically trained pianist with a keen eye for quality. She personally selects each instrument in our collection.</p>
+          </div>
+        </div>
+        
+        <div class="team-member" data-aos="fade-up" data-aos-delay="300">
+          <div class="team-member-image">
+            <img src="images/instruments/mike-johnson.jpg" alt="Mike Johnson - Customer Experience Manager" loading="lazy">
+            <div class="team-social">
+              <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+              <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+              <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+            </div>
+          </div>
+          <div class="team-member-info">
+            <h3>Mike Johnson</h3>
+            <p class="position">Customer Experience Manager</p>
+            <p class="bio">Mike ensures that every customer has an exceptional experience, from browsing our collection to receiving their instrument.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Testimonials Section -->
+  <section class="testimonials">
+    <div class="container">
+      <div class="section-header text-center">
+        <div class="section-subtitle">What Our Customers Say</div>
+        <h2 class="section-title">Testimonials</h2>
+        <p class="section-description">Hear from our satisfied customers about their experience with Harmony Haven.</p>
+      </div>
+      
+      <div class="testimonials-slider">
+        <div class="testimonial-item" data-aos="fade-up" data-aos-delay="100">
+          <div class="testimonial-content">
+            <div class="quote-icon">
+              <i class="fas fa-quote-left"></i>
+            </div>
+            <p class="testimonial-text">I've been buying instruments from Harmony Haven for years, and I'm always impressed by their quality and service. The team is knowledgeable and passionate about music.</p>
+            <div class="testimonial-author">
+              <div class="author-info">
+                <h4>David Wilson</h4>
+                <p>Professional Guitarist</p>
+              </div>
+              <div class="rating">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="testimonial-item" data-aos="fade-up" data-aos-delay="200">
+          <div class="testimonial-content">
+            <div class="quote-icon">
+              <i class="fas fa-quote-left"></i>
+            </div>
+            <p class="testimonial-text">As a music teacher, I recommend Harmony Haven to all my students. Their instruments are of exceptional quality, and their customer service is outstanding.</p>
+            <div class="testimonial-author">
+              <div class="author-info">
+                <h4>Sarah Thompson</h4>
+                <p>Music Educator</p>
+              </div>
+              <div class="rating">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Partners Section -->
+  <section class="partners-section">
+    <div class="container">
+      <div class="section-header text-center">
+        <div class="section-subtitle">Our Trusted Partners</div>
+        <h2 class="section-title">Brands We Carry</h2>
+        <p class="section-description">We partner with the world's leading musical instrument manufacturers to bring you the best quality.</p>
+      </div>
+      
+      <div class="partners-grid">
+        <div class="partner-logo" data-aos="fade-up" data-aos-delay="100">
+          <img src="/placeholder.svg?height=80&width=160" alt="Yamaha">
+        </div>
+        <div class="partner-logo" data-aos="fade-up" data-aos-delay="150">
+          <img src="/placeholder.svg?height=80&width=160" alt="Fender">
+        </div>
+        <div class="partner-logo" data-aos="fade-up" data-aos-delay="200">
+          <img src="/placeholder.svg?height=80&width=160" alt="Gibson">
+        </div>
+        <div class="partner-logo" data-aos="fade-up" data-aos-delay="250">
+          <img src="/placeholder.svg?height=80&width=160" alt="Roland">
+        </div>
+        <div class="partner-logo" data-aos="fade-up" data-aos-delay="300">
+          <img src="/placeholder.svg?height=80&width=160" alt="Steinway">
+        </div>
+        <div class="partner-logo" data-aos="fade-up" data-aos-delay="350">
+          <img src="/placeholder.svg?height=80&width=160" alt="Ibanez">
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- CTA Section -->
+  <section class="cta-section">
+    <div class="container">
+      <div class="cta-content">
+        <h2>Ready to Find Your Perfect Instrument?</h2>
+        <p>Browse our collection of premium musical instruments and accessories.</p>
+        <div class="cta-buttons">
+          <a href="shop.html" class="btn btn-primary">Shop Now</a>
+          <a href="contact.html" class="btn btn-outline">Contact Us</a>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-column">
+          <h3 class="footer-title">Harmony Haven</h3>
+          <p>Your one-stop destination for all musical instruments and accessories. Quality products, expert advice, and excellent service.</p>
+          
+          <div class="social-links">
+            <a href="#" class="social-link">
+              <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="#" class="social-link">
+              <i class="fab fa-twitter"></i>
+            </a>
+            <a href="#" class="social-link">
+              <i class="fab fa-instagram"></i>
+            </a>
+            <a href="#" class="social-link">
+              <i class="fab fa-youtube"></i>
+            </a>
+          </div>
+        </div>
+        
+        <div class="footer-column">
+          <h3 class="footer-title">Quick Links</h3>
+          <ul class="footer-links">
+            <li class="footer-link"><a href="index.html">Home</a></li>
+            <li class="footer-link"><a href="shop.html">Shop</a></li>
+            <li class="footer-link"><a href="about.html">About</a></li>
+            <li class="footer-link"><a href="contact.html">Contact</a></li>
+            <li class="footer-link"><a href="#">Privacy Policy</a></li>
+            <li class="footer-link"><a href="#">Terms & Conditions</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-column">
+          <h3 class="footer-title">Contact Us</h3>
+          <ul class="footer-links">
+            <li class="footer-link">
+              <i class="fas fa-map-marker-alt"></i> 123 Music Street, Melody City
+            </li>
+            <li class="footer-link">
+              <i class="fas fa-phone"></i> +1 (555) 123-4567
+            </li>
+            <li class="footer-link">
+              <i class="fas fa-envelope"></i> info@harmonyhaven.com
+            </li>
+          </ul>
+        </div>
+        
+        <div class="footer-column">
+          <h3 class="footer-title">Newsletter</h3>
+          <p>Subscribe to our newsletter to get updates on our latest offers!</p>
+          
+          <div class="footer-newsletter">
+            <form class="newsletter-form">
+              <input type="email" class="newsletter-input" placeholder="Your Email Address">
+              <button type="submit" class="newsletter-button">
+                <i class="fas fa-paper-plane"></i>
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <p>&copy; 2023 Harmony Haven. All Rights Reserved.</p>
+      </div>
+    </div>
+  </footer>
+  
+  <script src="js/main.js"></script>
+  <script src="js/about.js"></script>
+  <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+  <script>
+    // Initialize AOS animation library
+    AOS.init({
+      duration: 800,
+      once: true
+    });
+  </script>
+</body>
+</html>

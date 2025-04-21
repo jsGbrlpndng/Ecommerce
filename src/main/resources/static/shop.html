@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shop - Harmony Haven</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700;800&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="container header-container">
+      <div class="logo">
+        <h1>Harmony Haven</h1>
+      </div>
+      
+      <button class="mobile-menu-button">
+        <i class="fas fa-bars"></i>
+      </button>
+      
+      <nav class="nav">
+        <button class="nav-close">
+          <i class="fas fa-times"></i>
+        </button>
+        <ul class="nav-list">
+          <li class="nav-item">
+            <a href="index.html" class="nav-link">Home</a>
+          </li>
+          <li class="nav-item">
+            <a href="shop.html" class="nav-link active">Shop</a>
+          </li>
+          <li class="nav-item">
+            <a href="about.html" class="nav-link">About</a>
+          </li>
+          <li class="nav-item">
+            <a href="contact.html" class="nav-link">Contact</a>
+          </li>
+        </ul>
+      </nav>
+      
+      <div class="header-actions">
+        <form class="search-form">
+          <input type="text" class="search-input" placeholder="Search...">
+          <button type="submit" class="search-button">
+            <i class="fas fa-search"></i>
+          </button>
+        </form>
+        
+        <a href="cart.html" class="cart-button">
+          <i class="fas fa-shopping-cart"></i>
+          <span class="cart-count">0</span>
+        </a>
+        
+        <div class="profile-dropdown">
+          <button class="profile-button">
+            <i class="fas fa-user"></i>
+          </button>
+          <div class="dropdown-content">
+            <div class="dropdown-header">
+              <h3>Account</h3>
+            </div>
+            <div class="dropdown-body">
+              <form id="login-form" class="dropdown-form">
+                <div class="form-group">
+                  <label for="dropdown-email">Email</label>
+                  <input type="email" id="dropdown-email" class="form-input" placeholder="Enter your email">
+                </div>
+                <div class="form-group">
+                  <label for="dropdown-password">Password</label>
+                  <input type="password" id="dropdown-password" class="form-input" placeholder="Enter your password">
+                </div>
+                <div class="form-group form-actions">
+                  <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+                </div>
+                <div class="form-footer">
+                  <p>Don't have an account? <a href="#" class="register-link">Register</a></p>
+                  <a href="#" class="forgot-password">Forgot Password?</a>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+  
+  <div class="overlay"></div>
+  
+  <!-- Shop Hero Section -->
+  <section class="shop-hero">
+    <div class="container">
+      <h1 class="shop-hero-title">Discover Your Perfect Instrument</h1>
+      <p class="shop-hero-subtitle">Browse our collection of premium musical instruments</p>
+    </div>
+  </section>
+  
+  <!-- Shop Section -->
+  <section class="shop">
+    <div class="container">
+      <div class="shop-content">
+        <div class="shop-sidebar">
+          <div class="filter-group">
+            <h3 class="filter-title">Categories</h3>
+            <ul class="filter-list">
+              <li class="filter-item">
+                <a href="#" class="category-link active" data-category="all">All Instruments</a>
+              </li>
+              <li class="filter-item">
+                <a href="#" class="category-link" data-category="string">String Instruments</a>
+              </li>
+              <li class="filter-item">
+                <a href="#" class="category-link" data-category="percussion">Percussion</a>
+              </li>
+              <li class="filter-item">
+                <a href="#" class="category-link" data-category="wind">Wind Instruments</a>
+              </li>
+              <li class="filter-item">
+                <a href="#" class="category-link" data-category="keyboard">Keyboard Instruments</a>
+              </li>
+              <li class="filter-item">
+                <a href="#" class="category-link" data-category="electronic">Electronic Instruments</a>
+              </li>
+            </ul>
+          </div>
+          
+          <div class="filter-group">
+            <h3 class="filter-title">Price Range</h3>
+            <div class="price-filter">
+              <div class="price-inputs">
+                <div class="form-group">
+                  <label for="min-price">Min:</label>
+                  <input type="number" id="min-price" class="price-input" value="0">
+                </div>
+                <div class="form-group">
+                  <label for="max-price">Max:</label>
+                  <input type="number" id="max-price" class="price-input" value="5000">
+                </div>
+              </div>
+              <button class="btn btn-primary apply-price-btn">Apply</button>
+            </div>
+          </div>
+          
+          <div class="filter-group">
+            <h3 class="filter-title">Brand</h3>
+            <ul class="filter-list">
+              <li class="filter-item">
+                <input type="checkbox" id="brand-yamaha" class="brand-checkbox" value="Yamaha">
+                <label for="brand-yamaha">Yamaha</label>
+              </li>
+              <li class="filter-item">
+                <input type="checkbox" id="brand-fender" class="brand-checkbox" value="Fender">
+                <label for="brand-fender">Fender</label>
+              </li>
+              <li class="filter-item">
+                <input type="checkbox" id="brand-gibson" class="brand-checkbox" value="Gibson">
+                <label for="brand-gibson">Gibson</label>
+              </li>
+              <li class="filter-item">
+                <input type="checkbox" id="brand-roland" class="brand-checkbox" value="Roland">
+                <label for="brand-roland">Roland</label>
+              </li>
+              <li class="filter-item">
+                <input type="checkbox" id="brand-steinway" class="brand-checkbox" value="Steinway">
+                <label for="brand-steinway">Steinway</label>
+              </li>
+            </ul>
+          </div>
+          
+          <div class="filter-group">
+            <h3 class="filter-title">Availability</h3>
+            <ul class="filter-list">
+              <li class="filter-item">
+                <input type="checkbox" id="in-stock" class="availability-checkbox" value="in-stock" checked>
+                <label for="in-stock">In Stock</label>
+              </li>
+              <li class="filter-item">
+                <input type="checkbox" id="out-of-stock" class="availability-checkbox" value="out-of-stock">
+                <label for="out-of-stock">Out of Stock</label>
+              </li>
+            </ul>
+          </div>
+        </div>
+        
+        <div class="shop-products">
+          <div class="shop-toolbar">
+            <div class="product-count" id="product-count">9 products found</div>
+            
+            <div class="sort-options">
+              <label for="sort-select">Sort by:</label>
+              <select id="sort-select" class="sort-select">
+                <option value="featured">Featured</option>
+                <option value="price-low">Price: Low to High</option>
+                <option value="price-high">Price: High to Low</option>
+                <option value="name-asc">Name: A to Z</option>
+                <option value="name-desc">Name: Z to A</option>
+                <option value="rating">Rating</option>
+              </select>
+            </div>
+          </div>
+          
+          <div class="product-grid" id="products-container">
+            <!-- Products will be loaded here via JavaScript -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-column">
+          <h3 class="footer-title">Harmony Haven</h3>
+          <p>Your destination for premium musical instruments and accessories. Quality products, expert advice, and excellent service.</p>
+          
+          <div class="social-links">
+            <a href="#" class="social-link">
+              <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="#" class="social-link">
+              <i class="fab fa-twitter"></i>
+            </a>
+            <a href="#" class="social-link">
+              <i class="fab fa-instagram"></i>
+            </a>
+            <a href="#" class="social-link">
+              <i class="fab fa-youtube"></i>
+            </a>
+          </div>
+        </div>
+        
+        <div class="footer-column">
+          <h3 class="footer-title">Quick Links</h3>
+          <ul class="footer-links">
+            <li class="footer-link"><a href="index.html">Home</a></li>
+            <li class="footer-link"><a href="shop.html">Shop</a></li>
+            <li class="footer-link"><a href="about.html">About</a></li>
+            <li class="footer-link"><a href="contact.html">Contact</a></li>
+            <li class="footer-link"><a href="#">Privacy Policy</a></li>
+            <li class="footer-link"><a href="#">Terms & Conditions</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-column">
+          <h3 class="footer-title">Contact Us</h3>
+          <ul class="footer-links">
+            <li class="footer-link">
+              <i class="fas fa-map-marker-alt"></i> 123 Music Street, Melody City
+            </li>
+            <li class="footer-link">
+              <i class="fas fa-phone"></i> +1 (555) 123-4567
+            </li>
+            <li class="footer-link">
+              <i class="fas fa-envelope"></i> info@harmonyhaven.com
+            </li>
+          </ul>
+        </div>
+        
+        <div class="footer-column">
+          <h3 class="footer-title">Newsletter</h3>
+          <p>Subscribe to our newsletter to get updates on our latest offers!</p>
+          
+          <div class="footer-newsletter">
+            <form class="newsletter-form">
+              <input type="email" class="newsletter-input" placeholder="Your Email Address">
+              <button type="submit" class="newsletter-button">
+                <i class="fas fa-paper-plane"></i>
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <p>&copy; 2023 Harmony Haven. All Rights Reserved.</p>
+      </div>
+    </div>
+  </footer>
+  
+  <script src="js/main.js"></script>
+  <script src="js/shop.js"></script>
+</body>
+</html>

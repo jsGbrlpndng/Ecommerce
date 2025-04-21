@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Harmony Haven - Musical Instruments Shop</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="container header-container">
+      <div class="logo">
+        <h1>Harmony Haven</h1>
+      </div>
+      
+      <button class="mobile-menu-button">
+        <i class="fas fa-bars"></i>
+      </button>
+      
+      <nav class="nav">
+        <button class="nav-close">
+          <i class="fas fa-times"></i>
+        </button>
+        <ul class="nav-list">
+          <li class="nav-item">
+            <a href="index.html" class="nav-link active">Home</a>
+          </li>
+          <li class="nav-item">
+            <a href="shop.html" class="nav-link">Shop</a>
+          </li>
+          <li class="nav-item">
+            <a href="about.html" class="nav-link">About</a>
+          </li>
+          <li class="nav-item">
+            <a href="contact.html" class="nav-link">Contact</a>
+          </li>
+        </ul>
+      </nav>
+      
+      <div class="header-actions">
+        <form class="search-form">
+          <input type="text" class="search-input" placeholder="Search...">
+          <button type="submit" class="search-button">
+            <i class="fas fa-search"></i>
+          </button>
+        </form>
+        
+        <a href="cart.html" class="cart-button">
+          <i class="fas fa-shopping-cart"></i>
+          <span class="cart-count">0</span>
+        </a>
+        
+        <div class="profile-dropdown">
+          <button class="profile-button">
+            <i class="fas fa-user"></i>
+          </button>
+          <div class="dropdown-content">
+            <div class="dropdown-header">
+              <h3>Account</h3>
+            </div>
+            <div class="dropdown-body">
+              <form id="login-form" class="dropdown-form">
+                <div class="form-group">
+                  <label for="dropdown-email">Email</label>
+                  <input type="email" id="dropdown-email" class="form-input" placeholder="Enter your email">
+                </div>
+                <div class="form-group">
+                  <label for="dropdown-password">Password</label>
+                  <input type="password" id="dropdown-password" class="form-input" placeholder="Enter your password">
+                </div>
+                <div class="form-group form-actions">
+                  <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+                </div>
+                <div class="form-footer">
+                  <p>Don't have an account? <a href="#" class="register-link">Register</a></p>
+                  <a href="#" class="forgot-password">Forgot Password?</a>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+  
+  <div class="overlay"></div>
+  
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container">
+      <h1 class="fade-in">Find Your Perfect Instrument</h1>
+      <p class="fade-in">Discover premium quality musical instruments for musicians of all levels</p>
+      <a href="shop.html" class="btn btn-primary fade-in">Shop Now</a>
+    </div>
+  </section>
+  
+  <!-- Featured Products -->
+  <section class="featured-products">
+    <div class="container">
+      <h2 class="section-title slide-up">Featured Instruments</h2>
+      
+      <div class="product-grid" id="featured-products">
+        <!-- Products will be loaded via JavaScript -->
+      </div>
+      
+      <div class="text-center mt-4">
+        <a href="shop.html" class="btn btn-outline">View All Products</a>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Categories -->
+  <section class="categories">
+    <div class="container">
+      <h2 class="section-title slide-up">Browse By Category</h2>
+      
+      <div class="category-grid">
+        <a href="shop.html?category=string" class="category-card">
+          <div class="category-image">
+            <img src="images/instruments/Fender Electric Guitar.jpg" alt="String Instruments">
+          </div>
+          <h3 class="category-name">String Instruments</h3>
+        </a>
+        
+        <a href="shop.html?category=percussion" class="category-card">
+          <div class="category-image">
+            <img src="images/instruments/Roland-Drumset.jpg" alt="Percussion">
+          </div>
+          <h3 class="category-name">Percussion</h3>
+        </a>
+        
+        <a href="shop.html?category=keyboard" class="category-card">
+          <div class="category-image">
+            <img src="images/instruments/Steinway-Piano.jpg" alt="Keyboard Instruments">
+          </div>
+          <h3 class="category-name">Keyboard Instruments</h3>
+        </a>
+        
+        <a href="shop.html?category=electronic" class="category-card">
+          <div class="category-image">
+            <img src="images/instruments/Roland-Piano.jpg" alt="Electronic Instruments">
+          </div>
+          <h3 class="category-name">Electronic Instruments</h3>
+        </a>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Why Choose Us -->
+  <section class="why-choose-us">
+    <div class="container">
+      <h2 class="section-title slide-up">Why Choose Harmony Haven</h2>
+      
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-truck"></i>
+          </div>
+          <h3 class="feature-title">Free Shipping</h3>
+          <p class="feature-description">Free shipping on all orders over $100. We deliver worldwide with trusted shipping partners.</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-shield-alt"></i>
+          </div>
+          <h3 class="feature-title">2-Year Warranty</h3>
+          <p class="feature-description">All instruments come with a comprehensive 2-year warranty for your peace of mind.</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-headset"></i>
+          </div>
+          <h3 class="feature-title">Expert Support</h3>
+          <p class="feature-description">Get personalized advice from our team of professional musicians and instrument specialists.</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-exchange-alt"></i>
+          </div>
+          <h3 class="feature-title">Easy Returns</h3>
+          <p class="feature-description">30-day hassle-free return policy. Not satisfied? Return it for a full refund or exchange.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-column">
+          <h3 class="footer-title">Harmony Haven</h3>
+          <p>Your destination for premium musical instruments and accessories.</p>
+          
+          <div class="social-links">
+            <a href="#" class="social-link">
+              <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="#" class="social-link">
+              <i class="fab fa-twitter"></i>
+            </a>
+            <a href="#" class="social-link">
+              <i class="fab fa-instagram"></i>
+            </a>
+            <a href="#" class="social-link">
+              <i class="fab fa-youtube"></i>
+            </a>
+          </div>
+        </div>
+        
+        <div class="footer-column">
+          <h3 class="footer-title">Quick Links</h3>
+          <ul class="footer-links">
+            <li class="footer-link"><a href="index.html">Home</a></li>
+            <li class="footer-link"><a href="shop.html">Shop</a></li>
+            <li class="footer-link"><a href="about.html">About</a></li>
+            <li class="footer-link"><a href="contact.html">Contact</a></li>
+            <li class="footer-link"><a href="#">Privacy Policy</a></li>
+            <li class="footer-link"><a href="#">Terms & Conditions</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-column">
+          <h3 class="footer-title">Contact Us</h3>
+          <ul class="footer-links">
+            <li class="footer-link">
+              <i class="fas fa-map-marker-alt"></i> 123 Music Street, Melody City
+            </li>
+            <li class="footer-link">
+              <i class="fas fa-phone"></i> +1 (555) 123-4567
+            </li>
+            <li class="footer-link">
+              <i class="fas fa-envelope"></i> info@harmonyhaven.com
+            </li>
+          </ul>
+        </div>
+        
+        <div class="footer-column">
+          <h3 class="footer-title">Newsletter</h3>
+          <p>Subscribe to our newsletter to get updates on our latest offers!</p>
+          
+          <div class="footer-newsletter">
+            <form class="newsletter-form">
+              <input type="email" class="newsletter-input" placeholder="Your Email Address">
+              <button type="submit" class="newsletter-button">
+                <i class="fas fa-paper-plane"></i>
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <p>&copy; 2023 Harmony Haven. All Rights Reserved.</p>
+      </div>
+    </div>
+  </footer>
+  
+  <script src="js/main.js"></script>
+  <script src="js/index.js"></script>
+</body>
+</html>

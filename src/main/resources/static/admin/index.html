@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | Harmony Haven</title>
+    <link rel="stylesheet" href="../css/admin.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="admin-layout">
+        <aside class="admin-sidebar">
+            <div class="admin-logo">
+                <h2>Harmony Haven</h2>
+                <p>Admin Panel</p>
+            </div>
+            <nav class="admin-nav">
+                <ul>
+                    <li class="active"><a href="index.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                    <li><a href="inventory.html"><i class="fas fa-box"></i> Inventory</a></li>
+                    <li><a href="customers.html"><i class="fas fa-users"></i> Customers</a></li>
+                    <li><a href="orders.html"><i class="fas fa-shopping-cart"></i> Orders</a></li>
+                    <li><a href="#"><i class="fas fa-chart-bar"></i> Analytics</a></li>
+                    <li><a href="#"><i class="fas fa-cog"></i> Settings</a></li>
+                </ul>
+            </nav>
+            <div class="admin-logout">
+                <a href="#"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            </div>
+        </aside>
+        
+        <main class="admin-main">
+            <header class="admin-header">
+                <div class="admin-search">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search...">
+                </div>
+                <div class="admin-user">
+                    <div class="notifications">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-count">3</span>
+                    </div>
+                    <div class="user-info">
+                        <span>Admin User</span>
+                        <img src="/placeholder.svg?height=40&width=40" alt="Admin User">
+                    </div>
+                </div>
+            </header>
+            
+            <div class="admin-content">
+                <div class="dashboard-header">
+                    <h1>Dashboard</h1>
+                    <div class="date-filter">
+                        <label for="date-range">Date Range:</label>
+                        <select id="date-range">
+                            <option value="today">Today</option>
+                            <option value="week" selected>This Week</option>
+                            <option value="month">This Month</option>
+                            <option value="year">This Year</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="stats-cards">
+                    <div class="stat-card">
+                        <div class="stat-icon orders">
+                            <i class="fas fa-shopping-bag"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Total Orders</h3>
+                            <p class="stat-value">152</p>
+                            <p class="stat-change positive">+12.5% <span>vs last week</span></p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon revenue">
+                            <i class="fas fa-dollar-sign"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Revenue</h3>
+                            <p class="stat-value">$24,589</p>
+                            <p class="stat-change positive">+8.2% <span>vs last week</span></p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon customers">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>New Customers</h3>
+                            <p class="stat-value">48</p>
+                            <p class="stat-change positive">+5.7% <span>vs last week</span></p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon inventory">
+                            <i class="fas fa-box-open"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Low Stock Items</h3>
+                            <p class="stat-value">12</p>
+                            <p class="stat-change negative">+3 <span>since last week</span></p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="dashboard-charts">
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h3>Sales Overview</h3>
+                            <div class="chart-actions">
+                                <button class="btn-outline btn-sm active">Weekly</button>
+                                <button class="btn-outline btn-sm">Monthly</button>
+                                <button class="btn-outline btn-sm">Yearly</button>
+                            </div>
+                        </div>
+                        <div class="chart-container">
+                            <!-- Chart would be rendered here with JavaScript -->
+                            <div class="placeholder-chart">
+                                <div class="chart-bar" style="height: 30%;"></div>
+                                <div class="chart-bar" style="height: 50%;"></div>
+                                <div class="chart-bar" style="height: 70%;"></div>
+                                <div class="chart-bar" style="height: 60%;"></div>
+                                <div class="chart-bar" style="height: 80%;"></div>
+                                <div class="chart-bar" style="height: 90%;"></div>
+                                <div class="chart-bar" style="height: 75%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h3>Top Selling Categories</h3>
+                        </div>
+                        <div class="chart-container">
+                            <!-- Chart would be rendered here with JavaScript -->
+                            <div class="placeholder-pie-chart">
+                                <div class="pie-segment" style="--percentage: 40%; --color: #4CAF50;"></div>
+                                <div class="pie-segment" style="--percentage: 30%; --color: #2196F3;"></div>
+                                <div class="pie-segment" style="--percentage: 20%; --color: #FFC107;"></div>
+                                <div class="pie-segment" style="--percentage: 10%; --color: #9C27B0;"></div>
+                            </div>
+                            <div class="pie-legend">
+                                <div class="legend-item">
+                                    <span class="legend-color" style="background-color: #4CAF50;"></span>
+                                    <span>String Instruments (40%)</span>
+                                </div>
+                                <div class="legend-item">
+                                    <span class="legend-color" style="background-color: #2196F3;"></span>
+                                    <span>Percussion (30%)</span>
+                                </div>
+                                <div class="legend-item">
+                                    <span class="legend-color" style="background-color: #FFC107;"></span>
+                                    <span>Wind Instruments (20%)</span>
+                                </div>
+                                <div class="legend-item">
+                                    <span class="legend-color" style="background-color: #9C27B0;"></span>
+                                    <span>Electronic (10%)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="dashboard-tables">
+                    <div class="table-card">
+                        <div class="table-header">
+                            <h3>Recent Orders</h3>
+                            <a href="orders.html" class="view-all">View All</a>
+                        </div>
+                        <div class="table-container">
+                            <table class="admin-table">
+                                <thead>
+                                    <tr>
+                                        <th>Order ID</th>
+                                        <th>Customer</th>
+                                        <th>Date</th>
+                                        <th>Amount</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>#HH12345</td>
+                                        <td>John Smith</td>
+                                        <td>Apr 18, 2025</td>
+                                        <td>$1,299.99</td>
+                                        <td><span class="status-badge delivered">Delivered</span></td>
+                                        <td>
+                                            <div class="table-actions">
+                                                <button class="action-btn"><i class="fas fa-eye"></i></button>
+                                                <button class="action-btn"><i class="fas fa-edit"></i></button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>#HH12344</td>
+                                        <td>Sarah Johnson</td>
+                                        <td>Apr 17, 2025</td>
+                                        <td>$849.50</td>
+                                        <td><span class="status-badge shipped">Shipped</span></td>
+                                        <td>
+                                            <div class="table-actions">
+                                                <button class="action-btn"><i class="fas fa-eye"></i></button>
+                                                <button class="action-btn"><i class="fas fa-edit"></i></button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>#HH12343</td>
+                                        <td>Michael Brown</td>
+                                        <td>Apr 17, 2025</td>
+                                        <td>$2,499.00</td>
+                                        <td><span class="status-badge processing">Processing</span></td>
+                                        <td>
+                                            <div class="table-actions">
+                                                <button class="action-btn"><i class="fas fa-eye"></i></button>
+                                                <button class="action-btn"><i class="fas fa-edit"></i></button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>#HH12342</td>
+                                        <td>Emily Davis</td>
+                                        <td>Apr 16, 2025</td>
+                                        <td>$599.99</td>
+                                        <td><span class="status-badge delivered">Delivered</span></td>
+                                        <td>
+                                            <div class="table-actions">
+                                                <button class="action-btn"><i class="fas fa-eye"></i></button>
+                                                <button class="action-btn"><i class="fas fa-edit"></i></button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>#HH12341</td>
+                                        <td>David Wilson</td>
+                                        <td>Apr 16, 2025</td>
+                                        <td>$1,799.00</td>
+                                        <td><span class="status-badge cancelled">Cancelled</span></td>
+                                        <td>
+                                            <div class="table-actions">
+                                                <button class="action-btn"><i class="fas fa-eye"></i></button>
+                                                <button class="action-btn"><i class="fas fa-edit"></i></button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../js/admin.js"></script>
+</body>
+</html>

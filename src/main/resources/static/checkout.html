@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout - Harmony Haven</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <link rel="stylesheet" href="css/checkout.css">
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="container header-container">
+      <div class="logo">
+        <h1>Harmony Haven</h1>
+      </div>
+      
+      <button class="mobile-menu-button">
+        <i class="fas fa-bars"></i>
+      </button>
+      
+      <nav class="nav">
+        <button class="nav-close">
+          <i class="fas fa-times"></i>
+        </button>
+        <ul class="nav-list">
+          <li class="nav-item">
+            <a href="index.html" class="nav-link">Home</a>
+          </li>
+          <li class="nav-item">
+            <a href="shop.html" class="nav-link">Shop</a>
+          </li>
+          <li class="nav-item">
+            <a href="about.html" class="nav-link">About</a>
+          </li>
+          <li class="nav-item">
+            <a href="contact.html" class="nav-link">Contact</a>
+          </li>
+        </ul>
+      </nav>
+      
+      <div class="header-actions">
+        <form class="search-form">
+          <input type="text" class="search-input" placeholder="Search...">
+          <button type="submit" class="search-button">
+            <i class="fas fa-search"></i>
+          </button>
+        </form>
+        
+        <a href="cart.html" class="cart-button">
+          <i class="fas fa-shopping-cart"></i>
+          <span class="cart-count">0</span>
+        </a>
+        
+        <div class="profile-dropdown">
+          <button class="profile-button">
+            <i class="fas fa-user"></i>
+          </button>
+          <div class="dropdown-content">
+            <div class="dropdown-header">
+              <h3>Account</h3>
+            </div>
+            <div class="dropdown-body">
+              <form id="login-form" class="dropdown-form">
+                <div class="form-group">
+                  <label for="dropdown-email">Email</label>
+                  <input type="email" id="dropdown-email" class="form-input" placeholder="Enter your email">
+                </div>
+                <div class="form-group">
+                  <label for="dropdown-password">Password</label>
+                  <input type="password" id="dropdown-password" class="form-input" placeholder="Enter your password">
+                </div>
+                <div class="form-group form-actions">
+                  <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+                </div>
+                <div class="form-footer">
+                  <p>Don't have an account? <a href="#" class="register-link">Register</a></p>
+                  <a href="#" class="forgot-password">Forgot Password?</a>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+  
+  <div class="overlay"></div>
+  
+  <!-- Checkout Hero Section -->
+  <section class="checkout-hero">
+    <div class="container">
+      <h1 class="checkout-hero-title">Checkout</h1>
+      <p class="checkout-hero-subtitle">Complete your purchase</p>
+    </div>
+  </section>
+  
+  <!-- Checkout Progress -->
+  <section class="checkout-progress">
+    <div class="container">
+      <div class="progress-container">
+        <div class="progress-step active">
+          <div class="step-number">1</div>
+          <div class="step-label">Shipping</div>
+        </div>
+        <div class="progress-line"></div>
+        <div class="progress-step">
+          <div class="step-number">2</div>
+          <div class="step-label">Payment</div>
+        </div>
+        <div class="progress-line"></div>
+        <div class="progress-step">
+          <div class="step-number">3</div>
+          <div class="step-label">Review</div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Checkout Section -->
+  <section class="checkout">
+    <div class="container">
+      <div class="checkout-container">
+        <!-- Checkout Form -->
+        <div class="checkout-form-container">
+          <form id="checkout-form" class="checkout-form">
+            <!-- Shipping Information -->
+            <div class="checkout-section" id="shipping-section">
+              <h2 class="section-title">Shipping Information</h2>
+              
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="first-name">First Name*</label>
+                  <input type="text" id="first-name" name="firstName" class="form-control" required>
+                </div>
+                <div class="form-group">
+                  <label for="last-name">Last Name*</label>
+                  <input type="text" id="last-name" name="lastName" class="form-control" required>
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label for="email">Email Address*</label>
+                <input type="email" id="email" name="email" class="form-control" required>
+              </div>
+              
+              <div class="form-group">
+                <label for="phone">Phone Number*</label>
+                <input type="tel" id="phone" name="phone" class="form-control" required>
+              </div>
+              
+              <div class="form-group">
+                <label for="address">Street Address*</label>
+                <input type="text" id="address" name="address" class="form-control" required>
+              </div>
+              
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="city">City*</label>
+                  <input type="text" id="city" name="city" class="form-control" required>
+                </div>
+                <div class="form-group">
+                  <label for="state">State/Province*</label>
+                  <input type="text" id="state" name="state" class="form-control" required>
+                </div>
+              </div>
+              
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="zip">ZIP/Postal Code*</label>
+                  <input type="text" id="zip" name="zip" class="form-control" required>
+                </div>
+                <div class="form-group">
+                  <label for="country">Country*</label>
+                  <select id="country" name="country" class="form-control" required>
+                    <option value="">Select Country</option>
+                    <option value="US">United States</option>
+                    <option value="CA">Canada</option>
+                    <option value="UK">United Kingdom</option>
+                    <option value="AU">Australia</option>
+                    <option value="DE">Germany</option>
+                    <option value="FR">France</option>
+                    <option value="JP">Japan</option>
+                  </select>
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label>Shipping Method*</label>
+                <div class="shipping-options">
+                  <div class="shipping-option">
+                    <input type="radio" id="standard-shipping" name="shipping" value="0" checked>
+                    <label for="standard-shipping">
+                      <div class="option-info">
+                        <div class="option-title">Standard Shipping</div>
+                        <div class="option-description">3-5 business days</div>
+                      </div>
+                      <div class="option-price">Free</div>
+                    </label>
+                  </div>
+                  
+                  <div class="shipping-option">
+                    <input type="radio" id="express-shipping" name="shipping" value="15">
+                    <label for="express-shipping">
+                      <div class="option-info">
+                        <div class="option-title">Express Shipping</div>
+                        <div class="option-description">1-2 business days</div>
+                      </div>
+                      <div class="option-price">$15.00</div>
+                    </label>
+                  </div>
+                  
+                  <div class="shipping-option">
+                    <input type="radio" id="overnight-shipping" name="shipping" value="25">
+                    <label for="overnight-shipping">
+                      <div class="option-info">
+                        <div class="option-title">Overnight Shipping</div>
+                        <div class="option-description">Next business day</div>
+                      </div>
+                      <div class="option-price">$25.00</div>
+                    </label>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="form-actions">
+                <button type="button" class="btn btn-primary next-step" data-next="payment-section">Continue to Payment</button>
+              </div>
+            </div>
+            
+            <!-- Payment Information -->
+            <div class="checkout-section hidden" id="payment-section">
+              <h2 class="section-title">Payment Information</h2>
+              
+              <div class="form-group">
+                <label>Payment Method*</label>
+                <div class="payment-methods">
+                  <div class="payment-method">
+                    <input type="radio" id="credit-card" name="payment" value="credit-card" checked>
+                    <label for="credit-card">
+                      <i class="far fa-credit-card"></i>
+                      Credit Card
+                    </label>
+                  </div>
+                  
+                  <div class="payment-method">
+                    <input type="radio" id="paypal" name="payment" value="paypal">
+                    <label for="paypal">
+                      <i class="fab fa-paypal"></i>
+                      PayPal
+                    </label>
+                  </div>
+                  
+                  <div class="payment-method">
+                    <input type="radio" id="bank-transfer" name="payment" value="bank-transfer">
+                    <label for="bank-transfer">
+                      <i class="fas fa-university"></i>
+                      Bank Transfer
+                    </label>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Credit Card Form -->
+              <div class="payment-form" id="credit-card-form">
+                <div class="form-group">
+                  <label for="card-number">Card Number*</label>
+                  <div class="card-input-container">
+                    <input type="text" id="card-number" name="cardNumber" class="form-control" placeholder="1234 5678 9012 3456" required>
+                    <div class="card-icons">
+                      <i class="fab fa-cc-visa"></i>
+                      <i class="fab fa-cc-mastercard"></i>
+                      <i class="fab fa-cc-amex"></i>
+                      <i class="fab fa-cc-discover"></i>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="form-group">
+                  <label for="card-name">Name on Card*</label>
+                  <input type="text" id="card-name" name="cardName" class="form-control" required>
+                </div>
+                
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="exp-date">Expiration Date*</label>
+                    <input type="text" id="exp-date" name="expDate" class="form-control" placeholder="MM/YY" required>
+                  </div>
+                  <div class="form-group">
+                    <label for="cvv">CVV*</label>
+                    <input type="text" id="cvv" name="cvv" class="form-control" placeholder="123" required>
+                    <div class="cvv-info">
+                      <i class="fas fa-question-circle"></i>
+                      <div class="cvv-tooltip">3 or 4 digit security code on the back of your card</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- PayPal Form -->
+              <div class="payment-form hidden" id="paypal-form">
+                <div class="paypal-info">
+                  <p>You will be redirected to PayPal to complete your payment.</p>
+                  <div class="paypal-logo">
+                    <i class="fab fa-paypal"></i>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Bank Transfer Form -->
+              <div class="payment-form hidden" id="bank-transfer-form">
+                <div class="bank-info">
+                  <p>Please use the following information to complete your bank transfer:</p>
+                  <div class="bank-details">
+                    <div class="bank-detail">
+                      <span class="detail-label">Bank Name:</span>
+                      <span class="detail-value">Harmony National Bank</span>
+                    </div>
+                    <div class="bank-detail">
+                      <span class="detail-label">Account Name:</span>
+                      <span class="detail-value">Harmony Haven Inc.</span>
+                    </div>
+                    <div class="bank-detail">
+                      <span class="detail-label">Account Number:</span>
+                      <span class="detail-value">1234567890</span>
+                    </div>
+                    <div class="bank-detail">
+                      <span class="detail-label">Routing Number:</span>
+                      <span class="detail-value">987654321</span>
+                    </div>
+                    <div class="bank-detail">
+                      <span class="detail-label">SWIFT/BIC:</span>
+                      <span class="detail-value">HNBKUS12</span>
+                    </div>
+                  </div>
+                  <p class="bank-note">Please include your order number in the transfer reference.</p>
+                </div>
+              </div>
+              
+              <div class="form-actions">
+                <button type="button" class="btn btn-outline back-step" data-back="shipping-section">Back to Shipping</button>
+                <button type="button" class="btn btn-primary next-step" data-next="review-section">Review Order</button>
+              </div>
+            </div>
+            
+            <!-- Order Review -->
+            <div class="checkout-section hidden" id="review-section">
+              <h2 class="section-title">Review Your Order</h2>
+              
+              <div class="review-sections">
+                <div class="review-section">
+                  <div class="review-header">
+                    <h3>Shipping Information</h3>
+                    <button type="button" class="edit-btn" data-section="shipping-section">Edit</button>
+                  </div>
+                  <div class="review-content" id="shipping-review">
+                    <!-- Will be filled by JavaScript -->
+                  </div>
+                </div>
+                
+                <div class="review-section">
+                  <div class="review-header">
+                    <h3>Payment Information</h3>
+                    <button type="button" class="edit-btn" data-section="payment-section">Edit</button>
+                  </div>
+                  <div class="review-content" id="payment-review">
+                    <!-- Will be filled by JavaScript -->
+                  </div>
+                </div>
+                
+                <div class="review-section">
+                  <div class="review-header">
+                    <h3>Order Items</h3>
+                  </div>
+                  <div class="review-content">
+                    <div class="review-items" id="order-items-review">
+                      <!-- Will be filled by JavaScript -->
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="form-group checkbox-group">
+                <input type="checkbox" id="terms" name="terms" required>
+                <label for="terms">I agree to the <a href="#">Terms & Conditions</a> and <a href="#">Privacy Policy</a></label>
+              </div>
+              
+              <div class="form-actions">
+                <button type="button" class="btn btn-outline back-step" data-back="payment-section">Back to Payment</button>
+                <button type="submit" class="btn btn-primary">Place Order</button>
+              </div>
+            </div>
+          </form>
+        </div>
+        
+        <!-- Order Summary -->
+        <div class="order-summary">
+          <h3 class="summary-title">Order Summary</h3>
+          
+          <div class="summary-items" id="summary-items">
+            <!-- Will be filled by JavaScript -->
+          </div>
+          
+          <div class="summary-totals">
+            <div class="summary-row">
+              <div class="summary-label">Subtotal</div>
+              <div class="summary-value" id="checkout-subtotal">$0.00</div>
+            </div>
+            
+            <div class="summary-row">
+              <div class="summary-label">Shipping</div>
+              <div class="summary-value" id="checkout-shipping">$0.00</div>
+            </div>
+            
+            <div class="summary-row">
+              <div class="summary-label">Tax</div>
+              <div class="summary-value" id="checkout-tax">$0.00</div>
+            </div>
+            
+            <div class="summary-row total">
+              <div class="summary-label">Total</div>
+              <div class="summary-value" id="checkout-total">$0.00</div>
+            </div>
+          </div>
+          
+          <div class="coupon-section">
+            <div class="coupon-toggle">
+              <i class="fas fa-tag"></i>
+              <span>Have a coupon?</span>
+              <i class="fas fa-chevron-down"></i>
+            </div>
+            
+            <div class="coupon-form hidden">
+              <input type="text" class="coupon-input" placeholder="Enter coupon code">
+              <button class="coupon-btn">Apply</button>
+            </div>
+          </div>
+          
+          <div class="secure-checkout">
+            <div class="secure-icon">
+              <i class="fas fa-lock"></i>
+            </div>
+            <div class="secure-text">
+              <h4>Secure Checkout</h4>
+              <p>Your payment information is encrypted and secure.</p>
+            </div>
+          </div>
+          
+          <div class="payment-icons">
+            <img src="/placeholder.svg?height=30&width=45&text=Visa" alt="Visa">
+            <img src="/placeholder.svg?height=30&width=45&text=MC" alt="MasterCard">
+            <img src="/placeholder.svg?height=30&width=45&text=Amex" alt="American Express">
+            <img src="/placeholder.svg?height=30&width=45&text=PayPal" alt="PayPal">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-column">
+          <h3 class="footer-title">Harmony Haven</h3>
+          <p>Your destination for premium musical instruments and accessories. Quality products, expert advice, and excellent service.</p>
+          
+          <div class="social-links">
+            <a href="#" class="social-link">
+              <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="#" class="social-link">
+              <i class="fab fa-twitter"></i>
+            </a>
+            <a href="#" class="social-link">
+              <i class="fab fa-instagram"></i>
+            </a>
+            <a href="#" class="social-link">
+              <i class="fab fa-youtube"></i>
+            </a>
+          </div>
+        </div>
+        
+        <div class="footer-column">
+          <h3 class="footer-title">Quick Links</h3>
+          <ul class="footer-links">
+            <li class="footer-link"><a href="index.html">Home</a></li>
+            <li class="footer-link"><a href="shop.html">Shop</a></li>
+            <li class="footer-link"><a href="about.html">About</a></li>
+            <li class="footer-link"><a href="contact.html">Contact</a></li>
+            <li class="footer-link"><a href="#">Privacy Policy</a></li>
+            <li class="footer-link"><a href="#">Terms & Conditions</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-column">
+          <h3 class="footer-title">Contact Us</h3>
+          <ul class="footer-links">
+            <li class="footer-link">
+              <i class="fas fa-map-marker-alt"></i> 123 Music Street, Melody City
+            </li>
+            <li class="footer-link">
+              <i class="fas fa-phone"></i> +1 (555) 123-4567
+            </li>
+            <li class="footer-link">
+              <i class="fas fa-envelope"></i> info@harmonyhaven.com
+            </li>
+          </ul>
+        </div>
+        
+        <div class="footer-column">
+          <h3 class="footer-title">Newsletter</h3>
+          <p>Subscribe to our newsletter to get updates on our latest offers!</p>
+          
+          <div class="footer-newsletter">
+            <form class="newsletter-form">
+              <input type="email" class="newsletter-input" placeholder="Your Email Address">
+              <button type="submit" class="newsletter-button">
+                <i class="fas fa-paper-plane"></i>
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <p>&copy; 2023 Harmony Haven. All Rights Reserved.</p>
+      </div>
+    </div>
+  </footer>
+  
+  <script src="js/main.js"></script>
+  <script src="js/checkout.js"></script>
+</body>
+</html>

@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Details - Harmony Haven</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700;800&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <link rel="stylesheet" href="css/product-detail.css">
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="container header-container">
+      <div class="logo">
+        <h1>Harmony Haven</h1>
+      </div>
+      
+      <button class="mobile-menu-button">
+        <i class="fas fa-bars"></i>
+      </button>
+      
+      <nav class="nav">
+        <button class="nav-close">
+          <i class="fas fa-times"></i>
+        </button>
+        <ul class="nav-list">
+          <li class="nav-item">
+            <a href="index.html" class="nav-link">Home</a>
+          </li>
+          <li class="nav-item">
+            <a href="shop.html" class="nav-link active">Shop</a>
+          </li>
+          <li class="nav-item">
+            <a href="about.html" class="nav-link">About</a>
+          </li>
+          <li class="nav-item">
+            <a href="contact.html" class="nav-link">Contact</a>
+          </li>
+        </ul>
+      </nav>
+      
+      <div class="header-actions">
+        <form class="search-form">
+          <input type="text" class="search-input" placeholder="Search...">
+          <button type="submit" class="search-button">
+            <i class="fas fa-search"></i>
+          </button>
+        </form>
+        
+        <a href="cart.html" class="cart-button">
+          <i class="fas fa-shopping-cart"></i>
+          <span class="cart-count">0</span>
+        </a>
+        
+        <div class="profile-dropdown">
+          <button class="profile-button">
+            <i class="fas fa-user"></i>
+          </button>
+          <div class="dropdown-content">
+            <div class="dropdown-header">
+              <h3>Account</h3>
+            </div>
+            <div class="dropdown-body">
+              <form id="login-form" class="dropdown-form">
+                <div class="form-group">
+                  <label for="dropdown-email">Email</label>
+                  <input type="email" id="dropdown-email" class="form-input" placeholder="Enter your email">
+                </div>
+                <div class="form-group">
+                  <label for="dropdown-password">Password</label>
+                  <input type="password" id="dropdown-password" class="form-input" placeholder="Enter your password">
+                </div>
+                <div class="form-group form-actions">
+                  <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+                </div>
+                <div class="form-footer">
+                  <p>Don't have an account? <a href="#" class="register-link">Register</a></p>
+                  <a href="#" class="forgot-password">Forgot Password?</a>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+  
+  <div class="overlay"></div>
+  
+  <!-- Breadcrumb -->
+  <section class="breadcrumb-section">
+    <div class="container">
+      <div class="breadcrumb">
+        <a href="index.html">Home</a>
+        <span class="separator">/</span>
+        <a href="shop.html">Shop</a>
+        <span class="separator">/</span>
+        <span class="current" id="product-breadcrumb-name">Product Name</span>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Product Detail Section -->
+  <section class="product-detail-section">
+    <div class="container">
+      <div class="product-detail-container">
+        <!-- Product Gallery -->
+        <div class="product-gallery">
+          <div class="main-image-container">
+            <div class="swiper product-main-slider">
+              <div class="swiper-wrapper" id="main-image-wrapper">
+                <!-- Main images will be loaded here via JavaScript -->
+              </div>
+              <div class="swiper-button-next"></div>
+              <div class="swiper-button-prev"></div>
+            </div>
+          </div>
+          
+          <div class="thumbnail-container">
+            <div class="swiper product-thumbnail-slider">
+              <div class="swiper-wrapper" id="thumbnail-wrapper">
+                <!-- Thumbnails will be loaded here via JavaScript -->
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Product Info -->
+        <div class="product-info">
+          <div class="product-category" id="product-category">String Instruments</div>
+          <h1 class="product-title" id="product-name">Product Name</h1>
+          
+          <div class="product-meta">
+            <div class="product-rating">
+              <div class="stars" id="product-rating">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star-half-alt"></i>
+              </div>
+              <span class="rating-count" id="product-reviews">(42 reviews)</span>
+            </div>
+            
+            <div class="product-sku">
+              SKU: <span id="product-sku">MH-1234</span>
+            </div>
+          </div>
+          
+          <div class="product-price" id="product-price">$799.99</div>
+          
+          <div class="product-availability">
+            <span class="availability-label">Availability:</span>
+            <span class="availability-status" id="product-availability">In Stock</span>
+          </div>
+          
+          <div class="product-description" id="product-description">
+            <p>High-quality electric guitar with versatile sound options. Ideal for professional musicians.</p>
+          </div>
+          
+          <div class="product-actions">
+            <div class="quantity-selector">
+              <button class="quantity-btn decrease">-</button>
+              <input type="number" class="quantity-input" value="1" min="1">
+              <button class="quantity-btn increase">+</button>
+            </div>
+            
+            <button class="btn btn-primary add-to-cart-btn" id="add-to-cart-btn">
+              <i class="fas fa-shopping-cart"></i> Add to Cart
+            </button>
+            
+            <button class="btn btn-outline wishlist-btn">
+              <i class="far fa-heart"></i> Add to Wishlist
+            </button>
+          </div>
+          
+          <div class="product-share">
+            <span>Share:</span>
+            <div class="social-share">
+              <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+              <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+              <a href="#" class="social-icon"><i class="fab fa-pinterest-p"></i></a>
+              <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Product Tabs -->
+      <div class="product-tabs">
+        <div class="tabs-header">
+          <button class="tab-btn active" data-tab="description">Description</button>
+          <button class="tab-btn" data-tab="features">Features</button>
+          <button class="tab-btn" data-tab="specifications">Specifications</button>
+          <button class="tab-btn" data-tab="reviews">Reviews</button>
+        </div>
+        
+        <div class="tabs-content">
+          <div class="tab-panel active" id="description-panel">
+            <div class="tab-content" id="full-description">
+              <p>High-quality electric guitar with versatile sound options. Ideal for professional musicians. This guitar features premium components and craftsmanship to deliver exceptional tone and playability.</p>
+              <p>Whether you're playing blues, rock, jazz, or metal, this instrument delivers the sound and performance you need. The comfortable neck profile and smooth fretboard make it a joy to play for hours.</p>
+            </div>
+          </div>
+          
+          <div class="tab-panel" id="features-panel">
+            <div class="tab-content">
+              <ul class="features-list" id="features-list">
+                <!-- Features will be loaded here via JavaScript -->
+              </ul>
+            </div>
+          </div>
+          
+          <div class="tab-panel" id="specifications-panel">
+            <div class="tab-content">
+              <table class="specifications-table" id="specifications-table">
+                <tbody>
+                  <!-- Specifications will be loaded here via JavaScript -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+          
+          <div class="tab-panel" id="reviews-panel">
+            <div class="tab-content">
+              <div class="reviews-summary">
+                <div class="average-rating">
+                  <div class="rating-number" id="average-rating">4.8</div>
+                  <div class="rating-stars">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star-half-alt"></i>
+                  </div>
+                  <div class="rating-count" id="total-reviews">Based on 42 reviews</div>
+                </div>
+                
+                <div class="rating-bars">
+                  <div class="rating-bar">
+                    <div class="rating-label">5 Stars</div>
+                    <div class="progress-bar">
+                      <div class="progress" style="width: 75%"></div>
+                    </div>
+                    <div class="rating-percent">75%</div>
+                  </div>
+                  <div class="rating-bar">
+                    <div class="rating-label">4 Stars</div>
+                    <div class="progress-bar">
+                      <div class="progress" style="width: 20%"></div>
+                    </div>
+                    <div class="rating-percent">20%</div>
+                  </div>
+                  <div class="rating-bar">
+                    <div class="rating-label">3 Stars</div>
+                    <div class="progress-bar">
+                      <div class="progress" style="width: 5%"></div>
+                    </div>
+                    <div class="rating-percent">5%</div>
+                  </div>
+                  <div class="rating-bar">
+                    <div class="rating-label">2 Stars</div>
+                    <div class="progress-bar">
+                      <div class="progress" style="width: 0%"></div>
+                    </div>
+                    <div class="rating-percent">0%</div>
+                  </div>
+                  <div class="rating-bar">
+                    <div class="rating-label">1 Star</div>
+                    <div class="progress-bar">
+                      <div class="progress" style="width: 0%"></div>
+                    </div>
+                    <div class="rating-percent">0%</div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="reviews-list" id="reviews-list">
+                <!-- Reviews will be loaded here via JavaScript -->
+              </div>
+              
+              <div class="review-form-container">
+                <h3>Write a Review</h3>
+                <form id="review-form" class="review-form">
+                  <div class="form-group">
+                    <label>Your Rating</label>
+                    <div class="rating-selector">
+                      <i class="far fa-star" data-rating="1"></i>
+                      <i class="far fa-star" data-rating="2"></i>
+                      <i class="far fa-star" data-rating="3"></i>
+                      <i class="far fa-star" data-rating="4"></i>
+                      <i class="far fa-star" data-rating="5"></i>
+                    </div>
+                  </div>
+                  
+                  <div class="form-group">
+                    <label for="review-name">Your Name</label>
+                    <input type="text" id="review-name" required>
+                  </div>
+                  
+                  <div class="form-group">
+                    <label for="review-email">Your Email</label>
+                    <input type="email" id="review-email" required>
+                  </div>
+                  
+                  <div class="form-group">
+                    <label for="review-title">Review Title</label>
+                    <input type="text" id="review-title" required>
+                  </div>
+                  
+                  <div class="form-group">
+                    <label for="review-content">Your Review</label>
+                    <textarea id="review-content" rows="5" required></textarea>
+                  </div>
+                  
+                  <button type="submit" class="btn btn-primary">Submit Review</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Related Products -->
+      <div class="related-products">
+        <h2 class="section-title">Related Products</h2>
+        <div class="product-grid" id="related-products">
+          <!-- Related products will be loaded here via JavaScript -->
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Recently Viewed -->
+  <section class="recently-viewed">
+    <div class="container">
+      <h2 class="section-title">Recently Viewed</h2>
+      <div class="product-grid" id="recently-viewed-products">
+        <!-- Recently viewed products will be loaded here via JavaScript -->
+      </div>
+    </div>
+  </section>
+  
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-column">
+          <h3 class="footer-title">Harmony Haven</h3>
+          <p>Your one-stop destination for all musical instruments and accessories. Quality products, expert advice, and excellent service.</p>
+          
+          <div class="social-links">
+            <a href="#" class="social-link">
+              <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="#" class="social-link">
+              <i class="fab fa-twitter"></i>
+            </a>
+            <a href="#" class="social-link">
+              <i class="fab fa-instagram"></i>
+            </a>
+            <a href="#" class="social-link">
+              <i class="fab fa-youtube"></i>
+            </a>
+          </div>
+        </div>
+        
+        <div class="footer-column">
+          <h3 class="footer-title">Quick Links</h3>
+          <ul class="footer-links">
+            <li class="footer-link"><a href="index.html">Home</a></li>
+            <li class="footer-link"><a href="shop.html">Shop</a></li>
+            <li class="footer-link"><a href="about.html">About</a></li>
+            <li class="footer-link"><a href="contact.html">Contact</a></li>
+            <li class="footer-link"><a href="#">Privacy Policy</a></li>
+            <li class="footer-link"><a href="#">Terms & Conditions</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-column">
+          <h3 class="footer-title">Contact Us</h3>
+          <ul class="footer-links">
+            <li class="footer-link">
+              <i class="fas fa-map-marker-alt"></i> 123 Music Street, Melody City
+            </li>
+            <li class="footer-link">
+              <i class="fas fa-phone"></i> +1 (555) 123-4567
+            </li>
+            <li class="footer-link">
+              <i class="fas fa-envelope"></i> info@harmonyhaven.com
+            </li>
+          </ul>
+        </div>
+        
+        <div class="footer-column">
+          <h3 class="footer-title">Newsletter</h3>
+          <p>Subscribe to our newsletter to get updates on our latest offers!</p>
+          
+          <div class="footer-newsletter">
+            <form class="newsletter-form">
+              <input type="email" class="newsletter-input" placeholder="Your Email Address">
+              <button type="submit" class="newsletter-button">
+                <i class="fas fa-paper-plane"></i>
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <p>&copy; 2023 Harmony Haven. All Rights Reserved.</p>
+      </div>
+    </div>
+  </footer>
+  
+  <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/product-detail.js"></script>
+</body>
+</html>

@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shopping Cart - Harmony Haven</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <link rel="stylesheet" href="css/cart.css">
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="container header-container">
+      <div class="logo">
+        <h1>Harmony Haven</h1>
+      </div>
+      
+      <button class="mobile-menu-button">
+        <i class="fas fa-bars"></i>
+      </button>
+      
+      <nav class="nav">
+        <button class="nav-close">
+          <i class="fas fa-times"></i>
+        </button>
+        <ul class="nav-list">
+          <li class="nav-item">
+            <a href="index.html" class="nav-link">Home</a>
+          </li>
+          <li class="nav-item">
+            <a href="shop.html" class="nav-link">Shop</a>
+          </li>
+          <li class="nav-item">
+            <a href="about.html" class="nav-link">About</a>
+          </li>
+          <li class="nav-item">
+            <a href="contact.html" class="nav-link">Contact</a>
+          </li>
+        </ul>
+      </nav>
+      
+      <div class="header-actions">
+        <form class="search-form">
+          <input type="text" class="search-input" placeholder="Search...">
+          <button type="submit" class="search-button">
+            <i class="fas fa-search"></i>
+          </button>
+        </form>
+        
+        <a href="cart.html" class="cart-button">
+          <i class="fas fa-shopping-cart"></i>
+          <span class="cart-count">0</span>
+        </a>
+        
+        <div class="profile-dropdown">
+          <button class="profile-button">
+            <i class="fas fa-user"></i>
+          </button>
+          <div class="dropdown-content">
+            <div class="dropdown-header">
+              <h3>Account</h3>
+            </div>
+            <div class="dropdown-body">
+              <form id="login-form" class="dropdown-form">
+                <div class="form-group">
+                  <label for="dropdown-email">Email</label>
+                  <input type="email" id="dropdown-email" class="form-input" placeholder="Enter your email">
+                </div>
+                <div class="form-group">
+                  <label for="dropdown-password">Password</label>
+                  <input type="password" id="dropdown-password" class="form-input" placeholder="Enter your password">
+                </div>
+                <div class="form-group form-actions">
+                  <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+                </div>
+                <div class="form-footer">
+                  <p>Don't have an account? <a href="#" class="register-link">Register</a></p>
+                  <a href="#" class="forgot-password">Forgot Password?</a>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+  
+  <div class="overlay"></div>
+  
+  <!-- Cart Hero Section -->
+  <section class="cart-hero">
+    <div class="container">
+      <h1 class="cart-hero-title">Your Shopping Cart</h1>
+      <p class="cart-hero-subtitle">Review your items and proceed to checkout</p>
+    </div>
+  </section>
+  
+  <!-- Cart Section -->
+  <section class="cart">
+    <div class="container">
+      <div id="cart-content">
+        <!-- Empty Cart State -->
+        <div class="cart-empty" id="empty-cart">
+          <div class="cart-empty-icon">
+            <i class="fas fa-shopping-cart"></i>
+          </div>
+          <h2>Your cart is empty</h2>
+          <p>Looks like you haven't added any instruments to your cart yet. Browse our collection and find the perfect instrument for you.</p>
+          <a href="shop.html" class="btn btn-primary">Continue Shopping</a>
+        </div>
+        
+        <!-- Cart with Items -->
+        <div class="cart-container" id="cart-with-items" style="display: none;">
+          <div class="cart-items">
+            <div class="cart-header">
+              <div>Product</div>
+              <div>Price</div>
+              <div>Quantity</div>
+              <div>Total</div>
+              <div></div>
+            </div>
+            
+            <div id="cart-items-container">
+              <!-- Cart items will be loaded here via JavaScript -->
+            </div>
+            
+            <div class="cart-actions">
+              <button class="cart-action-btn" id="clear-cart-btn">
+                <i class="fas fa-trash-alt"></i> Clear Cart
+              </button>
+              <button class="cart-action-btn cart-update-btn" id="update-cart-btn">
+                <i class="fas fa-sync-alt"></i> Update Cart
+              </button>
+            </div>
+          </div>
+          
+          <div class="cart-summary">
+            <h3 class="summary-title">Order Summary</h3>
+            
+            <div class="summary-row">
+              <div class="summary-label">Subtotal</div>
+              <div class="summary-value" id="summary-subtotal">$0.00</div>
+            </div>
+            
+            <div class="summary-row">
+              <div class="summary-label">Shipping</div>
+              <div class="summary-value" id="summary-shipping">$0.00</div>
+            </div>
+            
+            <div class="summary-row">
+              <div class="summary-label">Tax</div>
+              <div class="summary-value" id="summary-tax">$0.00</div>
+            </div>
+            
+            <div class="summary-row total">
+              <div class="summary-label">Total</div>
+              <div class="summary-value" id="summary-total">$0.00</div>
+            </div>
+            
+            <div class="coupon-form">
+              <input type="text" class="coupon-input" placeholder="Enter coupon code">
+              <button class="coupon-btn">Apply</button>
+            </div>
+            
+            <button class="checkout-btn" id="checkout-btn">
+              <i class="fas fa-lock"></i> Proceed to Checkout
+            </button>
+            
+            <a href="shop.html" class="continue-shopping">
+              <i class="fas fa-arrow-left"></i> Continue Shopping
+            </a>
+            
+            <div class="shipping-info">
+              <h4>Shipping Information</h4>
+              <p>Standard shipping: 3-5 business days</p>
+              <p>Express shipping: 1-2 business days</p>
+              <p class="free-shipping">Free shipping on orders over $100</p>
+            </div>
+            
+            <div class="payment-methods">
+              <img src="/placeholder.svg?height=24&width=38&text=Visa" alt="Visa">
+              <img src="/placeholder.svg?height=24&width=38&text=MC" alt="MasterCard">
+              <img src="/placeholder.svg?height=24&width=38&text=Amex" alt="American Express">
+              <img src="/placeholder.svg?height=24&width=38&text=PayPal" alt="PayPal">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-column">
+          <h3 class="footer-title">Harmony Haven</h3>
+          <p>Your destination for premium musical instruments and accessories. Quality products, expert advice, and excellent service.</p>
+          
+          <div class="social-links">
+            <a href="#" class="social-link">
+              <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="#" class="social-link">
+              <i class="fab fa-twitter"></i>
+            </a>
+            <a href="#" class="social-link">
+              <i class="fab fa-instagram"></i>
+            </a>
+            <a href="#" class="social-link">
+              <i class="fab fa-youtube"></i>
+            </a>
+          </div>
+        </div>
+        
+        <div class="footer-column">
+          <h3 class="footer-title">Quick Links</h3>
+          <ul class="footer-links">
+            <li class="footer-link"><a href="index.html">Home</a></li>
+            <li class="footer-link"><a href="shop.html">Shop</a></li>
+            <li class="footer-link"><a href="about.html">About</a></li>
+            <li class="footer-link"><a href="contact.html">Contact</a></li>
+            <li class="footer-link"><a href="#">Privacy Policy</a></li>
+            <li class="footer-link"><a href="#">Terms & Conditions</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-column">
+          <h3 class="footer-title">Contact Us</h3>
+          <ul class="footer-links">
+            <li class="footer-link">
+              <i class="fas fa-map-marker-alt"></i> 123 Music Street, Melody City
+            </li>
+            <li class="footer-link">
+              <i class="fas fa-phone"></i> +1 (555) 123-4567
+            </li>
+            <li class="footer-link">
+              <i class="fas fa-envelope"></i> info@harmonyhaven.com
+            </li>
+          </ul>
+        </div>
+        
+        <div class="footer-column">
+          <h3 class="footer-title">Newsletter</h3>
+          <p>Subscribe to our newsletter to get updates on our latest offers!</p>
+          
+          <div class="footer-newsletter">
+            <form class="newsletter-form">
+              <input type="email" class="newsletter-input" placeholder="Your Email Address">
+              <button type="submit" class="newsletter-button">
+                <i class="fas fa-paper-plane"></i>
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <p>&copy; 2023 Harmony Haven. All Rights Reserved.</p>
+      </div>
+    </div>
+  </footer>
+  
+  <script src="js/main.js"></script>
+  <script src="js/cart.js"></script>
+</body>
+</html>
