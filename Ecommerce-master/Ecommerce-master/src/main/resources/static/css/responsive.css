@@ -1,0 +1,22 @@
+/* responsive.css - placeholder to fix 404 and MIME errors */
+@media (max-width: 700px) {
+  .shop-container {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  .shop-sidebar {
+    width: 100%;
+    min-width: 0;
+    position: static;
+    margin-bottom: 0;
+  }
+  .products-grid {
+    grid-template-columns: 1fr;
+    gap: 1.2rem;
+  }
+  .controls-bar {
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem 0.5rem;
+  }
+}

@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Detail - MelodyMatrix</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700;800&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <link rel="stylesheet" href="css/product-detail.css">
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="container header-container">
+      <div class="logo" style="display: flex; align-items: center; gap: 24px;">
+        <span style="background: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; height: 64px; width: 64px; box-shadow: 0 2px 8px rgba(0,0,0,0.10);">
+          <img src="Images/guitar_headstock.png" alt="MelodyMatrix Logo" style="height: 48px; width: 48px; object-fit: contain; display: block; filter: drop-shadow(0 2px 6px rgba(0,0,0,0.18));"/>
+        </span>
+        <span style="font-family: 'Montserrat', 'Poppins', Arial, sans-serif; font-size: 2.5rem; font-weight: 700; letter-spacing: 1px; color: #2d225a; line-height: 1;">
+          <span style="font-weight: 600; color: #6a5acd;">Melody</span><span style="font-weight: 800; color: #8f5cf7;">Matrix</span>
+        </span>
+      </div>
+      
+      <button class="mobile-menu-button">
+        <i class="fas fa-bars"></i>
+      </button>
+      
+      <nav class="nav">
+        <button class="nav-close">
+          <i class="fas fa-times"></i>
+        </button>
+        <ul class="nav-list">
+          <li class="nav-item">
+            <a href="index.html" class="nav-link">Home</a>
+          </li>
+          <li class="nav-item">
+            <a href="shop.html" class="nav-link active">Shop</a>
+          </li>
+          <li class="nav-item">
+            <a href="about.html" class="nav-link">About</a>
+          </li>
+          <li class="nav-item">
+            <a href="contact.html" class="nav-link">Contact</a>
+          </li>
+        </ul>
+      </nav>
+      
+      <div class="header-actions">
+        <form class="search-form">
+          <input type="text" class="search-input" placeholder="Search...">
+          <button type="submit" class="search-button">
+            <i class="fas fa-search"></i>
+          </button>
+        </form>
+        
+        <a href="cart.html" class="cart-button">
+          <i class="fas fa-shopping-cart"></i>
+          <span class="cart-count">0</span>
+        </a>
+        
+        <div class="profile-dropdown">
+          <button class="profile-button">
+            <i class="fas fa-user"></i>
+          </button>
+          <div class="dropdown-content">
+            <div class="dropdown-header">
+              <h3>Account</h3>
+            </div>
+            <div class="dropdown-body">
+              <form id="login-form" class="dropdown-form">
+                <div class="form-group">
+                  <label for="dropdown-email">Email</label>
+                  <input type="email" id="dropdown-email" class="form-input" placeholder="Enter your email">
+                </div>
+                <div class="form-group">
+                  <label for="dropdown-password">Password</label>
+                  <input type="password" id="dropdown-password" class="form-input" placeholder="Enter your password">
+                </div>
+                <div class="form-group form-actions">
+                  <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+                </div>
+                <div class="form-footer">
+                  <p>Don't have an account? <a href="#" class="register-link">Register</a></p>
+                  <a href="#" class="forgot-password">Forgot Password?</a>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+  
+  <div class="overlay"></div>
+  
+  <!-- Breadcrumb -->
+  <section class="breadcrumb-section">
+    <div class="container">
+      <nav class="breadcrumb">
+        <a href="index.html">Home</a>
+        <span>/</span>
+        <a href="shop.html">Shop</a>
+        <span>/</span>
+        <span id="product-breadcrumb-name">Loading...</span>
+      </nav>
+    </div>
+  </section>
+
+  <!-- Product Detail -->
+  <section class="product-detail-section">
+    <div class="container">
+      <div class="product-container">
+        <!-- Left: Product Image -->
+        <div class="product-gallery">
+          <div class="main-image">
+            <img id="product-main-image" src="/admin/img/placeholder.png" alt="Product Image" onerror="this.src='/admin/img/placeholder.png'">
+          </div>
+          <div id="product-image-message" class="product-image-message"></div>
+          <div id="product-extra-info" class="product-extra-info">
+            <!-- Extra info (category, brand, features) will be injected here -->
+          </div>
+          <div id="product-short-description" class="product-short-description">
+            <!-- Short description/tagline will be injected here -->
+          </div>
+        </div>
+        <!-- Right: Product Info -->
+        <div class="product-info">
+          <h1 id="product-name" class="product-title">Loading...</h1>
+          <div class="product-meta">
+            <span class="sku">SKU: <span id="product-sku">N/A</span></span>
+            <span class="availability">
+              Availability: <span id="product-availability" class="availability-status">Checking...</span>
+            </span>
+            <span class="stock">
+              Stock: <span id="product-stock">0</span> units
+            </span>
+          </div>
+          <div class="product-description">
+            <p id="product-description">No description available.</p>
+          </div>
+          <div class="product-price">
+            <span id="product-price">$0.00</span>
+          </div>
+          <div class="product-form">
+            <div class="quantity-selector">
+              <label for="quantity">Quantity:</label>
+              <input type="number" id="quantity" min="1" max="1" value="1">
+            </div>
+            <button id="add-to-cart-btn" class="btn btn-primary" onclick="handleAddToCart()">
+              <i class="fas fa-shopping-cart"></i>
+              Add to Cart
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Modern Footer -->
+  <footer class="footer">
+    <div class="container footer-content">
+      <span>&copy; 2025 MelodyMatrix. All rights reserved.</span>
+      <a href="shop.html" class="footer-link">&larr; Back to Shop</a>
+    </div>
+  </footer>
+
+  <script src="js/product-detail.js"></script>
+</body>
+</html>
