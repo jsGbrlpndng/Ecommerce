@@ -1,0 +1,16 @@
+INSERT INTO products (name, sku, category, price, stock, status, image) VALUES
+('2007 Gibson Explorer', 'SKU-GIBSON-EXPLORER-2007', 'string', 2499.99, 5, 'in-stock', 'Images/instruments/2007-Gibson-Explorer.jpg'),
+('Black Grand Piano', 'SKU-BLACK-GRAND-PIANO', 'percussion', 8999.99, 2, 'in-stock', 'Images/instruments/black-grand-piano.jpg'),
+('Black Violin', 'SKU-BLACK-VIOLIN', 'string', 499.99, 8, 'in-stock', 'Images/instruments/black-violin.jpg'),
+('Fender Electric Guitar', 'SKU-FENDER-ELECTRIC', 'string', 1199.99, 10, 'in-stock', 'Images/instruments/Fender-Electric-Guitar.jpg'),
+('Fender Acoustic Guitar', 'SKU-FENDER-ACOUSTIC', 'string', 799.99, 7, 'in-stock', 'Images/instruments/Fender-Acoustic-Guitar.jpg'),
+('Gibson Acoustic Guitar', 'SKU-GIBSON-ACOUSTIC', 'string', 999.99, 6, 'in-stock', 'Images/instruments/Gibson-Acoustic-Guitar.jpg'),
+('Ibanez Premium', 'SKU-IBANEZ-PREMIUM', 'string', 899.99, 4, 'in-stock', 'Images/instruments/ibanez-natural.jpg'),
+('Roland Drum Set', 'SKU-ROLAND-DRUMSET', 'percussion', 1599.99, 3, 'instock', 'Images/instruments/Roland-Drumset.jpg'),
+('Roland Piano', 'SKU-ROLAND-PIANO', 'electronic', 2999.99, 2, 'in-stock', 'Images/instruments/Roland-Piano.jpg'),
+('Silver Flute', 'SKU-SILVER-FLUTE', 'wind', 349.99, 6, 'in-stock', 'Images/instruments/silver-flute.jpg'),
+('Steinway Piano', 'SKU-STEINWAY-PIANO', 'percussion', 10999.99, 1, 'in-stock', 'Images/instruments/Steinway-Piano.jpg'),
+('Yamaha Acoustic Guitar', 'SKU-YAMAHA-ACOUSTIC', 'string', 299.99, 8, 'in-stock', 'Images/instruments/Yamaha-Acoustic-Guitar.jpg'),
+('Yamaha DTX Electronic Drums', 'SKU-YAMAHA-DTX', 'electronic', 1199.99, 5, 'in-stock', 'Images/instruments/yamaha-dtx-drums.jpg'),
+('Yamaha Grand Piano', 'SKU-YAMAHA-GRAND', 'percussion', 7999.99, 2, 'in-stock', 'Images/instruments/yamaha-grand-piano.jpg'),
+('Yamaha RGX A2', 'SKU-YAMAHA-RGX-A2', 'string', 699.99, 3, 'in-stock', 'Images/instruments/Yamaha-RGX-A2.jpg');

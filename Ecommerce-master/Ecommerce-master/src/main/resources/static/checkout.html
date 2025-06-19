@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout - MelodyMatrix</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <link rel="stylesheet" href="css/checkout.css">
+  <style>
+    .admin-login-form { display: none; }
+    .profile-dropdown .dropdown-content { min-width: 320px; border-radius: 16px; box-shadow: 0 8px 32px rgba(106,90,205,0.10);}
+    .profile-dropdown .dropdown-header {
+      background: #8f5cf7;
+      color: #fff;
+      padding: 18px 24px 10px 24px;
+      border-radius: 16px 16px 0 0;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+    .profile-dropdown .dropdown-body {
+      padding: 18px 24px 18px 24px;
+      background: #fff;
+      border-radius: 0 0 16px 16px;
+    }
+    .user-info {
+      text-align: center;
+      margin-bottom: 18px;
+    }
+    .user-info .user-name {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #6a5acd;
+      margin-bottom: 2px;
+    }
+    .user-info .user-email {
+      font-size: 1rem;
+      color: #888;
+      margin-bottom: 0;
+    }
+    .register-link {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    .register-link a {
+      color: #2196f3;
+      text-decoration: underline;
+      font-weight: 500;
+      font-size: 1rem;
+    }
+    .register-link a:hover {
+      color: #1565c0;
+    }
+    .dropdown-login-form input[type="email"],
+    .dropdown-login-form input[type="password"] {
+      width: 100%;
+      margin-bottom: 6px;
+      padding: 7px 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 1rem;
+    }
+    .dropdown-login-form button[type="submit"] {
+      width: 100%;
+      background: #6a5acd;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      padding: 8px 0;
+      font-weight: 600;
+      font-size: 1rem;
+      margin-bottom: 4px;
+      cursor: pointer;
+    }
+    .dropdown-login-form button[type="submit"]:hover {
+      background: #8f5cf7;
+    }
+    #dropdown-login-error {
+      color: #e53935;
+      font-size: 0.95em;
+      margin-top: 4px;
+      display: none;
+      text-align: center;
+    }
+    .admin-login-toggle {
+      text-align: center;
+      margin-top: 8px;
+    }
+    .admin-login-toggle button {
+      background: none;
+      border: none;
+      color: #2196f3;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 500;
+      text-decoration: underline;
+      margin-top: 4px;
+      padding: 0;
+    }
+    .admin-login-toggle button:hover {
+      color: #1565c0;
+    }
+    .logout-toggle {
+      text-align: center;
+      margin-top: 8px;
+    }
+    .logout-toggle button {
+      background: none;
+      border: none;
+      color: #e53935;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 500;
+      text-decoration: underline;
+      margin-top: 4px;
+      padding: 0;
+    }
+    .logout-toggle button:hover {
+      color: #b71c1c;
+    }
+    #admin-login-form .btn-danger {
+      background: #dc3545;
+      color: #fff;
+      border-radius: 10px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+      margin-top: 8px;
+      border: none;
+      width: 100%;
+      padding: 12px 0;
+      transition: background 0.2s;
+    }
+    #admin-login-form .btn-danger:hover {
+      background: #b52a37;
+    }
+    #back-to-user-login {
+      color: #8f5cf7;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+      text-decoration: underline;
+      margin-top: 8px;
+      padding: 0;
+    }
+    #back-to-user-login:hover {
+      color: #6a5acd;
+    }
+    .paypal-logo-img {
+      display: none;
+    }
+    .payment-icons-img {
+      max-height: 30px;
+      max-width: 45px;
+    }
+    .logo img {
+      height: 48px;
+      width: 48px;
+      object-fit: contain;
+      display: block;
+      filter: drop-shadow(0 2px 6px rgba(0,0,0,0.18));
+    }
+    .logo span {
+      font-family: 'Montserrat', 'Poppins', Arial, sans-serif;
+      font-size: 2.5rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: #2d225a;
+      line-height: 1;
+    }
+    .logo > span:first-child {
+      background: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 64px;
+      width: 64px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+    }
+    @media (max-width: 600px) {
+      .logo span { font-size: 1.3rem; }
+      .logo img { height: 32px; width: 32px; }
+      .logo > span:first-child { height: 40px; width: 40px; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="container header-container">
+      <div class="logo" style="display: flex; align-items: center; gap: 24px;">
+        <span style="background: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; height: 64px; width: 64px; box-shadow: 0 2px 8px rgba(0,0,0,0.10);">
+          <img src="Images/guitar_headstock.png" alt="MelodyMatrix Logo" style="height: 48px; width: 48px; object-fit: contain; display: block; filter: drop-shadow(0 2px 6px rgba(0,0,0,0.18));"/>
+        </span>
+        <span style="font-family: 'Montserrat', 'Poppins', Arial, sans-serif; font-size: 2.5rem; font-weight: 700; letter-spacing: 1px; color: #2d225a; line-height: 1;">
+          <span style="font-weight: 600; color: #6a5acd;">Melody</span><span style="font-weight: 800; color: #8f5cf7;">Matrix</span>
+        </span>
+      </div>
+      <button class="mobile-menu-button">
+        <i class="fas fa-bars"></i>
+      </button>
+      <nav class="nav">
+        <button class="nav-close">
+          <i class="fas fa-times"></i>
+        </button>
+        <ul class="nav-list">
+          <li class="nav-item">
+            <a href="index.html" class="nav-link">Home</a>
+          </li>
+          <li class="nav-item">
+            <a href="shop.html" class="nav-link">Shop</a>
+          </li>
+          <li class="nav-item">
+            <a href="about.html" class="nav-link">About</a>
+          </li>
+        </ul>
+      </nav>
+      <div class="header-actions">
+        <form class="search-form">
+          <input type="text" class="search-input" placeholder="Search...">
+          <button type="submit" class="search-button">
+            <i class="fas fa-search"></i>
+          </button>
+        </form>
+        <a href="cart.html" class="cart-button">
+          <i class="fas fa-shopping-cart"></i>
+          <span class="cart-count">0</span>
+        </a>
+        <div class="profile-dropdown">
+          <button class="profile-button">
+            <i class="fas fa-user"></i>
+          </button>
+          <div class="dropdown-content">
+            <div class="dropdown-header">
+              Account
+            </div>
+            <div class="dropdown-body">
+              <div class="user-info" id="user-info-section">
+                <div class="user-name" id="dropdown-username">Guest</div>
+                <div class="user-email" id="dropdown-email"></div>
+              </div>
+              <form id="dropdown-login-form" class="dropdown-login-form" style="display:none; margin-bottom: 10px;">
+                <input type="email" id="dropdown-login-email" placeholder="Email" required>
+                <input type="password" id="dropdown-login-password" placeholder="Password" required>
+                <button type="submit">Login</button>
+                <div id="dropdown-login-error"></div>
+              </form>
+              <div class="register-link" id="register-link-section" style="display:none;">
+                <a href="register.html">Register</a>
+              </div>
+              <div class="admin-login-toggle">
+                <button id="show-admin-login" type="button">Admin Login</button>
+              </div>
+              <div class="logout-toggle">
+                <button id="logout-btn" type="button">Logout</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- End profile-dropdown -->
+      </div>
+    </div>
+  </header>
+  
+  <div class="overlay"></div>
+  
+  <!-- Checkout Hero Section -->
+  <section class="checkout-hero">
+    <div class="container">
+      <h1 class="checkout-hero-title">Your Shopping Cart</h1>
+      <p class="checkout-hero-subtitle">Review your items and proceed to checkout</p>
+    </div>
+  </section>
+
+  <!-- Cart Section -->
+  <section class="cart-section">
+    <div class="container">
+      <div class="cart-container">
+        <!-- Cart Items -->
+        <div class="cart-items">
+          <!-- Cart items table and order summary removed as requested -->
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Checkout Progress -->
+  <section class="checkout-progress">
+    <div class="container">
+      <div class="progress-container">
+        <div class="progress-step active">
+          <div class="step-number">1</div>
+          <div class="step-label">Shipping</div>
+        </div>
+        <div class="progress-line"></div>
+        <div class="progress-step">
+          <div class="step-number">2</div>
+          <div class="step-label">Payment</div>
+        </div>
+        <div class="progress-line"></div>
+        <div class="progress-step">
+          <div class="step-number">3</div>
+          <div class="step-label">Review</div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Checkout Section -->
+  <section class="checkout">
+    <div class="container">
+      <div class="checkout-container">
+        <!-- Checkout Form -->
+        <div class="checkout-form-container">
+          <form id="checkout-form" class="checkout-form">
+            <!-- Shipping Information -->
+            <div class="checkout-section" id="shipping-section">
+              <h2 class="section-title">Shipping Information</h2>
+              
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="first-name">First Name*</label>
+                  <input type="text" id="first-name" name="firstName" class="form-control" required>
+                </div>
+                <div class="form-group">
+                  <label for="last-name">Last Name*</label>
+                  <input type="text" id="last-name" name="lastName" class="form-control" required>
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label for="email">Email Address*</label>
+                <input type="email" id="email" name="email" class="form-control" required>
+              </div>
+              
+              <div class="form-group">
+                <label for="phone">Phone Number*</label>
+                <input type="tel" id="phone" name="phone" class="form-control" required>
+              </div>
+              
+              <div class="form-group">
+                <label for="address">Street Address*</label>
+                <input type="text" id="address" name="address" class="form-control" required>
+              </div>
+              
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="city">City*</label>
+                  <input type="text" id="city" name="city" class="form-control" required>
+                </div>
+                <div class="form-group">
+                  <label for="state">State/Province*</label>
+                  <input type="text" id="state" name="state" class="form-control" required>
+                </div>
+              </div>
+              
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="zip">ZIP/Postal Code*</label>
+                  <input type="text" id="zip" name="zip" class="form-control" required>
+                </div>
+                <div class="form-group">
+                  <label for="country">Country*</label>
+                  <select id="country" name="country" class="form-control" required>
+                    <option value="">Select Country</option>
+                    <option value="US">United States</option>
+                    <option value="CA">Canada</option>
+                    <option value="UK">United Kingdom</option>
+                    <option value="AU">Australia</option>
+                    <option value="DE">Germany</option>
+                    <option value="FR">France</option>
+                    <option value="JP">Japan</option>
+                  </select>
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label>Shipping Method*</label>
+                <div class="shipping-options">
+                  <div class="shipping-option">
+                    <input type="radio" id="standard-shipping" name="shipping" value="0" checked>
+                    <label for="standard-shipping">
+                      <div class="option-info">
+                        <div class="option-title">Standard Shipping</div>
+                        <div class="option-description">3-5 business days</div>
+                      </div>
+                      <div class="option-price">Free</div>
+                    </label>
+                  </div>
+                  
+                  <div class="shipping-option">
+                    <input type="radio" id="express-shipping" name="shipping" value="15">
+                    <label for="express-shipping">
+                      <div class="option-info">
+                        <div class="option-title">Express Shipping</div>
+                        <div class="option-description">1-2 business days</div>
+                      </div>
+                      <div class="option-price">$15.00</div>
+                    </label>
+                  </div>
+                  
+                  <div class="shipping-option">
+                    <input type="radio" id="overnight-shipping" name="shipping" value="25">
+                    <label for="overnight-shipping">
+                      <div class="option-info">
+                        <div class="option-title">Overnight Shipping</div>
+                        <div class="option-description">Next business day</div>
+                      </div>
+                      <div class="option-price">$25.00</div>
+                    </label>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="form-actions">
+                <button type="button" class="btn btn-primary next-step" data-next="payment-section">Continue to Payment</button>
+              </div>
+            </div>
+            
+            <!-- Payment Information -->
+            <div class="checkout-section hidden" id="payment-section">
+              <h2 class="section-title">Payment Information</h2>
+              
+              <div class="form-group">
+                <label>Payment Method*</label>
+                <div class="payment-methods">
+                  <div class="payment-method">
+                    <input type="radio" id="cod" name="payment" value="cod" checked>
+                    <label for="cod">
+                      Cash on Delivery
+                    </label>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="form-actions">
+                <button type="button" class="btn btn-outline back-step" data-back="shipping-section">Back to Shipping</button>
+                <button type="button" class="btn btn-primary next-step" data-next="review-section">Review Order</button>
+              </div>
+            </div>
+            
+            <!-- Order Review -->
+            <div class="checkout-section hidden" id="review-section">
+              <h2 class="section-title">Review Your Order</h2>
+              
+              <div class="review-sections">
+                <div class="review-section">
+                  <div class="review-header">
+                    <h3>Shipping Information</h3>
+                    <button type="button" class="edit-btn" data-section="shipping-section">Edit</button>
+                  </div>
+                  <div class="review-content" id="shipping-review">
+                    <!-- Will be filled by JavaScript -->
+                  </div>
+                </div>
+                
+                <div class="review-section">
+                  <div class="review-header">
+                    <h3>Payment Information</h3>
+                    <button type="button" class="edit-btn" data-section="payment-section">Edit</button>
+                  </div>
+                  <div class="review-content" id="payment-review">
+                    <!-- Will be filled by JavaScript -->
+                  </div>
+                </div>
+                
+                <div class="review-section">
+                  <div class="review-header">
+                    <h3>Order Items</h3>
+                  </div>
+                  <div class="review-content">
+                    <div class="review-items" id="order-items-review">
+                      <!-- Will be filled by JavaScript -->
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="form-group checkbox-group">
+                <input type="checkbox" id="terms" name="terms" required>
+                <label for="terms">I agree to the <a href="#">Terms & Conditions</a> and <a href="#">Privacy Policy</a></label>
+              </div>
+              
+              <div class="form-actions">
+                <button type="button" class="btn btn-outline back-step" data-back="payment-section">Back to Payment</button>
+                <button type="submit" class="btn btn-primary">Place Order</button>
+              </div>
+            </div>
+          </form>
+        </div>
+        
+        <!-- Order Summary -->
+        <div class="order-summary">
+          <h3 class="summary-title">Order Summary</h3>
+          
+          <div class="summary-items" id="summary-items">
+            <!-- Will be filled by JavaScript -->
+          </div>
+          
+          <div class="summary-totals">
+            <div class="summary-row">
+              <div class="summary-label">Subtotal</div>
+              <div class="summary-value" id="checkout-subtotal">$0.00</div>
+            </div>
+            
+            <div class="summary-row">
+              <div class="summary-label">Shipping</div>
+              <div class="summary-value" id="checkout-shipping">$0.00</div>
+            </div>
+            
+            <div class="summary-row">
+              <div class="summary-label">Tax</div>
+              <div class="summary-value" id="checkout-tax">$0.00</div>
+            </div>
+            
+            <div class="summary-row total">
+              <div class="summary-label">Total</div>
+              <div class="summary-value" id="checkout-total">$0.00</div>
+            </div>
+          </div>
+          
+          <div class="secure-checkout">
+            <div class="secure-icon">
+              <i class="fas fa-lock"></i>
+            </div>
+            <div class="secure-text">
+              <h4>Secure Checkout</h4>
+              <p>Your payment information is encrypted and secure.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <script src="js/main.js"></script>
+  <script src="js/checkout.js"></script>
+  <script>
+    // Profile dropdown toggle
+    const profileButton = document.querySelector('.profile-button');
+    const dropdownContent = document.querySelector('.dropdown-content');
+    if (profileButton && dropdownContent) {
+      profileButton.addEventListener('click', function(e) {
+        e.stopPropagation();
+        dropdownContent.classList.toggle('show');
+      });
+    }
+    window.addEventListener('click', function(e) {
+      if (!e.target.matches('.profile-button') && !e.target.closest('.dropdown-content')) {
+        const dropdowns = document.getElementsByClassName('dropdown-content');
+        for (let dropdown of dropdowns) {
+          if (dropdown.classList.contains('show')) {
+            dropdown.classList.remove('show');
+          }
+        }
+      }
+    });
+
+    // Dropdown user info, login, register, logout logic
+    document.addEventListener('DOMContentLoaded', function() {
+      fetch('/api/users/me', {
+        credentials: 'include'
+      })
+        .then(res => {
+          if (!res.ok) throw new Error('Not logged in');
+          return res.json();
+        })
+        .then(data => {
+          document.getElementById('dropdown-username').textContent = data.username;
+          document.getElementById('dropdown-email').textContent = data.email;
+          document.getElementById('user-info-section').style.display = '';
+          document.getElementById('logout-btn').style.display = '';
+          document.getElementById('dropdown-login-form').style.display = 'none';
+          document.getElementById('register-link-section').style.display = 'none';
+        })
+        .catch(() => {
+          document.getElementById('dropdown-username').textContent = "Guest";
+          document.getElementById('dropdown-email').textContent = "";
+          document.getElementById('user-info-section').style.display = '';
+          document.getElementById('logout-btn').style.display = 'none';
+          document.getElementById('dropdown-login-form').style.display = '';
+          document.getElementById('register-link-section').style.display = '';
+        });
+
+      // Login form handler
+      const loginForm = document.getElementById('dropdown-login-form');
+      if (loginForm) {
+        loginForm.addEventListener('submit', async function(e) {
+          e.preventDefault();
+          const email = document.getElementById('dropdown-login-email').value.trim();
+          const password = document.getElementById('dropdown-login-password').value;
+          const errorDiv = document.getElementById('dropdown-login-error');
+          errorDiv.style.display = 'none';
+          try {
+            const response = await fetch('/api/users/login', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              credentials: 'include',
+              body: JSON.stringify({ email, password })
+            });
+            if (response.ok) {
+              window.location.reload();
+            } else {
+              const error = await response.text();
+              errorDiv.textContent = error || 'Invalid email or password';
+              errorDiv.style.display = 'block';
+            }
+          } catch (error) {
+            errorDiv.textContent = 'An error occurred during login';
+            errorDiv.style.display = 'block';
+          }
+        });
+      }
+
+      // Admin Login button
+      const showAdminBtn = document.getElementById('show-admin-login');
+      if (showAdminBtn) {
+        showAdminBtn.addEventListener('click', function() {
+          window.location.href = 'admin/index.html';
+        });
+      }
+
+      // Logout button
+      const logoutBtn = document.getElementById('logout-btn');
+      if (logoutBtn) {
+        logoutBtn.addEventListener('click', async function() {
+          await fetch('/api/users/logout', {
+            method: 'POST',
+            credentials: 'include'
+          });
+          localStorage.removeItem('user');
+          window.location.reload();
+        });
+      }
+    });
+  </script>
+</body>
+</html>

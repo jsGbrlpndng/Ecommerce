@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop - MelodyMatrix</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/shop.css">
+    <style>
+      .logo img { vertical-align: middle; }
+      .logo span { vertical-align: middle; }
+      .logo img {
+        height: 48px;
+        width: 48px;
+        object-fit: contain;
+        display: block;
+        filter: drop-shadow(0 2px 6px rgba(0,0,0,0.18));
+      }
+      .logo span {
+        font-family: 'Montserrat', 'Poppins', Arial, sans-serif;
+        font-size: 2.5rem;
+        font-weight: 700;
+        letter-spacing: 1px;
+        color: #2d225a;
+        line-height: 1;
+      }
+      .logo > span:first-child {
+        background: #fff;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 64px;
+        width: 64px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+      }
+      @media (max-width: 600px) {
+        .logo span { font-size: 1.3rem; }
+        .logo img { height: 32px; width: 32px; }
+        .logo > span:first-child { height: 40px; width: 40px; }
+      }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+  <div class="container header-container">
+    <div class="logo" style="display: flex; align-items: center; gap: 24px;">
+      <span style="background: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; height: 64px; width: 64px; box-shadow: 0 2px 8px rgba(0,0,0,0.10);">
+        <img src="Images/guitar_headstock.png" alt="MelodyMatrix Logo" style="height: 48px; width: 48px; object-fit: contain; display: block; filter: drop-shadow(0 2px 6px rgba(0,0,0,0.18));"/>
+      </span>
+      <span style="font-family: 'Montserrat', 'Poppins', Arial, sans-serif; font-size: 2.5rem; font-weight: 700; letter-spacing: 1px; color: #2d225a; line-height: 1;">
+        <span style="font-weight: 600; color: #6a5acd;">Melody</span><span style="font-weight: 800; color: #8f5cf7;">Matrix</span>
+      </span>
+    </div>
+    <button class="mobile-menu-button">
+      <i class="fas fa-bars"></i>
+    </button>
+    <nav class="nav">
+      <button class="nav-close">
+        <i class="fas fa-times"></i>
+      </button>
+      <ul class="nav-list">
+        <li class="nav-item">
+          <a href="index.html" class="nav-link">Home</a>
+        </li>
+        <li class="nav-item">
+          <a href="shop.html" class="nav-link active">Shop</a>
+        </li>
+        <li class="nav-item">
+          <a href="about.html" class="nav-link">About</a>
+        </li>
+        <li class="nav-item">
+          <a href="order-status.html" class="nav-link">Order Status</a>
+        </li>
+      </ul>
+    </nav>
+    <div class="header-actions">
+      <form class="search-form">
+        <input type="text" class="search-input" placeholder="Search...">
+        <button type="submit" class="search-button">
+          <i class="fas fa-search"></i>
+        </button>
+      </form>
+      <a href="cart.html" class="cart-button">
+        <i class="fas fa-shopping-cart"></i>
+        <span class="cart-count">0</span>
+      </a>
+      <div class="profile-dropdown">
+        <button class="profile-button">
+          <i class="fas fa-user"></i>
+        </button>
+        <div class="dropdown-content">
+          <div class="dropdown-header">
+            Account
+          </div>
+          <div class="dropdown-body">
+            <div class="user-info" id="user-info-section">
+              <div class="user-name" id="dropdown-username">Guest</div>
+              <div class="user-email" id="dropdown-email"></div>
+            </div>
+            <form id="dropdown-login-form" class="dropdown-login-form">
+              <input type="email" id="dropdown-login-email" placeholder="Email" required>
+              <input type="password" id="dropdown-login-password" placeholder="Password" required>
+              <button type="submit">Login</button>
+              <div id="dropdown-login-error"></div>
+            </form>
+            <div class="register-link" id="register-link-section">
+              <a href="register.html">Register</a>
+            </div>
+            <div class="admin-login-toggle">
+              <a href="/admin/admin-login.html" id="show-admin-login" class="admin-login-link">Admin Login</a>
+            </div>
+            <div class="logout-toggle">
+              <button id="logout-btn" type="button">Logout</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+    <main class="main-content">
+        <!-- Shop Title -->
+        <div class="shop-header">
+            <h1>Explore Our Musical Collection</h1>
+            <p>Find your perfect instrument and start your musical journey</p>
+        </div>
+
+        <!-- Shop Content -->
+        <div class="shop-container">
+            <!-- Sidebar with Filters (keep only one) -->
+            <aside class="shop-sidebar">
+                <div class="filter-section">
+                    <h2>Categories</h2>
+                    <ul class="category-list">
+                        <li><a href="#" class="category-link active" data-category="all">All Instruments</a></li>
+                        <li><a href="#" class="category-link" data-category="string">String Instruments</a></li>
+                        <li><a href="#" class="category-link" data-category="percussion">Percussion</a></li>
+                        <li><a href="#" class="category-link" data-category="wind">Wind Instruments</a></li>
+                        <li><a href="#" class="category-link" data-category="keyboard">Keyboard Instruments</a></li>
+                        <li><a href="#" class="category-link" data-category="electronic">Electronic Instruments</a></li>
+                    </ul>
+                </div>
+                <div class="filter-section">
+                    <h2>Price Range</h2>
+                    <div class="price-filter">
+                        <div class="price-inputs">
+                            <input type="number" id="min-price" placeholder="Min" min="0">
+                            <input type="number" id="max-price" placeholder="Max" min="0">
+                        </div>
+                        <button id="apply-price" class="apply-btn">Apply</button>
+                    </div>
+                </div>
+                <div class="filter-section">
+                    <h2>Availability</h2>
+                    <div class="availability-filter">
+                        <label><input type="checkbox" class="availability-checkbox" value="in-stock"> In Stock</label>
+                        <label><input type="checkbox" class="availability-checkbox" value="out-of-stock"> Out of Stock</label>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Main Shop Section -->
+            <section class="products-section">
+                <div class="controls-bar">
+                    <div class="product-count" id="product-count">0 products found</div>
+                    <div class="sort-filter">
+                        <select id="sort-select">
+                            <option value="featured">Featured</option>
+                            <option value="price-low">Price: Low to High</option>
+                            <option value="price-high">Price: High to Low</option>
+                            <option value="name-asc">Name: A to Z</option>
+                            <option value="name-desc">Name: Z to A</option>
+                        </select>
+                    </div>
+                </div>
+                <div id="products-grid" class="products-grid">
+                    <!-- Products will be dynamically inserted here -->
+                </div>
+                <!-- Pagination Bar -->
+                <div class="pagination" id="pagination-bar">
+                    <!-- Pagination buttons will be rendered by JS -->
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-content">
+          <h2>Join the Harmony Family</h2>
+          <p>Be the first to know about new arrivals, exclusive offers, and special events</p>
+          <a href="register.html" class="btn-primary">Create Account</a>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Move all scripts here to ensure DOM is loaded before JS runs -->
+    <script src="js/utils.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/shop.js"></script>
+</body>
+</html>

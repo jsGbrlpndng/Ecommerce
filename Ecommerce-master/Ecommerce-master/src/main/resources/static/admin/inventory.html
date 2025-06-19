@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory - MelodyMatrix</title>
+    <link rel="stylesheet" href="../css/admin.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Poppins', 'Montserrat', Arial, sans-serif;
+            background: #f4f6fa;
+            margin: 0;
+            color: #22223b;
+        }
+        .admin-header-bar {
+            background: linear-gradient(90deg, #6a5acd 0%, #fa8072 100%);
+            color: #fff;
+            padding: 24px 0 16px 0;
+            box-shadow: 0 2px 8px rgba(106,90,205,0.08);
+        }
+        .admin-header-bar .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 32px;
+        }
+        .admin-header-bar h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin: 0;
+            letter-spacing: 1px;
+        }
+        .admin-header-bar .admin-user {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            position: relative;
+        }
+        .admin-header-bar .profile-button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #fff;
+            font-size: 1.7rem;
+            border-radius: 50%;
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+        .admin-header-bar .profile-button:hover {
+            background: rgba(255,255,255,0.12);
+        }
+        .profile-dropdown {
+            position: relative;
+        }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 52px;
+            background: #fff;
+            color: #22223b;
+            min-width: 180px;
+            border-radius: 10px;
+            box-shadow: 0 4px 24px rgba(106,90,205,0.12);
+            z-index: 100;
+            padding: 16px 0;
+        }
+        .profile-dropdown.open .dropdown-content {
+            display: block;
+        }
+        .dropdown-content button {
+            width: 100%;
+            background: none;
+            border: none;
+            color: #22223b;
+            font-size: 1rem;
+            padding: 12px 24px;
+            text-align: left;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .dropdown-content button:hover {
+            background: #f3f0ff;
+        }
+        .admin-main-content {
+            max-width: 1200px;
+            margin: 32px auto;
+            padding: 0 32px;
+        }
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #fff;
+            color: #6a5acd;
+            border: 2px solid #6a5acd;
+            border-radius: 8px;
+            padding: 8px 18px;
+            font-weight: 500;
+            font-size: 1rem;
+            text-decoration: none;
+            margin-bottom: 24px;
+            transition: background 0.2s, color 0.2s;
+        }
+        .back-btn:hover {
+            background: #6a5acd;
+            color: #fff;
+        }
+        .inventory-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+        }
+        .inventory-header h2 {
+            font-size: 1.7rem;
+            font-weight: 600;
+            margin: 0;
+        }
+        .inventory-actions {
+            display: flex;
+            gap: 12px;
+        }
+        .btn {
+            padding: 10px 22px;
+            border-radius: 8px;
+            font-weight: 500;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background 0.2s;
+        }
+        .btn-primary {
+            background: linear-gradient(90deg, #6a5acd 0%, #fa8072 100%);
+            color: #fff;
+        }
+        .btn-primary:hover {
+            background: linear-gradient(90deg, #fa8072 0%, #6a5acd 100%);
+        }
+        .btn-outline {
+            background: #fff;
+            color: #6a5acd;
+            border: 2px solid #6a5acd;
+        }
+        .btn-outline:hover {
+            background: #f3f0ff;
+        }
+        .inventory-filters {
+            display: flex;
+            gap: 24px;
+            margin-bottom: 18px;
+            flex-wrap: wrap;
+        }
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .filter-group label {
+            font-weight: 500;
+            color: #4a4e69;
+        }
+        .filter-group select {
+            padding: 6px 12px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 1rem;
+        }
+        .inventory-table-container {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 4px 24px rgba(106,90,205,0.08);
+            padding: 0 0 24px 0;
+            overflow-x: auto;
+        }
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0;
+        }
+        .admin-table th, .admin-table td {
+            padding: 14px 10px;
+            text-align: left;
+        }
+        .admin-table th {
+            background: #f3f0ff;
+            color: #6a5acd;
+            font-weight: 600;
+        }
+        .admin-table tr:nth-child(even) {
+            background: #fafaff;
+        }
+        .product-thumbnail {
+            width: 48px;
+            height: 48px;
+            border-radius: 8px;
+            object-fit: cover;
+            border: 1px solid #eee;
+        }
+        .status-badge {
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            display: inline-block;
+        }
+        .status-badge.in-stock {
+            background: #e0f7e9;
+            color: #1b8a4b;
+        }
+        .status-badge.low-stock {
+            background: #fff4e0;
+            color: #e67e22;
+        }
+        .status-badge.out-of-stock {
+            background: #ffe0e0;
+            color: #e74c3c;
+        }
+        .table-actions {
+            display: flex;
+            gap: 8px;
+        }
+        .action-btn {
+            background: none;
+            border: none;
+            color: #6a5acd;
+            font-size: 1.1rem;
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 4px;
+            transition: background 0.15s;
+        }
+        .action-btn:hover {
+            background: #f3f0ff;
+        }
+        .pagination {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            margin-top: 18px;
+            gap: 8px;
+        }
+        .pagination-btn {
+            background: #fff;
+            border: 1px solid #6a5acd;
+            color: #6a5acd;
+            border-radius: 6px;
+            padding: 6px 12px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background 0.2s;
+        }
+        .pagination-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .page-numbers {
+            display: flex;
+            gap: 4px;
+        }
+        .page-number {
+            padding: 6px 12px;
+            border-radius: 6px;
+            background: #f3f0ff;
+            color: #6a5acd;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        .page-number.active {
+            background: linear-gradient(90deg, #6a5acd 0%, #fa8072 100%);
+            color: #fff;
+        }
+        .modal {
+            position: fixed;
+            z-index: 1050;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0 0 0 / 50%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-content {
+            background: #fff;
+            border-radius: 12px;
+            padding: 24px;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.1);
+        }
+        .modal h3 {
+            margin-top: 0;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #22223b;
+        }
+        .modal label {
+            font-weight: 500;
+            color: #4a4e69;
+            display: block;
+            margin-bottom: 8px;
+        }
+        .modal input, .modal select {
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 1rem;
+            width: 100%;
+            margin-bottom: 16px;
+        }
+        .modal button {
+            width: 48%;
+            padding: 10px;
+            border-radius: 8px;
+            font-weight: 500;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background 0.2s;
+        }
+        .modal .btn-primary {
+            background: linear-gradient(90deg, #6a5acd 0%, #fa8072 100%);
+            color: #fff;
+            margin-right: 4%;
+        }
+        .modal .btn-primary:hover {
+            background: linear-gradient(90deg, #fa8072 0%, #6a5acd 100%);
+        }
+        .modal .btn-outline {
+            background: #fff;
+            color: #6a5acd;
+            border: 2px solid #6a5acd;
+        }
+        .modal .btn-outline:hover {
+            background: #f3f0ff;
+        }
+        .logo img {
+          height: 48px;
+          width: 48px;
+          object-fit: contain;
+          display: block;
+          filter: drop-shadow(0 2px 6px rgba(0,0,0,0.18));
+        }
+        .logo span {
+          font-family: 'Montserrat', 'Poppins', Arial, sans-serif;
+          font-size: 2.5rem;
+          font-weight: 700;
+          letter-spacing: 1px;
+          color: #2d225a;
+          line-height: 1;
+        }
+        .logo > span:first-child {
+          background: #fff;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          height: 64px;
+          width: 64px;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+        }
+        @media (max-width: 600px) {
+          .logo span { font-size: 1.3rem; }
+          .logo img { height: 32px; width: 32px; }
+          .logo > span:first-child { height: 40px; width: 40px; }
+        }
+    </style>
+    <meta name="_csrf" th:content="${_csrf.token}" content="${_csrf.token}">
+    <meta name="_csrf_header" th:content="${_csrf.headerName}" content="${_csrf.headerName}">
+</head>
+<body>
+    <div class="admin-header-bar">
+        <div class="container">
+            <div class="logo" style="display: flex; align-items: center; gap: 24px;">
+        <span style="background: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; height: 64px; width: 64px; box-shadow: 0 2px 8px rgba(0,0,0,0.10);">
+          <img src="../Images/guitar_headstock.png" alt="MelodyMatrix Logo" style="height: 48px; width: 48px; object-fit: contain; display: block; filter: drop-shadow(0 2px 6px rgba(0,0,0,0.18));"/>
+        </span>
+        <span style="font-family: 'Montserrat', 'Poppins', Arial, sans-serif; font-size: 2.5rem; font-weight: 700; letter-spacing: 1px; color: #2d225a; line-height: 1;">
+          <span style="font-weight: 600; color: #6a5acd;">Melody</span><span style="font-weight: 800; color: #8f5cf7;">Matrix</span>
+        </span>
+      </div>
+            <div class="admin-user">
+                <span style="font-size:1.1rem;">Welcome, Admin</span>
+                <div class="profile-dropdown" id="adminProfileDropdown">
+                    <button class="profile-button" id="adminProfileBtn" title="Admin Profile">
+                        <i class="fas fa-user-circle"></i>
+                    </button>
+                    <div class="dropdown-content">
+                        <button id="adminLogoutBtn"><i class="fas fa-sign-out-alt"></i> Log Out</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <main class="admin-main-content">
+        <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
+        <div class="inventory-header">
+            <h2>Inventory Management</h2>
+            <div class="inventory-actions">
+                <button class="btn btn-primary" id="open-add-product-modal"><i class="fas fa-plus"></i> Add New Product</button>
+            </div>
+        </div>
+        <div class="inventory-filters">
+            <div class="filter-group">
+                <label for="category-filter">Category:</label>
+                <select id="category-filter">
+                    <option value="all">All Categories</option>
+                    <option value="string">String Instruments</option>
+                    <option value="percussion">Percussion</option>
+                    <option value="wind">Wind Instruments</option>
+                    <option value="electronic">Electronic</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="stock-filter">Stock Status:</label>
+                <select id="stock-filter">
+                    <option value="all">All</option>
+                    <option value="in-stock">In Stock</option>
+                    <option value="low-stock">Low Stock</option>
+                    <option value="out-of-stock">Out of Stock</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="sort-filter">Sort By:</label>
+                <select id="sort-filter">
+                    <option value="name-asc">Name (A-Z)</option>
+                    <option value="name-desc">Name (Z-A)</option>
+                    <option value="price-low">Price (Low to High)</option>
+                    <option value="price-high">Price (High to Low)</option>
+                    <option value="stock-low">Stock (Low to High)</option>
+                    <option value="stock-high">Stock (High to Low)</option>
+                </select>
+            </div>
+        </div>
+        <div class="inventory-table-container">
+            <table class="admin-table inventory-table">
+                <thead>
+                    <tr>
+                        <th><input type="checkbox" id="select-all"></th>
+                        <th>Image</th>
+                        <th>Product Name</th>
+                        <th>SKU</th>
+                        <th>Category</th>
+                        <th>Price</th>
+                        <th>Stock</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- ...your product rows... -->
+                </tbody>
+            </table>
+        </div>
+        <div class="pagination">
+            <button class="pagination-btn" disabled><i class="fas fa-chevron-left"></i></button>
+            <div class="page-numbers">
+                <span class="page-number active">1</span>
+                <span class="page-number">2</span>
+                <span class="page-number">3</span>
+            </div>
+            <button class="pagination-btn"><i class="fas fa-chevron-right"></i></button>
+        </div>
+    </main>
+    <!-- Add Product Modal -->
+    <div id="add-product-modal" class="modal" style="display:none;">
+        <div class="modal-content">
+            <form id="add-product-form">
+                <h3>Add New Product</h3>
+                <label>Product Name <input name="name" required></label>
+                <label>SKU <input name="sku" required></label>
+                <label>Category <input name="category" required></label>
+                <label>Price <input name="price" type="number" min="0" step="0.01" required></label>
+                <label>Stock <input name="stock" type="number" min="0" required></label>
+                <label>Image File <input name="imageFile" type="file" accept="image/*"></label>
+                <div style="margin-top:12px;">
+                    <button type="submit" class="btn btn-primary">Add Product</button>
+                    <button type="button" onclick="document.getElementById('add-product-modal').style.display='none'" class="btn btn-outline">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- Edit Product Modal -->
+    <div id="edit-product-modal" class="modal" style="display:none;">
+        <div class="modal-content">
+            <form id="edit-product-form">
+                <h3>Edit Product</h3>
+                <input name="id" id="edit-product-id" type="hidden">
+                <input type="hidden" name="_method" value="put">
+                <label>Product Name <input name="name" required></label>
+                <label>SKU <input name="sku" required></label>
+                <label>Category <input name="category" required></label>
+                <label>Price <input name="price" type="number" min="0" step="0.01" required></label>
+                <label>Stock <input name="stock" type="number" min="0" required></label>
+                <label>Image File <input name="imageFile" type="file" accept="image/*"></label>
+                <div style="margin-top:12px;">
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                    <button type="button" onclick="document.getElementById('edit-product-modal').style.display='none'" class="btn btn-outline">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- Remove the ES6 module import block and use standard script tags -->
+    <script src="js/admin.js"></script>
+    <script src="js/inventory.js"></script>
+</body>
+</html>
