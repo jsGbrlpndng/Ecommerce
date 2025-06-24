@@ -1,0 +1,116 @@
+/* Customer Management Table & Pagination Styles */
+#customerTable {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+    background: #fff;
+}
+#customerTable th, #customerTable td {
+    padding: 14px 12px;
+    vertical-align: middle;
+    font-size: 15px;
+    border: none;
+    height: 56px;
+    box-sizing: border-box;
+}
+#customerTable th {
+    background: #f7f7fb;
+    color: #6a5acd;
+    font-weight: 600;
+    text-align: center;
+}
+#customerTable td {
+    color: #222;
+    text-align: center;
+    background: #fff;
+}
+#customerTable th:nth-child(1), #customerTable td:nth-child(1) {
+    text-align: left;
+    padding-left: 32px;
+    min-width: 180px;
+    width: 22%;
+}
+#customerTable th:nth-child(2), #customerTable td:nth-child(2) {
+    text-align: left;
+    padding-left: 12px;
+    min-width: 180px;
+    width: 22%;
+}
+#customerTable th:nth-child(3), #customerTable td:nth-child(3) {
+    text-align: center;
+    min-width: 80px;
+    width: 10%;
+}
+#customerTable th:nth-child(4), #customerTable td:nth-child(4) {
+    text-align: center;
+    min-width: 90px;
+    width: 12%;
+}
+#customerTable th:nth-child(5), #customerTable td:nth-child(5) {
+    text-align: center;
+    min-width: 120px;
+    width: 17%;
+}
+#customerTable th:nth-child(6), #customerTable td:nth-child(6) {
+    text-align: center;
+    min-width: 90px;
+    width: 10%;
+}
+#customerTable .btn-group {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    align-items: center;
+}
+#customerTable .btn-group .btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 10px;
+    font-size: 1rem;
+    height: 32px;
+    width: 32px;
+    border-radius: 6px;
+}
+#customerTable .btn-group .btn i {
+    font-size: 1.1rem;
+    margin: 0;
+}
+.view-orders-btn {
+    color: #2563eb;
+    font-weight: 500;
+    padding: 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-decoration: underline;
+}
+/* Pagination Centering */
+#paginationContainer {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    margin: 30px 0 10px 0 !important;
+    width: 100%;
+}
+.pagination-btn {
+    margin: 0 3px;
+    padding: 6px 14px;
+    border: 1px solid #6a5acd;
+    background: #fff;
+    color: #6a5acd;
+    border-radius: 5px;
+    font-weight: 500;
+    transition: background 0.2s, color 0.2s;
+}
+.pagination-btn.active, .pagination-btn:focus {
+    background: #6a5acd;
+    color: #fff;
+    outline: none;
+}
+.pagination-btn[disabled] {
+    background: #eee;
+    color: #aaa;
+    border-color: #eee;
+    cursor: not-allowed;
+}

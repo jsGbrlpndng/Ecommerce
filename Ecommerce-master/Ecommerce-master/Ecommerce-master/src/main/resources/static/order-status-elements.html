@@ -1,0 +1,197 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Status - MelodyMatrix</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <style>
+        /* ...existing logo styles... */
+    </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="container header-container">
+      <div class="logo" style="display: flex; align-items: center; gap: 24px;">
+        <span style="background: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; height: 64px; width: 64px; box-shadow: 0 2px 8px rgba(0,0,0,0.10);">
+          <img src="Images/guitar_headstock.png" alt="MelodyMatrix Logo" style="height: 48px; width: 48px; object-fit: contain; display: block; filter: drop-shadow(0 2px 6px rgba(0,0,0,0.18));"/>
+        </span>
+        <span style="font-family: 'Montserrat', 'Poppins', Arial, sans-serif; font-size: 2.5rem; font-weight: 700; letter-spacing: 1px; color: #2d225a; line-height: 1;">
+          <span style="font-weight: 600; color: #6a5acd;">Melody</span><span style="font-weight: 800; color: #8f5cf7;">Matrix</span>
+        </span>
+      </div>
+      <button class="mobile-menu-button">
+        <i class="fas fa-bars"></i>
+      </button>
+      <nav class="nav">
+        <ul class="nav-list">
+          <li class="nav-item">
+            <a href="index.html" class="nav-link">Home</a>
+          </li>
+          <li class="nav-item">
+            <a href="shop.html" class="nav-link">Shop</a>
+          </li>
+          <li class="nav-item">
+            <a href="about.html" class="nav-link">About</a>
+          </li>
+          <li class="nav-item">
+            <a href="order-status.html" class="nav-link">Order Status</a>
+          </li>
+        </ul>
+      </nav>
+      <div class="header-actions">
+        <form class="search-form">
+          <input type="text" class="search-input" placeholder="Search...">
+          <button type="submit" class="search-button">
+            <i class="fas fa-search"></i>
+          </button>
+        </form>
+        <a href="cart.html" class="cart-button">
+          <i class="fas fa-shopping-cart"></i>
+          <span class="cart-count">0</span>
+        </a>
+        <div class="profile-dropdown">
+          <button class="profile-button">
+            <i class="fas fa-user"></i>
+          </button>
+          <div class="dropdown-content" style="min-width:320px;">
+            <div class="dropdown-header">
+              Account
+            </div>
+            <div class="dropdown-body">
+              <div class="user-info" id="user-info-section">
+                <div class="user-name" id="dropdown-username">Guest</div>
+                <div class="user-email" id="dropdown-email"></div>
+              </div>
+              <form id="dropdown-login-form" class="dropdown-login-form" style="display:none; margin-bottom: 10px;">
+                <input type="email" id="dropdown-login-email" placeholder="Email" required>
+                <input type="password" id="dropdown-login-password" placeholder="Password" required>
+                <button type="submit">Login</button>
+                <div id="dropdown-login-error"></div>
+              </form>
+              <div class="register-link" id="register-link-section" style="display:none;">
+                <a href="register.html">Register</a>
+              </div>
+              <div class="admin-login-toggle">
+                <button id="show-admin-login" type="button">Admin Login</button>
+              </div>
+              <div class="logout-toggle">
+                <button id="logout-btn" type="button">Logout</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- End profile-dropdown -->
+      </div>
+    </div>
+  </header>
+  <div class="overlay"></div>
+  <!-- ...existing code... -->
+  <script src="js/main.js"></script>
+  <script>
+    // Profile dropdown toggle
+    const profileButton = document.querySelector('.profile-button');
+    const dropdownContent = document.querySelector('.dropdown-content');
+    if (profileButton && dropdownContent) {
+      profileButton.addEventListener('click', function(e) {
+        e.stopPropagation();
+        dropdownContent.classList.toggle('show');
+      });
+    }
+    window.addEventListener('click', function(e) {
+      if (!e.target.matches('.profile-button') && !e.target.closest('.dropdown-content')) {
+        const dropdowns = document.getElementsByClassName('dropdown-content');
+        for (let dropdown of dropdowns) {
+          if (dropdown.classList.contains('show')) {
+            dropdown.classList.remove('show');
+          }
+        }
+      }
+    });
+
+    // Dropdown user info, login, register, logout logic
+    document.addEventListener('DOMContentLoaded', function() {
+      fetch('/api/users/me', {
+        credentials: 'include'
+      })
+        .then(res => {
+          if (!res.ok) throw new Error('Not logged in');
+          return res.json();
+        })
+        .then(data => {
+          document.getElementById('dropdown-username').textContent = data.username;
+          document.getElementById('dropdown-email').textContent = data.email;
+          document.getElementById('user-info-section').style.display = '';
+          document.getElementById('logout-btn').style.display = '';
+          document.getElementById('dropdown-login-form').style.display = 'none';
+          document.getElementById('register-link-section').style.display = 'none';
+        })
+        .catch(() => {
+          document.getElementById('dropdown-username').textContent = "Guest";
+          document.getElementById('dropdown-email').textContent = "";
+          document.getElementById('user-info-section').style.display = '';
+          document.getElementById('logout-btn').style.display = 'none';
+          document.getElementById('dropdown-login-form').style.display = '';
+          document.getElementById('register-link-section').style.display = '';
+        });
+
+      // Login form handler
+      const loginForm = document.getElementById('dropdown-login-form');
+      if (loginForm) {
+        loginForm.addEventListener('submit', async function(e) {
+          e.preventDefault();
+          const email = document.getElementById('dropdown-login-email').value.trim();
+          const password = document.getElementById('dropdown-login-password').value;
+          const errorDiv = document.getElementById('dropdown-login-error');
+          errorDiv.style.display = 'none';
+          try {
+            const response = await fetch('/api/users/login', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              credentials: 'include',
+              body: JSON.stringify({ email, password })
+            });
+            if (response.ok) {
+              window.location.reload();
+            } else {
+              const error = await response.text();
+              errorDiv.textContent = error || 'Invalid email or password';
+              errorDiv.style.display = 'block';
+            }
+          } catch (error) {
+            errorDiv.textContent = 'An error occurred during login';
+            errorDiv.style.display = 'block';
+          }
+        });
+      }
+
+      // Admin Login button
+      const showAdminBtn = document.getElementById('show-admin-login');
+      if (showAdminBtn) {
+        showAdminBtn.addEventListener('click', function() {
+          window.location.href = 'admin/index.html';
+        });
+      }
+
+      // Logout button
+      const logoutBtn = document.getElementById('logout-btn');
+      if (logoutBtn) {
+        logoutBtn.addEventListener('click', async function() {
+          await fetch('/api/users/logout', {
+            method: 'POST',
+            credentials: 'include'
+          });
+          localStorage.removeItem('user');
+          window.location.reload();
+        });
+      }
+    });
+  </script>
+</body>
+</html>
+```

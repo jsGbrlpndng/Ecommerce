@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Login - MelodyMatrix</title>
+  <link rel="stylesheet" href="../css/admin.css">
+  <style>
+    body {
+      min-height: 100vh;
+      background: linear-gradient(120deg, #f8f9fa 0%, #e9ecef 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Montserrat', 'Poppins', Arial, sans-serif;
+    }
+    .admin-login-container {
+      background: #fff;
+      border-radius: 18px;
+      box-shadow: 0 6px 32px rgba(106,90,205,0.10), 0 1.5px 6px rgba(143,92,247,0.08);
+      padding: 2.5rem 2.2rem 2rem 2.2rem;
+      max-width: 370px;
+      width: 100%;
+      text-align: center;
+      animation: fadeIn 0.7s cubic-bezier(.4,0,.2,1);
+    }
+    .admin-login-container h2 {
+      font-size: 2.1rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      color: #6a5acd;
+      letter-spacing: 1px;
+    }
+    #admin-login-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.1rem;
+    }
+    #admin-login-form input {
+      padding: 0.85rem 1rem;
+      border: 1.5px solid #e0e0ff;
+      border-radius: 8px;
+      font-size: 1.08rem;
+      background: #f8f9fa;
+      transition: border 0.2s;
+    }
+    #admin-login-form input:focus {
+      border-color: #8f5cf7;
+      outline: none;
+      background: #fff;
+    }
+    #admin-login-form button {
+      background: linear-gradient(90deg, #6a5acd 60%, #8f5cf7 100%);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 0.9rem 0;
+      font-size: 1.1rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(106,90,205,0.08);
+      transition: background 0.2s, transform 0.15s;
+    }
+    #admin-login-form button:hover {
+      background: linear-gradient(90deg, #8f5cf7 60%, #6a5acd 100%);
+      transform: translateY(-2px) scale(1.03);
+    }
+    .error-message {
+      color: #e53935;
+      font-size: 1rem;
+      margin-top: 0.5rem;
+      min-height: 1.2em;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @media (max-width: 500px) {
+      .admin-login-container {
+        padding: 1.2rem 0.5rem 1.2rem 0.5rem;
+        max-width: 98vw;
+      }
+      .admin-login-container h2 {
+        font-size: 1.5rem;
+      }
+    }
+    .logo img {
+      height: 48px;
+      width: 48px;
+      object-fit: contain;
+      display: block;
+      filter: drop-shadow(0 2px 6px rgba(0,0,0,0.18));
+    }
+    .logo span {
+      font-family: 'Montserrat', 'Poppins', Arial, sans-serif;
+      font-size: 2.5rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: #2d225a;
+      line-height: 1;
+    }
+    .logo > span:first-child {
+      background: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 64px;
+      width: 64px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+    }
+    @media (max-width: 600px) {
+      .logo span { font-size: 1.3rem; }
+      .logo img { height: 32px; width: 32px; }
+      .logo > span:first-child { height: 40px; width: 40px; }
+    }
+    .back-to-user-btn {
+      display: inline-block;
+      margin-top: 1.2rem;
+      padding: 0.7rem 1.5rem;
+      background: #f8f9fa;
+      color: #6a5acd;
+      border: 1.5px solid #e0e0ff;
+      border-radius: 8px;
+      font-size: 1.08rem;
+      font-weight: 600;
+      text-decoration: none;
+      box-shadow: 0 1.5px 6px rgba(143,92,247,0.06);
+      transition: background 0.18s, color 0.18s, border 0.18s;
+    }
+    .back-to-user-btn:hover {
+      background: #ece7ff;
+      color: #8f5cf7;
+      border-color: #8f5cf7;
+    }
+  </style>
+</head>
+<body>
+  <div class="admin-login-container">
+    <div class="logo" style="display: flex; align-items: center; gap: 24px;">
+      <span style="background: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; height: 64px; width: 64px; box-shadow: 0 2px 8px rgba(0,0,0,0.10);">
+        <img src="../Images/guitar_headstock.png" alt="MelodyMatrix Logo" style="height: 48px; width: 48px; object-fit: contain; display: block; filter: drop-shadow(0 2px 6px rgba(0,0,0,0.18));"/>
+      </span>
+      <span style="font-family: 'Montserrat', 'Poppins', Arial, sans-serif; font-size: 2.5rem; font-weight: 700; letter-spacing: 1px; color: #2d225a; line-height: 1;">
+        <span style="font-weight: 600; color: #6a5acd;">Melody</span><span style="font-weight: 800; color: #8f5cf7;">Matrix</span>
+      </span>
+    </div>
+    <h2>Admin Login</h2>
+    <form id="admin-login-form">
+      <input type="text" id="admin-username" placeholder="Admin Username" required>
+      <input type="password" id="admin-password" placeholder="Password" required>
+      <button type="submit">Login</button>
+      <div id="admin-login-error" class="error-message"></div>
+    </form>
+    <a href="../login.html" class="back-to-user-btn">Back to User Page</a>
+  </div>
+  <script>
+    document.getElementById('admin-login-form').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const username = document.getElementById('admin-username').value.trim();
+      const password = document.getElementById('admin-password').value;
+      const errorDiv = document.getElementById('admin-login-error');
+      errorDiv.textContent = '';
+      try {
+        const response = await fetch('/api/admin/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+          body: JSON.stringify({ username, password })
+        });
+        if (response.ok) {
+          // Try to get token from response, fallback to a dummy token if not present
+          let token = null;
+          try {
+            const data = await response.json();
+            token = data.token || 'admin-session';
+          } catch (e) {
+            token = 'admin-session';
+          }
+          if (window.SessionManager && window.SessionManager.setToken) {
+            window.SessionManager.setToken(token);
+          } else {
+            localStorage.setItem('adminToken', token);
+          }
+          window.location.href = '/admin/index.html';
+        } else {
+          const error = await response.text();
+          errorDiv.textContent = error || 'Invalid admin credentials';
+        }
+      } catch (err) {
+        errorDiv.textContent = 'Server error. Please try again.';
+      }
+    });
+  </script>
+  <script src="js/admin-login.js"></script>
+</body>
+</html>

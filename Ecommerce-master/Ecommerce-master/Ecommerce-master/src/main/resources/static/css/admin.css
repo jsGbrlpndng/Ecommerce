@@ -1,0 +1,149 @@
+/* Admin Panel Styles */
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #f4f6fa;
+}
+
+.login-container {
+    max-width: 400px;
+    margin: 100px auto;
+    padding: 20px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Main Website Styles */
+:root {
+    --primary-color: #6a5acd;
+    --secondary-color: #fa8072;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* Customer Management specific styles */
+.customer-filters {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.customer-search {
+    flex: 1;
+    min-width: 200px;
+}
+
+.customer-actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-left: auto;
+}
+
+.customer-table th {
+    white-space: nowrap;
+}
+
+.customer-status {
+    padding: 0.25rem 0.75rem;
+    border-radius: 1rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.customer-status.active {
+    background-color: #e6f4ea;
+    color: #1e7e34;
+}
+
+.customer-status.inactive {
+    background-color: #fbe9e7;
+    color: #d32f2f;
+}
+
+.customer-orders-badge {
+    background-color: #e3f2fd;
+    color: #1976d2;
+    padding: 0.25rem 0.75rem;
+    border-radius: 1rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+/* Modal styles */
+.modal-header {
+    background: linear-gradient(90deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    color: white;
+}
+
+.modal-header .close {
+    color: white;
+}
+
+.orders-table th {
+    background-color: #f8f9fa;
+}
+
+/* Toast notifications */
+.toast-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1050;
+}
+
+.toast {
+    background: white;
+    border-radius: 4px;
+    padding: 1rem;
+    margin-bottom: 0.5rem;
+    box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.1);
+    max-width: 350px;
+}
+
+.toast.success {
+    border-left: 4px solid #28a745;
+}
+
+.toast.error {
+    border-left: 4px solid #dc3545;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .customer-filters {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .customer-actions {
+        margin-left: 0;
+        margin-top: 1rem;
+    }
+    
+    .customer-table {
+        display: block;
+        overflow-x: auto;
+    }
+}
+
+.product-thumbnail {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+  background: #fafafa;
+  display: block;
+  margin: 0 auto;
+}
+
+/* Add more main styles as needed */
+/* Add more admin styles as needed */

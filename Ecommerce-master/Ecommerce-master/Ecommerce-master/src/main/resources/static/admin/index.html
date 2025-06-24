@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - MelodyMatrix</title>
+    <link rel="stylesheet" href="../css/admin.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Poppins', 'Montserrat', Arial, sans-serif;
+            background: #f4f6fa;
+            margin: 0;
+            color: #22223b;
+        }
+        .admin-header-bar {
+            background: linear-gradient(90deg, #6a5acd 0%, #fa8072 100%);
+            color: #fff;
+            padding: 24px 0 16px 0;
+            box-shadow: 0 2px 8px rgba(106,90,205,0.08);
+        }
+        .admin-header-bar .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 32px;
+        }
+        .admin-header-bar h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin: 0;
+            letter-spacing: 1px;
+        }
+        .admin-header-bar .admin-user {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            position: relative;
+        }
+        .admin-header-bar .profile-button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #fff;
+            font-size: 1.7rem;
+            border-radius: 50%;
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+        .admin-header-bar .profile-button:hover {
+            background: rgba(255,255,255,0.12);
+        }
+        .profile-dropdown {
+            position: relative;
+        }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 52px;
+            background: #fff;
+            color: #22223b;
+            min-width: 180px;
+            border-radius: 10px;
+            box-shadow: 0 4px 24px rgba(106,90,205,0.12);
+            z-index: 100;
+            padding: 16px 0;
+        }
+        .profile-dropdown.open .dropdown-content {
+            display: block;
+        }
+        .dropdown-content button {
+            width: 100%;
+            background: none;
+            border: none;
+            color: #22223b;
+            font-size: 1rem;
+            padding: 12px 24px;
+            text-align: left;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .dropdown-content button:hover {
+            background: #f3f0ff;
+        }
+        .admin-main-content {
+            max-width: 1200px;
+            margin: 32px auto;
+            padding: 0 32px;
+        }
+        .admin-features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 32px;
+            margin-top: 32px;
+        }
+        .admin-feature-card {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 4px 24px rgba(106,90,205,0.08);
+            padding: 32px 28px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            transition: box-shadow 0.2s;
+            border-left: 6px solid #6a5acd;
+        }
+        .admin-feature-card.customers {
+            border-left-color: #fa8072;
+        }
+        .admin-feature-card:hover {
+            box-shadow: 0 8px 32px rgba(106,90,205,0.16);
+        }
+        .admin-feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 18px;
+            color: #6a5acd;
+        }
+        .admin-feature-card.customers .admin-feature-icon {
+            color: #fa8072;
+        }
+        .admin-feature-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #22223b;
+        }
+        .admin-feature-desc {
+            font-size: 1rem;
+            color: #4a4e69;
+            margin-bottom: 18px;
+        }
+        .admin-feature-link {
+            display: inline-block;
+            margin-top: auto;
+            padding: 10px 22px;
+            background: linear-gradient(90deg, #6a5acd 0%, #fa8072 100%);
+            color: #fff;
+            border-radius: 8px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: background 0.2s;
+            box-shadow: 0 2px 8px rgba(106,90,205,0.08);
+        }
+        .admin-feature-link:hover {
+            background: linear-gradient(90deg, #fa8072 0%, #6a5acd 100%);
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+        .logo img {
+            height: 48px;
+            width: 48px;
+            object-fit: contain;
+            display: block;
+            filter: drop-shadow(0 2px 6px rgba(0,0,0,0.18));
+        }
+        .logo span {
+            font-family: 'Montserrat', 'Poppins', Arial, sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: #2d225a;
+            line-height: 1;
+        }
+        .logo > span:first-child {
+            background: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 64px;
+            width: 64px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+        }
+        @media (max-width: 600px) {
+            .logo span { font-size: 1.3rem; }
+            .logo img { height: 32px; width: 32px; }
+            .logo > span:first-child { height: 40px; width: 40px; }
+        }
+        @media (max-width: 700px) {
+            .admin-header-bar .container, .admin-main-content {
+                padding: 0 12px;
+            }
+            .admin-feature-card {
+                padding: 20px 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-header-bar">
+        <div class="container">
+            <div class="logo">
+                <span style="background: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; height: 64px; width: 64px; box-shadow: 0 2px 8px rgba(0,0,0,0.10);">
+                  <img src="../Images/guitar_headstock.png" alt="MelodyMatrix Logo" style="height: 48px; width: 48px; object-fit: contain; display: block; filter: drop-shadow(0 2px 6px rgba(0,0,0,0.18));"/>
+                </span>
+                <span style="font-family: 'Montserrat', 'Poppins', Arial, sans-serif; font-size: 2.5rem; font-weight: 700; letter-spacing: 1px; color: #2d225a; line-height: 1;">
+                  <span style="font-weight: 600; color: #6a5acd;">Melody</span><span style="font-weight: 800; color: #8f5cf7;">Matrix</span>
+                </span>
+              </div>
+            <div class="admin-user">
+                <span style="font-size:1.1rem;">Welcome, Admin</span>
+                <div class="profile-dropdown" id="adminProfileDropdown">
+                    <button class="profile-button" id="adminProfileBtn" title="Admin Profile">
+                        <i class="fas fa-user-circle"></i>
+                    </button>
+                    <div class="dropdown-content">
+                        <button id="adminLogoutBtn"><i class="fas fa-sign-out-alt"></i> Log Out</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <main class="admin-main-content">
+        <h2 style="font-size:1.7rem;font-weight:600;margin-bottom:8px;">Dashboard</h2>
+        <p style="color:#4a4e69;font-size:1.08rem;margin-bottom:32px;">Manage your store's inventory and customers efficiently.</p>
+        <div class="admin-features-grid">
+            <div class="admin-feature-card">
+                <div class="admin-feature-icon"><i class="fas fa-box"></i></div>
+                <div class="admin-feature-title">Inventory Management</div>
+                <div class="admin-feature-desc">
+                    Add, edit, and monitor all musical instruments and stock levels in your store.
+                </div>
+                <a href="inventory.html" class="admin-feature-link">Go to Inventory</a>
+            </div>
+            <div class="admin-feature-card customers">
+                <div class="admin-feature-icon"><i class="fas fa-users"></i></div>
+                <div class="admin-feature-title">Customer Management</div>
+                <div class="admin-feature-desc">
+                    View, manage, and support your customers and their orders.
+                </div>
+                <a href="customermanagement.html" class="admin-feature-link">Go to Customers</a>
+            </div>
+        </div>
+    </main>
+    <script>
+        // Profile dropdown toggle
+        const profileBtn = document.getElementById('adminProfileBtn');
+        const profileDropdown = document.getElementById('adminProfileDropdown');
+        profileBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            profileDropdown.classList.toggle('open');
+        });
+        document.addEventListener('click', function(e) {
+            if (!profileDropdown.contains(e.target)) {
+                profileDropdown.classList.remove('open');
+            }
+        });
+        // Logout button
+        document.getElementById('adminLogoutBtn').onclick = function() {
+            fetch('/api/admin/logout', { method: 'POST', credentials: 'include' })
+                .then(() => {
+                    window.location.href = 'admin-login.html';
+                });
+        };
+    </script>
+</body>
+</html>

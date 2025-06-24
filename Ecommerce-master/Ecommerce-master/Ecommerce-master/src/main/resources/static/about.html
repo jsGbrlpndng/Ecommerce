@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About - MelodyMatrix</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700;800&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <link rel="stylesheet" href="css/about.css">
+  <style>
+    .admin-login-form { display: none; }
+    .profile-dropdown .dropdown-content { min-width: 260px; }
+    .admin-login-toggle { margin: 16px 0 0 0; text-align: center; }
+    .admin-login-toggle button { background: none; border: none; color: #007bff; cursor: pointer; font-weight: 500; }
+    #admin-login-form .btn-danger { background: #dc3545; color: #fff; }
+    #admin-login-form .btn-danger:hover { background: #b52a37; }
+    .about-hero {
+      background: linear-gradient(to right, #6a5acd, #fa8072);
+      color: white;
+      padding: 50px 0;
+      text-align: center;
+    }
+    .about-hero .hero-content {
+      position: relative;
+      z-index: 2;
+    }
+    .logout-toggle {
+      text-align: center;
+      margin-top: 8px;
+    }
+    .logout-toggle button {
+      background: none;
+      border: none;
+      color: #e53935;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 500;
+      text-decoration: underline;
+      margin-top: 4px;
+      padding: 0;
+    }
+    .logout-toggle button:hover {
+      color: #b71c1c;
+    }
+    .user-info {
+      text-align: center;
+      margin-bottom: 18px;
+    }
+    .user-info .user-name {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #6a5acd;
+      margin-bottom: 2px;
+    }
+    .user-info .user-email {
+      font-size: 1rem;
+      color: #888;
+      margin-bottom: 0;
+    }
+    .register-link {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    .register-link a {
+      color: #2196f3;
+      text-decoration: underline;
+      font-weight: 500;
+      font-size: 1rem;
+    }
+    .register-link a:hover {
+      color: #1565c0;
+    }
+    .dropdown-login-form input[type="email"],
+    .dropdown-login-form input[type="password"] {
+      width: 100%;
+      margin-bottom: 6px;
+      padding: 7px 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 1rem;
+    }
+    .dropdown-login-form button[type="submit"] {
+      width: 100%;
+      background: #6a5acd;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      padding: 8px 0;
+      font-weight: 600;
+      font-size: 1rem;
+      margin-bottom: 4px;
+      cursor: pointer;
+    }
+    .dropdown-login-form button[type="submit"]:hover {
+      background: #8f5cf7;
+    }
+    #dropdown-login-error {
+      color: #e53935;
+      font-size: 0.95em;
+      margin-top: 4px;
+      display: none;
+      text-align: center;
+    }
+    .logo img {
+      height: 48px;
+      width: 48px;
+      object-fit: contain;
+      display: block;
+      filter: drop-shadow(0 2px 6px rgba(0,0,0,0.18));
+    }
+    .logo span {
+      font-family: 'Montserrat', 'Poppins', Arial, sans-serif;
+      font-size: 2.5rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: #2d225a;
+      line-height: 1;
+    }
+    .logo > span:first-child {
+      background: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 64px;
+      width: 64px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+    }
+    @media (max-width: 600px) {
+      .logo span { font-size: 1.3rem; }
+      .logo img { height: 32px; width: 32px; }
+      .logo > span:first-child { height: 40px; width: 40px; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="container header-container">
+      <div class="logo" style="display: flex; align-items: center; gap: 24px;">
+        <span style="background: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; height: 64px; width: 64px; box-shadow: 0 2px 8px rgba(0,0,0,0.10);">
+          <img src="Images/guitar_headstock.png" alt="MelodyMatrix Logo" style="height: 48px; width: 48px; object-fit: contain; display: block; filter: drop-shadow(0 2px 6px rgba(0,0,0,0.18));"/>
+        </span>
+        <span style="font-family: 'Montserrat', 'Poppins', Arial, sans-serif; font-size: 2.5rem; font-weight: 700; letter-spacing: 1px; color: #2d225a; line-height: 1;">
+          <span style="font-weight: 600; color: #6a5acd;">Melody</span><span style="font-weight: 800; color: #8f5cf7;">Matrix</span>
+        </span>
+      </div>
+      <button class="mobile-menu-button">
+        <i class="fas fa-bars"></i>
+      </button>
+      <nav class="nav">
+        <button class="nav-close">
+          <i class="fas fa-times"></i>
+        </button>
+        <ul class="nav-list">
+          <li class="nav-item">
+            <a href="index.html" class="nav-link">Home</a>
+          </li>
+          <li class="nav-item">
+            <a href="shop.html" class="nav-link">Shop</a>
+          </li>
+          <li class="nav-item">
+            <a href="about.html" class="nav-link active">About</a>
+          </li>
+          <li class="nav-item">
+            <a href="order-status.html" class="nav-link">Order Status</a>
+          </li>
+        </ul>
+      </nav>
+      <div class="header-actions">
+        <form class="search-form">
+          <input type="text" class="search-input" placeholder="Search...">
+          <button type="submit" class="search-button">
+            <i class="fas fa-search"></i>
+          </button>
+        </form>
+        <a href="cart.html" class="cart-button">
+          <i class="fas fa-shopping-cart"></i>
+          <span class="cart-count">0</span>
+        </a>
+        <div class="profile-dropdown">
+          <button class="profile-button">
+            <i class="fas fa-user"></i>
+          </button>
+          <div class="dropdown-content">
+            <div class="dropdown-header">
+              Account
+            </div>
+            <div class="dropdown-body">
+              <div class="user-info" id="user-info-section">
+                <div class="user-name" id="dropdown-username">Guest</div>
+                <div class="user-email" id="dropdown-email"></div>
+              </div>
+              <form id="dropdown-login-form" class="dropdown-login-form">
+                <input type="email" id="dropdown-login-email" placeholder="Email" required>
+                <input type="password" id="dropdown-login-password" placeholder="Password" required>
+                <button type="submit">Login</button>
+                <div id="dropdown-login-error"></div>
+              </form>
+              <div class="register-link" id="register-link-section">
+                <a href="register.html">Register</a>
+              </div>
+              <div class="admin-login-toggle">
+                <a href="/admin/admin-login.html" id="show-admin-login" class="admin-login-link">Admin Login</a>
+              </div>
+              <div class="logout-toggle">
+                <button id="logout-btn" type="button">Logout</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+  
+  <div class="overlay"></div>
+  
+  <!-- About Hero Section -->
+  <section class="about-hero">
+    <div class="container">
+      <div class="hero-content">
+        <h1 class="page-title">Our Story</h1>
+        <p class="page-subtitle">Passionate about music since 2005</p>
+        <div class="breadcrumb">
+          <a href="index.html">Home</a>
+          <span class="separator">/</span>
+          <span class="current">About Us</span>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- About Section -->
+  <section class="about-section">
+    <div class="container">
+      <div class="about-content">
+        <div class="about-image-container" data-aos="fade-right">
+          <img src="images/instruments/About.jpg" alt="Harmony Haven Store" class="about-main-image">
+          <div class="about-experience">
+            <span class="years">18</span>
+            <span class="text">Years of Excellence</span>
+          </div>
+        </div>
+        <div class="about-text-container" data-aos="fade-left">
+          <div class="section-subtitle">About Harmony Haven</div>
+          <h2 class="section-title">Your Trusted Music Instrument Partner Since 2005</h2>
+          <p class="about-description">Welcome to Harmony Haven, where passion for music meets exceptional quality. For over 18 years, we've been providing musicians of all levels with the finest instruments and accessories.</p>
+          <p>Our journey began with a simple vision: to create a space where musicians could find instruments that inspire them to create beautiful music. Today, we're proud to be one of the leading music instrument retailers, serving customers worldwide.</p>
+          <div class="about-stats">
+            <div class="stat-item">
+              <span class="stat-number">5000+</span>
+              <span class="stat-text">Happy Customers</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-number">1200+</span>
+              <span class="stat-text">Instruments</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-number">150+</span>
+              <span class="stat-text">Brands</span>
+            </div>
+          </div>
+          <div class="about-features">
+            <div class="feature-item">
+              <div class="feature-icon">
+                <i class="fas fa-check-circle"></i>
+              </div>
+              <div class="feature-text">
+                <h3>Quality Assurance</h3>
+                <p>All our instruments undergo rigorous quality checks before they reach our customers.</p>
+              </div>
+            </div>
+            <div class="feature-item">
+              <div class="feature-icon">
+                <i class="fas fa-truck"></i>
+              </div>
+              <div class="feature-text">
+                <h3>Fast & Secure Shipping</h3>
+                <p>We ensure your instruments arrive safely and on time, no matter where you are.</p>
+              </div>
+            </div>
+            <div class="feature-item">
+              <div class="feature-icon">
+                <i class="fas fa-headset"></i>
+              </div>
+              <div class="feature-text">
+                <h3>Expert Support</h3>
+                <p>Our team of music enthusiasts is always ready to help you find the perfect instrument.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Mission & Vision Section -->
+  <section class="mission-vision">
+    <div class="container">
+      <div class="section-header text-center">
+        <div class="section-subtitle">Our Purpose</div>
+        <h2 class="section-title">Mission, Vision & Values</h2>
+        <p class="section-description">What drives us every day to provide the best musical instruments and service.</p>
+      </div>
+      <div class="mission-vision-grid">
+        <div class="mission-box" data-aos="fade-up" data-aos-delay="100">
+          <div class="icon-container">
+            <i class="fas fa-bullseye"></i>
+          </div>
+          <h3>Our Mission</h3>
+          <p>To provide musicians of all levels with high-quality instruments that inspire creativity and musical excellence, while offering exceptional customer service and expert guidance.</p>
+        </div>
+        <div class="vision-box" data-aos="fade-up" data-aos-delay="200">
+          <div class="icon-container">
+            <i class="fas fa-eye"></i>
+          </div>
+          <h3>Our Vision</h3>
+          <p>To be the most trusted destination for musical instruments worldwide, fostering a global community of musicians and contributing to the advancement of musical culture and education.</p>
+        </div>
+        <div class="values-box" data-aos="fade-up" data-aos-delay="300">
+          <div class="icon-container">
+            <i class="fas fa-heart"></i>
+          </div>
+          <h3>Our Values</h3>
+          <p>Quality, integrity, passion for music, customer satisfaction, and continuous improvement guide everything we do at Harmony Haven.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Our Team Section -->
+  <section class="team-section">
+    <div class="container">
+      <div class="section-header text-center">
+        <div class="section-subtitle">The People Behind Harmony Haven</div>
+        <h2 class="section-title">Meet Our Team</h2>
+        <p class="section-description">Our team of music enthusiasts is dedicated to providing you with the best musical instruments and exceptional service.</p>
+      </div>
+      <div class="team-grid">
+        <div class="team-member" data-aos="fade-up" data-aos-delay="100">
+          <div class="team-member-image">
+            <img src="images/instruments/john-doe.jpg" alt="John Doe - Founder & CEO" loading="lazy">
+            <div class="team-social">
+              <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+              <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+              <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+            </div>
+          </div>
+          <div class="team-member-info">
+            <h3>John Doe</h3>
+            <p class="position">Founder & CEO</p>
+            <p class="bio">With over 20 years of experience as a professional guitarist, John founded Harmony Haven to share his passion for quality instruments.</p>
+          </div>
+        </div>
+        <div class="team-member" data-aos="fade-up" data-aos-delay="200">
+          <div class="team-member-image">
+            <img src="images/instruments/jane-smith.jpg" alt="Jane Smith - Head of Product Selection" loading="lazy">
+            <div class="team-social">
+              <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+              <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+              <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+            </div>
+          </div>
+          <div class="team-member-info">
+            <h3>Jane Smith</h3>
+            <p class="position">Head of Product Selection</p>
+            <p class="bio">Jane is a classically trained pianist with a keen eye for quality. She personally selects each instrument in our collection.</p>
+          </div>
+        </div>
+        <div class="team-member" data-aos="fade-up" data-aos-delay="300">
+          <div class="team-member-image">
+            <img src="images/instruments/mike-johnson.jpg" alt="Mike Johnson - Customer Experience Manager" loading="lazy">
+            <div class="team-social">
+              <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+              <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+              <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+            </div>
+          </div>
+          <div class="team-member-info">
+            <h3>Mike Johnson</h3>
+            <p class="position">Customer Experience Manager</p>
+            <p class="bio">Mike ensures that every customer has an exceptional experience, from browsing our collection to receiving their instrument.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Testimonials Section -->
+  <section class="testimonials">
+    <div class="container">
+      <div class="section-header text-center">
+        <div class="section-subtitle">What Our Customers Say</div>
+        <h2 class="section-title">Testimonials</h2>
+        <p class="section-description">Hear from our satisfied customers about their experience with Harmony Haven.</p>
+      </div>
+      <div class="testimonials-slider">
+        <div class="testimonial-item" data-aos="fade-up" data-aos-delay="100">
+          <div class="testimonial-content">
+            <div class="quote-icon">
+              <i class="fas fa-quote-left"></i>
+            </div>
+            <p class="testimonial-text">I've been buying instruments from Harmony Haven for years, and I'm always impressed by their quality and service. The team is knowledgeable and passionate about music.</p>
+            <div class="testimonial-author">
+              <div class="author-info">
+                <h4>David Wilson</h4>
+                <p>Professional Guitarist</p>
+              </div>
+              <div class="rating">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-item" data-aos="fade-up" data-aos-delay="200">
+          <div class="testimonial-content">
+            <div class="quote-icon">
+              <i class="fas fa-quote-left"></i>
+            </div>
+            <p class="testimonial-text">As a music teacher, I recommend Harmony Haven to all my students. Their instruments are of exceptional quality, and their customer service is outstanding.</p>
+            <div class="testimonial-author">
+              <div class="author-info">
+                <h4>Sarah Thompson</h4>
+                <p>Music Educator</p>
+              </div>
+              <div class="rating">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Partners Section -->
+  <section class="partners-section">
+    <div class="container">
+      <div class="section-header text-center">
+        <div class="section-subtitle">Our Trusted Partners</div>
+        <h2 class="section-title">Brands We Carry</h2>
+        <p class="section-description">We partner with the world's leading musical instrument manufacturers to bring you the best quality.</p>
+      </div>
+      <div class="partners-grid">
+        <div class="partner-logo" data-aos="fade-up" data-aos-delay="100">
+          <img src="/placeholder.svg?height=80&width=160" alt="Yamaha">
+        </div>
+        <div class="partner-logo" data-aos="fade-up" data-aos-delay="150">
+          <img src="/placeholder.svg?height=80&width=160" alt="Fender">
+        </div>
+        <div class="partner-logo" data-aos="fade-up" data-aos-delay="200">
+          <img src="/placeholder.svg?height=80&width=160" alt="Gibson">
+        </div>
+        <div class="partner-logo" data-aos="fade-up" data-aos-delay="250">
+          <img src="/placeholder.svg?height=80&width=160" alt="Roland">
+        </div>
+        <div class="partner-logo" data-aos="fade-up" data-aos-delay="300">
+          <img src="/placeholder.svg?height=80&width=160" alt="Steinway">
+        </div>
+        <div class="partner-logo" data-aos="fade-up" data-aos-delay="350">
+          <img src="/placeholder.svg?height=80&width=160" alt="Ibanez">
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- CTA Section -->
+  <section class="cta-section">
+    <div class="container">
+      <div class="cta-content">
+        <h2>Ready to Find Your Perfect Instrument?</h2>
+        <p>Browse our collection of premium musical instruments and accessories.</p>
+        <div class="cta-buttons">
+          <a href="shop.html" class="btn btn-primary">Shop Now</a>
+          <a href="contact.html" class="btn btn-outline">Contact Us</a>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <script src="js/main.js"></script>
+  <script src="js/about.js"></script>
+  <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+  <script>
+    // Initialize AOS animation library
+    AOS.init({
+      duration: 800,
+      once: true
+    });
+
+    // Profile dropdown toggle
+    const profileButton = document.querySelector('.profile-button');
+    const dropdownContent = document.querySelector('.dropdown-content');
+    if (profileButton && dropdownContent) {
+      profileButton.addEventListener('click', function(e) {
+        e.stopPropagation();
+        dropdownContent.classList.toggle('show');
+      });
+    }
+    // Close dropdown when clicking outside
+    window.addEventListener('click', function(e) {
+      if (!e.target.matches('.profile-button') && !e.target.closest('.dropdown-content')) {
+        const dropdowns = document.getElementsByClassName('dropdown-content');
+        for (let dropdown of dropdowns) {
+          if (dropdown.classList.contains('show')) {
+            dropdown.classList.remove('show');
+          }
+        }
+      }
+    });
+
+    // Dropdown user info, login, register, logout logic
+    document.addEventListener('DOMContentLoaded', function() {
+      fetch('/api/users/me', {
+        credentials: 'include'
+      })
+        .then(res => {
+          if (!res.ok) throw new Error('Not logged in');
+          return res.json();
+        })
+        .then(data => {
+          document.getElementById('dropdown-username').textContent = data.username;
+          document.getElementById('dropdown-email').textContent = data.email;
+          document.getElementById('user-info-section').style.display = '';
+          document.getElementById('logout-btn').style.display = '';
+          document.getElementById('dropdown-login-form').style.display = 'none';
+          document.getElementById('register-link-section').style.display = 'none';
+        })
+        .catch(() => {
+          document.getElementById('dropdown-username').textContent = "Guest";
+          document.getElementById('dropdown-email').textContent = "";
+          document.getElementById('user-info-section').style.display = '';
+          document.getElementById('logout-btn').style.display = 'none';
+          document.getElementById('dropdown-login-form').style.display = '';
+          document.getElementById('register-link-section').style.display = '';
+        });
+
+      // Login form handler
+      const loginForm = document.getElementById('dropdown-login-form');
+      if (loginForm) {
+        loginForm.addEventListener('submit', async function(e) {
+          e.preventDefault();
+          const email = document.getElementById('dropdown-login-email').value.trim();
+          const password = document.getElementById('dropdown-login-password').value;
+          const errorDiv = document.getElementById('dropdown-login-error');
+          errorDiv.style.display = 'none';
+          try {
+            const response = await fetch('/api/users/login', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              credentials: 'include',
+              body: JSON.stringify({ email, password })
+            });
+            if (response.ok) {
+              window.location.reload();
+            } else {
+              const error = await response.text();
+              errorDiv.textContent = error || 'Invalid email or password';
+              errorDiv.style.display = 'block';
+            }
+          } catch (error) {
+            errorDiv.textContent = 'An error occurred during login';
+            errorDiv.style.display = 'block';
+          }
+        });
+      }
+
+      // Admin Login button
+      const showAdminBtn = document.getElementById('show-admin-login');
+      if (showAdminBtn) {
+        showAdminBtn.addEventListener('click', function() {
+          window.location.href = 'admin/index.html';
+        });
+      }
+
+      // Logout button
+      const logoutBtn = document.getElementById('logout-btn');
+      if (logoutBtn) {
+        logoutBtn.addEventListener('click', async function() {
+          await fetch('/api/users/logout', {
+            method: 'POST',
+            credentials: 'include'
+          });
+          localStorage.removeItem('user');
+          window.location.reload();
+        });
+      }
+    });
+  </script>
+</body>
+</html>

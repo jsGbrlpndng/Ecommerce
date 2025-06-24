@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cart - MelodyMatrix</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <link rel="stylesheet" href="css/cart.css">
+  <style>
+    .admin-login-form { display: none; }
+    .profile-dropdown .dropdown-content { min-width: 320px; border-radius: 16px; box-shadow: 0 8px 32px rgba(106,90,205,0.10);}
+    .profile-dropdown .dropdown-header {
+      background: #8f5cf7;
+      color: #fff;
+      padding: 18px 24px 10px 24px;
+      border-radius: 16px 16px 0 0;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+    .profile-dropdown .dropdown-body {
+      padding: 18px 24px 18px 24px;
+      background: #fff;
+      border-radius: 0 0 16px 16px;
+    }
+    .user-info {
+      text-align: center;
+      margin-bottom: 18px;
+    }
+    .user-info .user-name {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #6a5acd;
+      margin-bottom: 2px;
+    }
+    .user-info .user-email {
+      font-size: 1rem;
+      color: #888;
+      margin-bottom: 0;
+    }
+    .register-link {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    .register-link a {
+      color: #2196f3;
+      text-decoration: underline;
+      font-weight: 500;
+      font-size: 1rem;
+    }
+    .register-link a:hover {
+      color: #1565c0;
+    }
+    .dropdown-login-form input[type="email"],
+    .dropdown-login-form input[type="password"] {
+      width: 100%;
+      margin-bottom: 6px;
+      padding: 7px 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 1rem;
+    }
+    .dropdown-login-form button[type="submit"] {
+      width: 100%;
+      background: #6a5acd;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      padding: 8px 0;
+      font-weight: 600;
+      font-size: 1rem;
+      margin-bottom: 4px;
+      cursor: pointer;
+    }
+    .dropdown-login-form button[type="submit"]:hover {
+      background: #8f5cf7;
+    }
+    #dropdown-login-error {
+      color: #e53935;
+      font-size: 0.95em;
+      margin-top: 4px;
+      display: none;
+      text-align: center;
+    }
+    .admin-login-toggle {
+      text-align: center;
+      margin-top: 8px;
+    }
+    .admin-login-toggle button, .admin-login-toggle a {
+      background: none;
+      border: none;
+      color: #2196f3;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 500;
+      text-decoration: underline;
+      margin-top: 4px;
+      padding: 0;
+    }
+    .admin-login-toggle button:hover, .admin-login-toggle a:hover {
+      color: #1565c0;
+    }
+    .logout-toggle {
+      text-align: center;
+      margin-top: 8px;
+    }
+    .logout-toggle button {
+      background: none;
+      border: none;
+      color: #e53935;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 500;
+      text-decoration: underline;
+      margin-top: 4px;
+      padding: 0;
+    }
+    .logout-toggle button:hover {
+      color: #b71c1c;
+    }
+    #admin-login-form .btn-danger {
+      background: #dc3545;
+      color: #fff;
+      border-radius: 10px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+      margin-top: 8px;
+      border: none;
+      width: 100%;
+      padding: 12px 0;
+      transition: background 0.2s;
+    }
+    #admin-login-form .btn-danger:hover {
+      background: #b52a37;
+    }
+    #back-to-user-login {
+      color: #8f5cf7;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+      text-decoration: underline;
+      margin-top: 8px;
+      padding: 0;
+    }
+    #back-to-user-login:hover {
+      color: #6a5acd;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+    .logo img {
+      height: 48px;
+      width: 48px;
+      object-fit: contain;
+      display: block;
+      filter: drop-shadow(0 2px 6px rgba(0,0,0,0.18));
+    }
+    .logo span {
+      font-family: 'Montserrat', 'Poppins', Arial, sans-serif;
+      font-size: 2.5rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: #2d225a;
+      line-height: 1;
+    }
+    .logo > span:first-child {
+      background: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 64px;
+      width: 64px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+    }
+    @media (max-width: 600px) {
+      .logo span { font-size: 1.3rem; }
+      .logo img { height: 32px; width: 32px; }
+      .logo > span:first-child { height: 40px; width: 40px; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="container header-container">
+      <div class="logo" style="display: flex; align-items: center; gap: 24px;">
+        <span style="background: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; height: 64px; width: 64px; box-shadow: 0 2px 8px rgba(0,0,0,0.10);">
+          <img src="Images/guitar_headstock.png" alt="MelodyMatrix Logo" style="height: 48px; width: 48px; object-fit: contain; display: block; filter: drop-shadow(0 2px 6px rgba(0,0,0,0.18));"/>
+        </span>
+        <span style="font-family: 'Montserrat', 'Poppins', Arial, sans-serif; font-size: 2.5rem; font-weight: 700; letter-spacing: 1px; color: #2d225a; line-height: 1;">
+          <span style="font-weight: 600; color: #6a5acd;">Melody</span><span style="font-weight: 800; color: #8f5cf7;">Matrix</span>
+        </span>
+      </div>
+      <button class="mobile-menu-button">
+        <i class="fas fa-bars"></i>
+      </button>
+      <nav class="nav">
+        <ul class="nav-list">
+          <li class="nav-item">
+            <a href="index.html" class="nav-link">Home</a>
+          </li>
+          <li class="nav-item">
+            <a href="shop.html" class="nav-link">Shop</a>
+          </li>
+          <li class="nav-item">
+            <a href="about.html" class="nav-link">About</a>
+          </li>
+          <li class="nav-item">
+            <a href="order-status.html" class="nav-link">Order Status</a>
+          </li>
+        </ul>
+      </nav>
+      <div class="header-actions">
+        <form class="search-form">
+          <input type="text" class="search-input" placeholder="Search...">
+          <button type="submit" class="search-button">
+            <i class="fas fa-search"></i>
+          </button>
+        </form>
+        <a href="cart.html" class="cart-button">
+          <i class="fas fa-shopping-cart"></i>
+          <span class="cart-count">0</span>
+        </a>
+        <div class="profile-dropdown">
+          <button class="profile-button">
+            <i class="fas fa-user"></i>
+          </button>
+          <div class="dropdown-content" style="min-width:320px;">
+            <div class="dropdown-header">
+              Account
+            </div>
+            <div class="dropdown-body">
+              <div class="user-info" id="user-info-section">
+                <div class="user-name" id="dropdown-username">Guest</div>
+                <div class="user-email" id="dropdown-email"></div>
+              </div>
+              <form id="dropdown-login-form" class="dropdown-login-form" style="display:none; margin-bottom: 10px;">
+                <input type="email" id="dropdown-login-email" placeholder="Email" required>
+                <input type="password" id="dropdown-login-password" placeholder="Password" required>
+                <button type="submit">Login</button>
+                <div id="dropdown-login-error"></div>
+              </form>
+              <div class="register-link" id="register-link-section" style="display:none;">
+                <a href="register.html">Register</a>
+              </div>
+              <div class="admin-login-toggle">
+                <button id="show-admin-login" type="button">Admin Login</button>
+              </div>
+              <div class="logout-toggle">
+                <button id="logout-btn" type="button">Logout</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- End profile-dropdown -->
+      </div>
+    </div>
+  </header>
+  
+  <div class="overlay"></div>
+  
+  <!-- Cart Hero Section -->
+  <section class="cart-hero">
+    <div class="container">
+      <h1 class="cart-hero-title">Your Shopping Cart</h1>
+      <p class="cart-hero-subtitle">Review your items and proceed to checkout</p>
+    </div>
+  </section>
+  
+  <!-- Cart Section -->
+  <section class="cart">
+    <div class="container">
+      <div id="cart-content">
+        <!-- Empty Cart State -->
+        <div class="cart-empty" id="empty-cart">
+          <div class="cart-empty-icon">
+            <i class="fas fa-shopping-cart"></i>
+          </div>
+          <h2>Your cart is empty</h2>
+          <p>Looks like you haven't added any instruments to your cart yet. Browse our collection and find the perfect instrument for you.</p>
+          <a href="shop.html" class="btn btn-primary">Continue Shopping</a>
+        </div>
+        <!-- Cart with Items -->
+        <div class="cart-container" id="cart-with-items" style="display: none;">
+          <div class="cart-items">
+            <div class="cart-header">
+              <div>Product</div>
+              <div>Price</div>
+              <div>Quantity</div>
+              <div>Total</div>
+              <div></div>
+            </div>
+            <div id="cart-items-container">
+              <!-- Cart items will be loaded here via JavaScript -->
+            </div>
+            <div class="cart-actions">
+              <button class="cart-action-btn" id="clear-cart-btn">
+                <i class="fas fa-trash-alt"></i> Clear Cart
+              </button>
+              <button class="cart-action-btn cart-update-btn" id="update-cart-btn">
+                <i class="fas fa-sync-alt"></i> Update Cart
+              </button>
+            </div>
+          </div>
+          <div class="cart-summary">
+            <h3 class="summary-title">Order Summary</h3>
+            <div class="summary-row">
+              <div class="summary-label">Subtotal</div>
+              <div class="summary-value" id="summary-subtotal">₱0.00</div>
+            </div>
+            <div class="summary-row">
+              <div class="summary-label">Shipping</div>
+              <div class="summary-value" id="summary-shipping">₱0.00</div>
+            </div>
+            <div class="summary-row">
+              <div class="summary-label">Tax</div>
+              <div class="summary-value" id="summary-tax">₱0.00</div>
+            </div>
+            <div class="summary-row total">
+              <div class="summary-label">Total</div>
+              <div class="summary-value" id="summary-total">₱0.00</div>
+            </div>
+            <button class="checkout-btn" id="checkout-btn">
+              <i class="fas fa-lock"></i> Proceed to Checkout
+            </button>
+            <a href="shop.html" class="continue-shopping">
+              <i class="fas fa-arrow-left"></i> Continue Shopping
+            </a>
+            <div class="shipping-info">
+              <h4>Shipping Information</h4>
+              <p>Standard shipping: 3-5 business days</p>
+              <p>Express shipping: 1-2 business days</p>
+              <p class="free-shipping">Free shipping on orders over ₱5,000</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script src="js/main.js"></script>
+  <script src="js/cart.js"></script>
+  <script>
+    // Profile dropdown toggle
+    const profileButton = document.querySelector('.profile-button');
+    const dropdownContent = document.querySelector('.dropdown-content');
+    if (profileButton && dropdownContent) {
+      profileButton.addEventListener('click', function(e) {
+        e.stopPropagation();
+        dropdownContent.classList.toggle('show');
+      });
+    }
+    window.addEventListener('click', function(e) {
+      if (!e.target.matches('.profile-button') && !e.target.closest('.dropdown-content')) {
+        const dropdowns = document.getElementsByClassName('dropdown-content');
+        for (let dropdown of dropdowns) {
+          if (dropdown.classList.contains('show')) {
+            dropdown.classList.remove('show');
+          }
+        }
+      }
+    });
+
+    // Dropdown user info, login, register, logout logic
+    document.addEventListener('DOMContentLoaded', function() {
+      fetch('/api/users/me', {
+        credentials: 'include'
+      })
+        .then(res => {
+          if (!res.ok) throw new Error('Not logged in');
+          return res.json();
+        })
+        .then(data => {
+          document.getElementById('dropdown-username').textContent = data.username;
+          document.getElementById('dropdown-email').textContent = data.email;
+          document.getElementById('user-info-section').style.display = '';
+          document.getElementById('logout-btn').style.display = '';
+          document.getElementById('dropdown-login-form').style.display = 'none';
+          document.getElementById('register-link-section').style.display = 'none';
+        })
+        .catch(() => {
+          document.getElementById('dropdown-username').textContent = "Guest";
+          document.getElementById('dropdown-email').textContent = "";
+          document.getElementById('user-info-section').style.display = '';
+          document.getElementById('logout-btn').style.display = 'none';
+          document.getElementById('dropdown-login-form').style.display = '';
+          document.getElementById('register-link-section').style.display = '';
+        });
+
+      // Login form handler
+      const loginForm = document.getElementById('dropdown-login-form');
+      if (loginForm) {
+        loginForm.addEventListener('submit', async function(e) {
+          e.preventDefault();
+          const email = document.getElementById('dropdown-login-email').value.trim();
+          const password = document.getElementById('dropdown-login-password').value;
+          const errorDiv = document.getElementById('dropdown-login-error');
+          errorDiv.style.display = 'none';
+          try {
+            const response = await fetch('/api/users/login', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              credentials: 'include',
+              body: JSON.stringify({ email, password })
+            });
+            if (response.ok) {
+              window.location.reload();
+            } else {
+              const error = await response.text();
+              errorDiv.textContent = error || 'Invalid email or password';
+              errorDiv.style.display = 'block';
+            }
+          } catch (error) {
+            errorDiv.textContent = 'An error occurred during login';
+            errorDiv.style.display = 'block';
+          }
+        });
+      }
+
+      // Admin Login button
+      const showAdminBtn = document.getElementById('show-admin-login');
+      if (showAdminBtn) {
+        showAdminBtn.addEventListener('click', function() {
+          window.location.href = 'admin/index.html';
+        });
+      }
+
+      // Logout button
+      const logoutBtn = document.getElementById('logout-btn');
+      if (logoutBtn) {
+        logoutBtn.addEventListener('click', async function() {
+          await fetch('/api/users/logout', {
+            method: 'POST',
+            credentials: 'include'
+          });
+          localStorage.removeItem('user');
+          window.location.reload();
+        });
+      }
+    });
+  </script>
+</body>
+</html>

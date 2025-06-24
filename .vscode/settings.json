@@ -1,0 +1,20 @@
+{
+    "sqltools.connections": [
+        {
+            "mysqlOptions": {
+                "authProtocol": "xprotocol",
+                "enableSsl": "Disabled"
+            },
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 33060,
+            "driver": "MySQL",
+            "name": "harmonyhaven",
+            "group": "db",
+            "database": "harmonyhaven",
+            "username": "root",
+            "password": "1125",
+            "connectionTimeout": 50
+        }
+    ]
+}
