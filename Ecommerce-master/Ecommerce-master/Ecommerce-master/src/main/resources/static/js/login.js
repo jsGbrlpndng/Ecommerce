@@ -71,7 +71,10 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
             } catch {
                 errorMsg = await response.text() || errorMsg;
             }
-            console.error('Login failed:', errorMsg);
+            // Show popup for inactive account
+            if (errorMsg.includes('currently inactive')) {
+                alert(errorMsg); // Popup for inactive users
+            }
             errorDiv.textContent = errorMsg;
             errorDiv.style.display = 'block';
         }

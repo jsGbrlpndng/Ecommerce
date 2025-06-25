@@ -19,21 +19,6 @@ function setupEventListeners() {
         searchInput.addEventListener('input', debounce(loadCustomers, 300));
     }
 
-    // Edit customer form submission
-    const editForm = document.getElementById('editCustomerForm');
-    if (editForm) {
-        editForm.addEventListener('submit', async function(e) {
-            e.preventDefault();
-            const customerId = document.getElementById('editCustomerId').value;
-            try {
-                await updateCustomer(customerId);
-            } catch (error) {
-                console.error('Update error:', error);
-                showError('Error updating customer');
-            }
-        });
-    }
-
     // Status filter
     const statusFilter = document.getElementById('status-filter');
     if (statusFilter) {
@@ -249,7 +234,6 @@ function displayCustomers(customers) {
             <td>${formatDateCreated(customer.createdAt)}</td>
             <td><button onclick="viewOrders(${customer.id})" class="btn btn-link view-orders-btn">View Orders</button></td>
             <td><div class="btn-group">
-                <button onclick="editCustomer(${customer.id})" class="btn btn-sm btn-outline-primary" title="Edit"><i class="fas fa-edit"></i></button>
                 <button onclick="confirmDeleteCustomer(${customer.id})" class="btn btn-sm btn-outline-danger" title="Delete"><i class="fas fa-trash"></i></button>
             </div></td>
         `;
@@ -292,64 +276,6 @@ function filterCustomers(searchTerm) {
         const text = row.textContent.toLowerCase();
         row.style.display = text.includes(searchTerm) ? '' : 'none';
     });
-}
-
-async function editCustomer(id) {
-    try {
-        const response = await fetch(`/api/admin/customers/${id}`, {
-            credentials: 'include'
-        });
-        
-        if (!response.ok) {
-            throw new Error('Failed to fetch customer details');
-        }
-
-        const customer = await response.json();
-        populateEditForm(customer);
-        $('#editCustomerModal').modal('show');
-    } catch (error) {
-        console.error('Error fetching customer details:', error);
-        showNotification('Error fetching customer details', 'error');
-    }
-}
-
-function populateEditForm(customer) {
-    document.getElementById('editCustomerId').value = customer.id;
-    document.getElementById('editFirstName').value = customer.firstName;
-    document.getElementById('editLastName').value = customer.lastName;
-    document.getElementById('editEmail').value = customer.email;
-    document.getElementById('editPhone').value = customer.phone || '';
-}
-
-async function updateCustomer(id) {
-    const customerData = {
-        firstName: document.getElementById('editFirstName').value,
-        lastName: document.getElementById('editLastName').value,
-        email: document.getElementById('editEmail').value,
-        phone: document.getElementById('editPhone').value
-    };
-
-    try {
-        const response = await fetch(`/api/admin/customers/${id}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            credentials: 'include',
-            body: JSON.stringify(customerData)
-        });
-
-        if (!response.ok) {
-            throw new Error('Failed to update customer');
-        }
-
-        $('#editCustomerModal').modal('hide');
-        loadCustomers();
-        showNotification('Customer updated successfully', 'success');
-    } catch (error) {
-        console.error('Error updating customer:', error);
-        showNotification('Error updating customer', 'error');
-    }
 }
 
 function confirmDeleteCustomer(id) {

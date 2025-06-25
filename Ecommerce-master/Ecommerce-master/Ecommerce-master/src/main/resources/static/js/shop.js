@@ -33,19 +33,25 @@ function createProductCard(product) {
   const card = document.createElement('div');
   card.className = 'product-card';
   card.innerHTML = `
-    <div class="product-image">
+    <div class="product-image product-link" style="cursor:pointer;" data-id="${product.id}">
       <img src="${getProductImagePath(product.image)}" alt="${product.name}" onerror="this.src='Images/instruments/placeholder.png'">
     </div>
     <div class="product-info">
-      <h3>${product.name}</h3>
+      <h3 class="product-link" style="cursor:pointer;" data-id="${product.id}">${product.name}</h3>
       <div class="product-price">${formatCurrencyPHP(product.price)}</div>
       <div class="product-status">${product.stock > 0 ? 'In Stock' : 'Out of Stock'}</div>
-      <button class="add-to-cart-btn" ${product.stock <= 0 ? 'disabled' : ''}>Add to Cart</button>
-      <a href="product-detail.html?id=${product.id}" class="view-details">View Details</a>
+      <button class="add-to-cart-btn" ${product.stock <= 0 ? 'disabled' : ''} style="margin: 0 auto; display: block;">Add to Cart</button>
     </div>
   `;
+  // Remove view details link
+  // Add click event to image and name to go to product detail
+  card.querySelectorAll('.product-link').forEach(el => {
+    el.addEventListener('click', () => {
+      window.location.href = `product-detail.html?id=${product.id}`;
+    });
+  });
   // Add to cart event
-  card.querySelector('.add-to-cart-btn').addEventListener('click', () => addToCart(product));
+  card.querySelector('.add-to-cart-btn').addEventListener('click', (e) => addToCart(product));
   return card;
 }
 

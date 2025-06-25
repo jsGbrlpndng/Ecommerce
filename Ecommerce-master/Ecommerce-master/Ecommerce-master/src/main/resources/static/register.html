@@ -68,8 +68,8 @@
     </style>
 </head>
 <body>
-    <header class="header">
-        <div class="header-container">
+    <header class="header" style="background: #fff; border-bottom: 1px solid #eee;">
+        <div class="header-container" style="max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; padding: 24px 32px 16px 32px;">
             <div class="logo" style="display: flex; align-items: center; gap: 24px;">
                 <span style="background: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; height: 64px; width: 64px; box-shadow: 0 2px 8px rgba(0,0,0,0.10);">
                   <img src="Images/guitar_headstock.png" alt="MelodyMatrix Logo" style="height: 48px; width: 48px; object-fit: contain; display: block; filter: drop-shadow(0 2px 6px rgba(0,0,0,0.18));"/>
@@ -77,14 +77,38 @@
                 <span style="font-family: 'Montserrat', 'Poppins', Arial, sans-serif; font-size: 2.5rem; font-weight: 700; letter-spacing: 1px; color: #2d225a; line-height: 1;">
                   <span style="font-weight: 600; color: #6a5acd;">Melody</span><span style="font-weight: 800; color: #8f5cf7;">Matrix</span>
                 </span>
-              </div>
+            </div>
             <nav class="nav">
-                <ul class="nav-list">
-                    <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
-                    <li class="nav-item"><a href="shop.html" class="nav-link">Shop</a></li>
-                    <li class="nav-item"><a href="about.html" class="nav-link">About</a></li>
-                    <li class="nav-item"><a href="login.html" class="nav-link">Login</a></li>
-                    <li class="nav-item"><a href="register.html" class="nav-link active">Register</a></li>
+                <ul class="nav-list main-navbar" style="list-style: none; display: flex; gap: 40px; margin: 0; padding: 0; align-items: center;">
+                    <li class="nav-item"><a href="index.html" class="nav-link" style="font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 1.3rem; color: #222; text-decoration: none; position: relative; transition: color 0.2s;">Home</a></li>
+                    <li class="nav-item"><a href="shop.html" class="nav-link" style="font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 1.3rem; color: #222; text-decoration: none; position: relative; transition: color 0.2s;">Shop</a></li>
+                    <li class="nav-item"><a href="about.html" class="nav-link" style="font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 1.3rem; color: #222; text-decoration: none; position: relative; transition: color 0.2s;">About</a></li>
+                    <li class="nav-item"><a href="order-status.html" class="nav-link" style="font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 1.3rem; color: #222; text-decoration: none; position: relative; transition: color 0.2s;">Order Status</a></li>
+                    <li class="nav-item"><a href="login.html" class="nav-link" style="font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 1.3rem; color: #222; text-decoration: none; position: relative; transition: color 0.2s;">Login</a></li>
+                    <li class="nav-item profile-dropdown" id="profileDropdown" style="display:none;position:relative;">
+                      <button class="profile-button" id="profileBtn" title="Profile" style="background:none;border:none;cursor:pointer;padding:0;display:flex;align-items:center;">
+                        <i class="fas fa-user-circle" style="font-size:2rem;color:#6a5acd;"></i>
+                      </button>
+                      <div class="dropdown-content profile-menu" style="right:0;min-width:250px;padding:0;border-radius:18px;box-shadow:0 8px 32px rgba(106,90,205,0.13);overflow:hidden;background:#fff;">
+                        <div class="dropdown-header" style="background:#8f5cf7;color:#fff;padding:22px 28px 14px 28px;border-radius:18px 18px 0 0;text-align:left;">
+                          <div id="dropdown-username" class="user-name" style="font-size:1.15rem;font-weight:700;line-height:1.2;margin-bottom:2px;"></div>
+                          <div id="dropdown-email" class="user-email" style="font-size:1rem;opacity:0.92;word-break:break-all;"></div>
+                        </div>
+                        <div class="dropdown-body" id="user-info-section" style="padding:22px 28px 16px 28px;display:none;text-align:center;">
+                          <a href="profile.html" class="profile-link" style="display:block;font-weight:600;font-size:1.1rem;color:#8f5cf7;margin-bottom:14px;text-decoration:none;transition:color 0.2s;">Edit Profile</a>
+                          <button id="logout-btn" type="button" style="background:none;border:none;color:#e53935;font-size:1rem;font-weight:600;cursor:pointer;padding:8px 0 0 0;transition:color 0.2s;">Logout</button>
+                        </div>
+                        <form id="dropdown-login-form" class="dropdown-login-form" style="display:none;padding:20px 28px 16px 28px;">
+                          <input type="email" id="dropdown-login-email" placeholder="Email" required style="width:100%;margin-bottom:10px;padding:10px 12px;border:1px solid #ccc;border-radius:6px;font-size:1rem;">
+                          <input type="password" id="dropdown-login-password" placeholder="Password" required style="width:100%;margin-bottom:10px;padding:10px 12px;border:1px solid #ccc;border-radius:6px;font-size:1rem;">
+                          <button type="submit" style="width:100%;background:#6a5acd;color:#fff;border:none;border-radius:6px;padding:12px 0;font-weight:600;font-size:1rem;margin-bottom:4px;cursor:pointer;transition:background 0.2s;">Login</button>
+                          <div id="dropdown-login-error" style="color:#e53935;font-size:0.95em;margin-top:4px;display:none;text-align:center;"></div>
+                        </form>
+                        <div class="register-link" id="register-link-section" style="display:none;text-align:center;margin-bottom:10px;">
+                          <a href="register.html" style="color:#8f5cf7;text-decoration:underline;font-weight:500;font-size:1rem;">Register</a>
+                        </div>
+                      </div>
+                    </li>
                 </ul>
             </nav>
         </div>

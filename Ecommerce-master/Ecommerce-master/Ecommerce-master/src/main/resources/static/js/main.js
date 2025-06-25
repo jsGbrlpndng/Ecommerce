@@ -180,6 +180,7 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById('logout-btn').style.display = '';
       document.getElementById('dropdown-login-form').style.display = 'none';
       document.getElementById('register-link-section').style.display = 'none';
+      document.getElementById('profileDropdown').style.display = 'flex';
     })
     .catch(() => {
       // Not logged in - show guest view
@@ -192,16 +193,18 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById('logout-btn').style.display = 'none';
       document.getElementById('dropdown-login-form').style.display = '';
       document.getElementById('register-link-section').style.display = '';
+      document.getElementById('profileDropdown').style.display = 'none';
     });
 
-  // Profile dropdown toggle
-  if (profileButton && dropdownContent) {
-    profileButton.addEventListener('click', function(e) {
+  // Profile dropdown toggle (unique variable names to avoid redeclaration)
+  const navProfileButton = document.getElementById('profileBtn');
+  const navDropdownContent = document.querySelector('#profileDropdown .dropdown-content');
+  if (navProfileButton && navDropdownContent) {
+    navProfileButton.addEventListener('click', function(e) {
       e.stopPropagation();
-      dropdownContent.classList.toggle('show');
+      navDropdownContent.classList.toggle('show');
     });
   }
-
   // Close dropdown when clicking outside
   window.addEventListener('click', function(e) {
     if (!e.target.matches('.profile-button') && !e.target.closest('.dropdown-content')) {

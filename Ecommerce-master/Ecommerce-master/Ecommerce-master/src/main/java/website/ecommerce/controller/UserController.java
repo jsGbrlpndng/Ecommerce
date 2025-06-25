@@ -58,15 +58,19 @@ public class UserController {
             Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword())
             );
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-            HttpSession session = request.getSession(true);
-            session.setAttribute("SPRING_SECURITY_CONTEXT", SecurityContextHolder.getContext());
-
             String email = authentication.getName();
             Customer customer = customerRepository.findByEmail(email);
             if (customer == null) {
-                return ResponseEntity.status(404).body("Customer not found");
+                return ResponseEntity.status(404).body(Map.of("message", "Customer not found"));
             }
+            if (!customer.isActive()) {
+                return ResponseEntity.status(403).body(Map.of(
+                    "message", "Your account is currently inactive due to a violation of our policies. Please contact the administrator for assistance."
+                ));
+            }
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            HttpSession session = request.getSession(true);
+            session.setAttribute("SPRING_SECURITY_CONTEXT", SecurityContextHolder.getContext());
             return ResponseEntity.ok(Map.of(
                 "id", customer.getId(),
                 "firstName", customer.getFirstName(),
@@ -75,7 +79,7 @@ public class UserController {
                 "phone", customer.getPhone()
             ));
         } catch (AuthenticationException e) {
-            return ResponseEntity.status(401).body("Invalid email or password");
+            return ResponseEntity.status(401).body(Map.of("message", "Invalid email or password"));
         }
     }
 
@@ -120,5 +124,30 @@ public class UserController {
             ));
         }
         return ResponseEntity.status(404).body(Map.of("message", "Customer not found"));
+    }
+
+    // Update current user's profile
+    @PutMapping("/me")
+    public ResponseEntity<?> updateCurrentCustomer(@RequestBody Map<String, Object> updates, Authentication authentication) {
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return ResponseEntity.status(401).body(Map.of("message", "Not logged in"));
+        }
+        String email = authentication.getName();
+        Customer customer = customerRepository.findByEmail(email);
+        if (customer == null) {
+            return ResponseEntity.status(404).body(Map.of("message", "Customer not found"));
+        }
+        // Only allow updating safe fields
+        if (updates.containsKey("firstName")) customer.setFirstName((String) updates.get("firstName"));
+        if (updates.containsKey("lastName")) customer.setLastName((String) updates.get("lastName"));
+        if (updates.containsKey("email")) customer.setEmail((String) updates.get("email"));
+        if (updates.containsKey("phone")) customer.setPhone((String) updates.get("phone"));
+        if (updates.containsKey("street")) customer.setStreet((String) updates.get("street"));
+        if (updates.containsKey("city")) customer.setCity((String) updates.get("city"));
+        if (updates.containsKey("state")) customer.setState((String) updates.get("state"));
+        if (updates.containsKey("zipCode")) customer.setZipCode((String) updates.get("zipCode"));
+        if (updates.containsKey("country")) customer.setCountry((String) updates.get("country"));
+        customerRepository.save(customer);
+        return ResponseEntity.ok(Map.of("message", "Profile updated successfully"));
     }
 }
