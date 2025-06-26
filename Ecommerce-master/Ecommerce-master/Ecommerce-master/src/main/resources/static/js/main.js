@@ -74,15 +74,22 @@ function updateCartItemQuantity(productId, quantity) {
 
 // Update cart count in header
 function updateCartCount() {
-  const cartCountElement = document.getElementById("cart-count")
-  if (!cartCountElement) return
-
-  const cart = JSON.parse(localStorage.getItem("cart")) || []
-  const itemCount = cart.reduce((total, item) => total + item.quantity, 0)
-
-  cartCountElement.textContent = itemCount
-  cartCountElement.style.display = itemCount > 0 ? "flex" : "none"
+  const cart = JSON.parse(localStorage.getItem("cart")) || [];
+  const count = cart.reduce((total, item) => total + (item.quantity || 1), 0);
+  // Update all cart count badges
+  const badgeEls = document.querySelectorAll('.cart-count-badge, #cart-count');
+  badgeEls.forEach(el => {
+    if (count > 0) {
+      el.textContent = count;
+      el.style.display = '';
+    } else {
+      el.textContent = '';
+      el.style.display = 'none';
+    }
+  });
 }
+
+document.addEventListener('DOMContentLoaded', updateCartCount);
 
 // Show notification
 function showNotification(message, type = "success") {

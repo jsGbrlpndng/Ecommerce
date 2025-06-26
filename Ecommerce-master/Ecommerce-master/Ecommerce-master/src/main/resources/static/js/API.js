@@ -107,8 +107,15 @@ const API = {
             });
 
             if (!response.ok) {
-                if (response.status === 401) {
+                if (response.status === 401 || response.status === 403) {
                     throw new Error('Not logged in');
+                }
+                if (response.status === 404) {
+                    throw new Error('User not found');
+                }
+                if (response.status === 500) {
+                    const errorData = await response.json().catch(() => ({}));
+                    throw new Error(errorData.message || 'Server error');
                 }
                 throw new Error('Failed to fetch current user');
             }

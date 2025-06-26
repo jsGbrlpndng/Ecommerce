@@ -1,18 +1,40 @@
+/*
+ * CustomerManagementController.java
+ * MelodyMatrix E-commerce Platform
+ *
+ * Handles admin endpoints for managing customers and their orders.
+ * All endpoints require a valid admin session for access.
+ *
+ * Author: MelodyMatrix Team
+ * Date: 2025-06-26
+ */
+
 package website.ecommerce.controller;
 
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import website.ecommerce.model.Customer;
-import website.ecommerce.repository.CustomerRepository;
-import website.ecommerce.repository.OrderRepository;
 import website.ecommerce.model.Order;
+import website.ecommerce.repository.CheckoutInformationRepository;
+import website.ecommerce.repository.CustomerRepository;
+import website.ecommerce.repository.OrderItemRepository;
+import website.ecommerce.repository.OrderRepository;
+import website.ecommerce.dto.OrderDetailsDTO;
+import website.ecommerce.dto.OrderItemDTO;
+import website.ecommerce.dto.OrderTotalsDTO;
+import website.ecommerce.service.OrderCalculationService;
+import website.ecommerce.model.OrderItem;
 
-import jakarta.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+/**
+ * Controller for admin management of customers and their orders.
+ * All endpoints require admin session.
+ */
 @RestController
 @RequestMapping("/api/admin")
 public class CustomerManagementController {
@@ -21,7 +43,25 @@ public class CustomerManagementController {
     private CustomerRepository customerRepository;
 
     @Autowired
-    private OrderRepository orderRepository;    // Get all customers
+    private OrderRepository orderRepository;
+
+    @Autowired
+    private CheckoutInformationRepository checkoutInformationRepository;
+    @Autowired
+    private OrderItemRepository orderItemRepository;
+
+    @Autowired
+    private OrderCalculationService orderCalculationService;
+
+    /**
+     * Returns all customers, with optional search, status filter, and sorting (admin only).
+     *
+     * @param search Optional search query
+     * @param status Optional status filter (active/inactive)
+     * @param sort   Optional sort order
+     * @param session HttpSession for admin check
+     * @return List of customers
+     */
     @GetMapping("/customers")
     public ResponseEntity<List<Customer>> getAllCustomers(
             @RequestParam(required = false) String search,
@@ -43,9 +83,9 @@ public class CustomerManagementController {
         }
         // Status filter
         if (status != null && !status.trim().isEmpty() && !status.equalsIgnoreCase("all")) {
-            boolean isActive = status.equalsIgnoreCase("active");
+            boolean isStatus = status.equalsIgnoreCase("active");
             customers = customers.stream()
-                .filter(c -> c.isActive() == isActive)
+                .filter(c -> c.isStatus() == isStatus)
                 .toList();
         }
         // Sorting
@@ -70,7 +110,13 @@ public class CustomerManagementController {
         return ResponseEntity.ok(customers);
     }
 
-    // Get customer by ID
+    /**
+     * Returns a customer by ID (admin only).
+     *
+     * @param id Customer ID
+     * @param session HttpSession for admin check
+     * @return Customer or 404 if not found
+     */
     @GetMapping("/customers/{id}")
     public ResponseEntity<Customer> getCustomerById(@PathVariable Long id, HttpSession session) {
         if (!Boolean.TRUE.equals(session.getAttribute("isAdmin"))) {
@@ -81,7 +127,14 @@ public class CustomerManagementController {
                       .orElse(ResponseEntity.notFound().build());
     }
 
-    // Update customer
+    /**
+     * Updates a customer (admin only).
+     *
+     * @param id Customer ID
+     * @param customerDetails Customer details to update
+     * @param session HttpSession for admin check
+     * @return ResponseEntity with update result
+     */
     @PutMapping("/customers/{id}")
     public ResponseEntity<?> updateCustomer(@PathVariable Long id, 
                                           @RequestBody Customer customerDetails,
@@ -100,17 +153,18 @@ public class CustomerManagementController {
         customer.setLastName(customerDetails.getLastName());
         customer.setEmail(customerDetails.getEmail());
         customer.setPhone(customerDetails.getPhone());
-        customer.setStreet(customerDetails.getStreet());
-        customer.setCity(customerDetails.getCity());
-        customer.setState(customerDetails.getState());
-        customer.setZipCode(customerDetails.getZipCode());
-        customer.setCountry(customerDetails.getCountry());
 
         customerRepository.save(customer);
         return ResponseEntity.ok().build();
     }
 
-    // Delete customer
+    /**
+     * Deletes a customer by ID (admin only).
+     *
+     * @param id Customer ID
+     * @param session HttpSession for admin check
+     * @return ResponseEntity with delete result
+     */
     @DeleteMapping("/customers/{id}")
     public ResponseEntity<?> deleteCustomer(@PathVariable Long id, HttpSession session) {
         if (!Boolean.TRUE.equals(session.getAttribute("isAdmin"))) {
@@ -125,9 +179,15 @@ public class CustomerManagementController {
         return ResponseEntity.ok().build();
     }
 
-    // Get customer orders
+    /**
+     * Returns all orders for a customer (admin only).
+     *
+     * @param id Customer ID
+     * @param session HttpSession for admin check
+     * @return List of orders
+     */
     @GetMapping("/customers/{id}/orders")
-    public ResponseEntity<List<Order>> getCustomerOrders(@PathVariable Long id, HttpSession session) {
+    public ResponseEntity<List<Map<String, Object>>> getCustomerOrders(@PathVariable Long id, HttpSession session) {
         if (!Boolean.TRUE.equals(session.getAttribute("isAdmin"))) {
             return ResponseEntity.status(401).build();
         }
@@ -138,10 +198,28 @@ public class CustomerManagementController {
         }
 
         List<Order> orders = orderRepository.findByCustomerId(id);
-        return ResponseEntity.ok(orders);
+        List<Map<String, Object>> result = new java.util.ArrayList<>();
+        for (Order order : orders) {
+            List<OrderItem> orderItems = orderItemRepository.findByOrder(order);
+            OrderTotalsDTO totals = orderCalculationService.calculateTotals(orderItems, order.getShippingFee());
+            java.util.Map<String, Object> map = new java.util.HashMap<>();
+            map.put("orderId", order.getOrderId());
+            map.put("orderDate", order.getOrderDate());
+            map.put("status", order.getStatus());
+            map.put("total", totals.getTotal());
+            result.add(map);
+        }
+        return ResponseEntity.ok(result);
     }
 
-    // Update order status
+    /**
+     * Updates the status of an order (admin only).
+     *
+     * @param orderId Order ID
+     * @param body Map containing new status
+     * @param session HttpSession for admin check
+     * @return ResponseEntity with update result
+     */
     @PutMapping("/orders/{orderId}/status")
     public ResponseEntity<?> updateOrderStatus(
             @PathVariable String orderId,
@@ -163,7 +241,12 @@ public class CustomerManagementController {
         return ResponseEntity.ok().body("Order status updated");
     }
 
-    // Check admin session
+    /**
+     * Checks if the current session is an admin session.
+     *
+     * @param session HttpSession
+     * @return ResponseEntity with session status
+     */
     @GetMapping("/check-session")
     public ResponseEntity<?> checkAdminSession(HttpSession session) {
         System.out.println("Check admin session: isAdmin=" + session.getAttribute("isAdmin") + " | Session ID: " + session.getId());
@@ -173,7 +256,14 @@ public class CustomerManagementController {
         return ResponseEntity.ok().build();
     }
 
-    // Toggle customer status (active/inactive)
+    /**
+     * Toggles a customer's status (admin only).
+     *
+     * @param id Customer ID
+     * @param body Map containing new status
+     * @param session HttpSession for admin check
+     * @return ResponseEntity with update result
+     */
     @PatchMapping("/customers/{id}/status")
     public ResponseEntity<?> toggleCustomerStatus(@PathVariable Long id, @RequestBody Map<String, Object> body, HttpSession session) {
         if (!Boolean.TRUE.equals(session.getAttribute("isAdmin"))) {
@@ -184,12 +274,60 @@ public class CustomerManagementController {
             return ResponseEntity.notFound().build();
         }
         Customer customer = customerOpt.get();
-        if (!body.containsKey("active")) {
-            return ResponseEntity.badRequest().body("Missing 'active' field");
+        if (!body.containsKey("status")) {
+            return ResponseEntity.badRequest().body("Missing 'status' field");
         }
-        boolean newStatus = Boolean.parseBoolean(body.get("active").toString());
-        customer.setActive(newStatus);
+        boolean newStatus = Boolean.parseBoolean(body.get("status").toString());
+        customer.setStatus(newStatus);
         customerRepository.save(customer);
         return ResponseEntity.ok(customer);
+    }
+
+    /**
+     * Returns full order details for a given orderId (admin only).
+     * @param orderId Order ID
+     * @param session HttpSession for admin check
+     * @return Order details or 404 if not found
+     */
+    @GetMapping("/orders/{orderId}")
+    public ResponseEntity<?> getOrderDetailsByOrderId(@PathVariable String orderId, HttpSession session) {
+        if (!Boolean.TRUE.equals(session.getAttribute("isAdmin"))) {
+            return ResponseEntity.status(401).body("Unauthorized");
+        }
+        Order order = orderRepository.findByOrderId(orderId);
+        if (order == null) {
+            return ResponseEntity.status(404).body("Order not found");
+        }
+        // Fetch checkout info
+        var checkout = checkoutInformationRepository.findByOrderId(orderId);
+        // Fetch order items
+        var orderItems = orderItemRepository.findByOrder(order);
+        // Build DTO
+        OrderDetailsDTO dto = new OrderDetailsDTO();
+        dto.setOrderId(order.getOrderId());
+        dto.setOrderDate(order.getOrderDate() != null ? order.getOrderDate().toString() : null);
+        dto.setStatus(order.getStatus());
+        if (checkout != null) {
+            dto.setFirstName(checkout.getFirstName());
+            dto.setLastName(checkout.getLastName());
+            dto.setEmail(checkout.getEmail());
+            dto.setPhone(checkout.getPhone());
+            dto.setPaymentMethod(checkout.getPaymentMethod());
+            dto.setShippingMethod(checkout.getShippingMethod());
+            dto.setAddress(checkout.getShippingAddress());
+        }
+        java.util.List<OrderItemDTO> itemDTOs = new java.util.ArrayList<>();
+        for (var item : orderItems) {
+            OrderItemDTO itemDTO = new OrderItemDTO();
+            itemDTO.setName(item.getName());
+            itemDTO.setQuantity(item.getQuantity());
+            itemDTO.setPrice(item.getPrice());
+            itemDTO.setImage(item.getImage());
+            itemDTOs.add(itemDTO);
+        }
+        dto.setItems(itemDTOs);
+        OrderTotalsDTO totals = orderCalculationService.calculateTotals(orderItems, order.getShippingFee());
+        dto.setTotals(totals);
+        return ResponseEntity.ok(dto);
     }
 }

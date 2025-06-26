@@ -31,6 +31,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     loadOrderSummary();
     initCheckoutForm();
     setupEventListeners();
+    if (typeof window.updateCartCount === 'function') window.updateCartCount();
 });
 
 function loadCart() {
@@ -40,6 +41,7 @@ function loadCart() {
     } catch (e) {
         cartItems = [];
     }
+    if (typeof window.updateCartCount === 'function') window.updateCartCount();
     const cartTableBody = document.getElementById('cart-items');
     if (!cartTableBody) return;
     if (!Array.isArray(cartItems) || cartItems.length === 0) {
@@ -84,26 +86,37 @@ function loadCart() {
     updateTotals();
 }
 
-function updateTotals() {
+async function updateTotals() {
     let cartItems = [];
     try {
         cartItems = JSON.parse(localStorage.getItem('cart')) || [];
     } catch (e) {
         cartItems = [];
     }
-    let subtotal = 0;
-    cartItems.forEach(item => {
-        const price = isNaN(Number(item.price)) ? 0 : Number(item.price);
-        const quantity = isNaN(Number(item.quantity)) ? 1 : Number(item.quantity);
-        subtotal += price * quantity;
-    });
-    const shipping = cartItems.length > 0 ? 10 : 0;
-    const tax = subtotal * 0.1;
-    const total = subtotal + shipping + tax;
-    document.getElementById('subtotal').textContent = formatCurrency(subtotal);
-    document.getElementById('shipping').textContent = formatCurrency(shipping);
-    document.getElementById('tax').textContent = formatCurrency(tax);
-    document.getElementById('total').textContent = formatCurrency(total);
+    // Always get backend-calculated totals for consistency
+    try {
+        const shipping = cartItems.length > 0 ? 10 : 0;
+        const response = await fetch('/api/orders/summary', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                items: cartItems.map(item => ({ price: item.price, quantity: item.quantity })),
+                shippingFee: shipping
+            })
+        });
+        if (!response.ok) throw new Error('Failed to get order totals');
+        const totals = await response.json();
+        document.getElementById('subtotal').textContent = formatCurrency(totals.subtotal);
+        document.getElementById('shipping').textContent = formatCurrency(totals.shipping);
+        document.getElementById('tax').textContent = formatCurrency(totals.tax) + " (VAT 12%)";
+        document.getElementById('total').textContent = formatCurrency(totals.total);
+    } catch (e) {
+        // fallback: clear fields
+        document.getElementById('subtotal').textContent = formatCurrency(0);
+        document.getElementById('shipping').textContent = formatCurrency(0);
+        document.getElementById('tax').textContent = formatCurrency(0) + " (VAT 12%)";
+        document.getElementById('total').textContent = formatCurrency(0);
+    }
 }
 
 function initCheckoutForm() {
@@ -269,17 +282,43 @@ function showEmptyCart() {
     `;
 }
 
-function loadOrderSummary() {
-    const orderSummary = JSON.parse(localStorage.getItem("orderSummary"));
-    if (!orderSummary) {
+async function loadOrderSummary() {
+    let orderSummary = JSON.parse(localStorage.getItem("orderSummary"));
+    if (!orderSummary || !orderSummary.items) {
         window.location.href = "cart.html";
         return;
     }
-    document.getElementById("checkout-subtotal").textContent = formatCurrency(orderSummary.subtotal);
-    document.getElementById("checkout-shipping").textContent = formatCurrency(orderSummary.shipping);
-    document.getElementById("checkout-tax").textContent = formatCurrency(orderSummary.tax);
-    document.getElementById("checkout-total").textContent = formatCurrency(orderSummary.total);
-
+    // Always get backend-calculated totals for consistency
+    try {
+        const shipping = orderSummary.shipping !== undefined ? orderSummary.shipping : 10;
+        const response = await fetch('/api/orders/summary', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                items: orderSummary.items.map(item => ({ price: item.price, quantity: item.quantity })),
+                shippingFee: shipping
+            })
+        });
+        if (!response.ok) throw new Error('Failed to get order totals');
+        const totals = await response.json();
+        document.getElementById("checkout-subtotal").textContent = formatCurrency(totals.subtotal);
+        document.getElementById("checkout-shipping").textContent = formatCurrency(totals.shipping);
+        document.getElementById("checkout-tax").textContent = formatCurrency(totals.tax);
+        document.getElementById("checkout-total").textContent = formatCurrency(totals.total);
+        // Update orderSummary in localStorage
+        orderSummary.subtotal = totals.subtotal;
+        orderSummary.shipping = totals.shipping;
+        orderSummary.tax = totals.tax;
+        orderSummary.total = totals.total;
+        localStorage.setItem("orderSummary", JSON.stringify(orderSummary));
+    } catch (e) {
+        // fallback to old logic if backend fails
+        document.getElementById("checkout-subtotal").textContent = formatCurrency(orderSummary.subtotal);
+        document.getElementById("checkout-shipping").textContent = formatCurrency(orderSummary.shipping);
+        document.getElementById("checkout-tax").textContent = formatCurrency(orderSummary.tax);
+        document.getElementById("checkout-total").textContent = formatCurrency(orderSummary.total);
+    }
+    // Render items
     const summaryItemsContainer = document.getElementById("summary-items");
     summaryItemsContainer.innerHTML = "";
     orderSummary.items.forEach((item) => {
@@ -485,6 +524,16 @@ async function processOrder() {
 
     const orderId = generateOrderId();
 
+    // Extract payment and shipping method from DOM
+    const paymentRadio = document.querySelector('input[name="payment"]:checked');
+    const paymentMethod = paymentRadio ? paymentRadio.value : '';
+    const shippingRadio = document.querySelector('input[name="shipping"]:checked');
+    let shippingMethod = '';
+    if (shippingRadio) {
+        const label = shippingRadio.parentElement.querySelector('.option-title');
+        shippingMethod = label ? label.textContent.trim() : shippingRadio.value;
+    }
+
     // Build order object to send to backend
     const completeOrder = {
         ...orderData,
@@ -493,8 +542,18 @@ async function processOrder() {
         orderId: orderId,
         orderDate: new Date().toISOString(),
         status: "Processing",
-        items: orderSummary.items
+        items: orderSummary.items,
+        paymentMethod: paymentMethod,
+        shippingMethod: shippingMethod
     };
+
+    // Add shippingFee to order data for backend
+    const shippingInput = document.querySelector('input[name="shipping"]:checked');
+    let shippingFee = 0.0;
+    if (shippingInput) {
+        shippingFee = parseFloat(shippingInput.value);
+    }
+    completeOrder.shippingFee = shippingFee;
 
     try {
         // Send order to backend API
@@ -530,11 +589,9 @@ function handleCheckoutSuccess() {
         ...item,
         totalPrice: Number(item.price * (item.quantity || 1)).toFixed(2)
     }));
-    // Calculate order totals
-    const subtotal = cartItems.reduce((sum, item) => sum + (item.price * (item.quantity || 1)), 0);
+    // Use backend-calculated totals from orderSummary
+    const orderSummary = JSON.parse(localStorage.getItem('orderSummary')) || {};
     const shipping = parseFloat(document.querySelector('input[name="shipping"]:checked').value || 0);
-    const tax = subtotal * 0.1; // 10% tax
-    const total = subtotal + shipping + tax;
     // Create new order object with complete product and order information
     const newOrder = {
         orderId: orderId,
@@ -550,10 +607,10 @@ function handleCheckoutSuccess() {
         },
         products: cartItems,
         totals: {
-            subtotal: subtotal.toFixed(2),
-            shipping: shipping.toFixed(2),
-            tax: tax.toFixed(2),
-            total: total.toFixed(2)
+            subtotal: orderSummary.subtotal,
+            shipping: orderSummary.shipping,
+            tax: orderSummary.tax,
+            total: orderSummary.total
         },
         customer: {
             firstName: document.getElementById('first-name').value,
@@ -630,7 +687,7 @@ function calculateSubtotal(cartItems) {
 
 function calculateTax(cartItems) {
     const subtotal = calculateSubtotal(cartItems);
-    return subtotal * 0.1;
+    return subtotal * 0.12;
 }
 
 function calculateTotal(cartItems) {

@@ -1,3 +1,13 @@
+/*
+ * UserController.java
+ * MelodyMatrix E-commerce Platform
+ *
+ * Handles user registration, authentication, profile management, and session endpoints.
+ *
+ * Author: MelodyMatrix Team
+ * Date: 2025-06-26
+ */
+
 package website.ecommerce.controller;
 
 import org.springframework.http.ResponseEntity;
@@ -18,6 +28,9 @@ import website.ecommerce.model.CheckoutInformation;
 
 import java.util.Map;
 
+/**
+ * Controller for user registration, login, logout, and profile management.
+ */
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
@@ -39,19 +52,30 @@ public class UserController {
         this.checkoutInformationRepository = checkoutInformationRepository;
     }
 
-    // Registration endpoint
+    /**
+     * Registers a new customer.
+     *
+     * @param customer Customer to register
+     * @return ResponseEntity with registration result
+     */
     @PostMapping("/register")
     public ResponseEntity<?> registerCustomer(@RequestBody Customer customer) {
         if (customerRepository.findByEmail(customer.getEmail()) != null) {
             return ResponseEntity.badRequest().body("Email already in use");
         }
-        customer.setActive(true); // Ensure active is set
+        customer.setStatus(true); // Ensure status is set
         customer.setPassword(passwordEncoder.encode(customer.getPassword()));
         customerRepository.save(customer);
         return ResponseEntity.ok("Customer registered successfully");
     }
 
-    // Login endpoint
+    /**
+     * Authenticates a customer and starts a session.
+     *
+     * @param loginRequest LoginRequest with email and password
+     * @param request HttpServletRequest for session
+     * @return ResponseEntity with login result
+     */
     @PostMapping("/login")
     public ResponseEntity<?> loginCustomer(@RequestBody LoginRequest loginRequest, HttpServletRequest request) {
         try {
@@ -63,7 +87,7 @@ public class UserController {
             if (customer == null) {
                 return ResponseEntity.status(404).body(Map.of("message", "Customer not found"));
             }
-            if (!customer.isActive()) {
+            if (!customer.isStatus()) {
                 return ResponseEntity.status(403).body(Map.of(
                     "message", "Your account is currently inactive due to a violation of our policies. Please contact the administrator for assistance."
                 ));
@@ -83,7 +107,12 @@ public class UserController {
         }
     }
 
-    // Logout endpoint
+    /**
+     * Logs out the current user and invalidates the session.
+     *
+     * @param request HttpServletRequest for session
+     * @return ResponseEntity with logout result
+     */
     @PostMapping("/logout")
     public ResponseEntity<?> logout(HttpServletRequest request) {
         request.getSession().invalidate();
@@ -91,42 +120,58 @@ public class UserController {
         return ResponseEntity.ok("Logged out successfully");
     }
 
-    // Endpoint to get current logged-in customer's info
+    /**
+     * Returns the current logged-in customer's info.
+     *
+     * @param authentication Spring Security authentication
+     * @return Customer info or 401 if not logged in
+     */
     @GetMapping("/me")
     public ResponseEntity<?> getCurrentCustomer(Authentication authentication) {
-        if (authentication == null || !authentication.isAuthenticated()) {
-            return ResponseEntity.status(401).body(Map.of("message", "Not logged in"));
-        }
-        String email = authentication.getName();
-        Customer customer = customerRepository.findByEmail(email);
-        if (customer != null) {
-            // Fetch latest checkout info for this customer
-            java.util.Optional<CheckoutInformation> checkoutOpt = checkoutInformationRepository.findTopByCustomerIdOrderByIdDesc(customer.getId());
-            Map<String, Object> shippingAddress = Map.of();
-            if (checkoutOpt.isPresent()) {
-                CheckoutInformation checkout = checkoutOpt.get();
-                shippingAddress = Map.of(
-                    "street", checkout.getShippingAddress(),
-                    "city", checkout.getCity(),
-                    "state", checkout.getState(),
-                    "zipCode", checkout.getZip(),
-                    "country", checkout.getCountry()
-                );
+        try {
+            if (authentication == null || !authentication.isAuthenticated()) {
+                return ResponseEntity.status(401).body(Map.of("message", "Not logged in"));
             }
-            return ResponseEntity.ok(Map.of(
-                "id", customer.getId(),
-                "firstName", customer.getFirstName(),
-                "lastName", customer.getLastName(),
-                "email", customer.getEmail(),
-                "phone", customer.getPhone(),
-                "username", customer.getFirstName() + " " + customer.getLastName(),
-                "shippingAddress", shippingAddress
-            ));
+            String email = authentication.getName();
+            Customer customer = customerRepository.findByEmail(email);
+            if (customer != null) {
+                // Fetch latest checkout info for this customer
+                java.util.Optional<CheckoutInformation> checkoutOpt = checkoutInformationRepository.findTopByCustomerIdOrderByIdDesc(customer.getId());
+                Map<String, Object> shippingAddress = Map.of();
+                if (checkoutOpt.isPresent()) {
+                    CheckoutInformation checkout = checkoutOpt.get();
+                    shippingAddress = Map.of(
+                        "street", checkout.getShippingAddress() != null ? checkout.getShippingAddress() : "",
+                        "city", checkout.getCity() != null ? checkout.getCity() : "",
+                        "state", checkout.getState() != null ? checkout.getState() : "",
+                        "zipCode", checkout.getZip() != null ? checkout.getZip() : "",
+                        "country", checkout.getCountry() != null ? checkout.getCountry() : ""
+                    );
+                }
+                return ResponseEntity.ok(Map.of(
+                    "id", customer.getId(),
+                    "firstName", customer.getFirstName(),
+                    "lastName", customer.getLastName(),
+                    "email", customer.getEmail(),
+                    "phone", customer.getPhone(),
+                    "username", customer.getFirstName() + " " + customer.getLastName(),
+                    "shippingAddress", shippingAddress
+                ));
+            }
+            return ResponseEntity.status(404).body(Map.of("message", "Customer not found"));
+        } catch (Exception e) {
+            // Log the error in production
+            return ResponseEntity.status(500).body(Map.of("message", "Internal server error: " + e.getMessage()));
         }
-        return ResponseEntity.status(404).body(Map.of("message", "Customer not found"));
     }
 
-    // Update current user's profile
+    /**
+     * Updates the current user's profile.
+     *
+     * @param updates Map of fields to update
+     * @param authentication Spring Security authentication
+     * @return ResponseEntity with update result
+     */
     @PutMapping("/me")
     public ResponseEntity<?> updateCurrentCustomer(@RequestBody Map<String, Object> updates, Authentication authentication) {
         if (authentication == null || !authentication.isAuthenticated()) {
@@ -142,11 +187,6 @@ public class UserController {
         if (updates.containsKey("lastName")) customer.setLastName((String) updates.get("lastName"));
         if (updates.containsKey("email")) customer.setEmail((String) updates.get("email"));
         if (updates.containsKey("phone")) customer.setPhone((String) updates.get("phone"));
-        if (updates.containsKey("street")) customer.setStreet((String) updates.get("street"));
-        if (updates.containsKey("city")) customer.setCity((String) updates.get("city"));
-        if (updates.containsKey("state")) customer.setState((String) updates.get("state"));
-        if (updates.containsKey("zipCode")) customer.setZipCode((String) updates.get("zipCode"));
-        if (updates.containsKey("country")) customer.setCountry((String) updates.get("country"));
         customerRepository.save(customer);
         return ResponseEntity.ok(Map.of("message", "Profile updated successfully"));
     }

@@ -27,7 +27,7 @@ function renderProductTable(products) {
     productTableBody.innerHTML = '';
     if (!products.length) {
         const tr = document.createElement('tr');
-        tr.innerHTML = `<td colspan="9" style="text-align:center;color:#aaa;">No products found.</td>`;
+        tr.innerHTML = `<td colspan="10" style="text-align:center;color:#aaa;">No products found.</td>`;
         productTableBody.appendChild(tr);
         return;
     }
@@ -46,7 +46,6 @@ function renderProductTable(products) {
         const tr = document.createElement('tr');
         tr.setAttribute('role', 'row');
         tr.innerHTML = `
-            <td><input type="checkbox" data-id="${product.id}" aria-label="Select product ${SecurityUtil.sanitizeInput(product.name)}"></td>
             <td><img src="${imageUrl}" class="product-thumbnail" alt="Product Image for ${SecurityUtil.sanitizeInput(product.name)}"></td>
             <td>${SecurityUtil.sanitizeInput(product.name)}</td>
             <td>${SecurityUtil.sanitizeInput(product.sku)}</td>
@@ -76,10 +75,47 @@ function renderProductTable(products) {
 // --- Filtering and Sorting Logic ---
 const categoryFilter = document.getElementById('category-filter') || document.querySelector('select[name="category"]');
 const stockFilter = document.getElementById('stock-filter') || document.querySelector('select[name="stock-status"]');
-const sortSelect = document.getElementById('sort-select') || document.querySelector('select[name="sort"]');
+const sortFilter = document.getElementById('sort-filter') || document.querySelector('select[name="sort"]');
 const searchInput = document.getElementById('search-input') || document.querySelector('input[type="search"], input[name="search"]');
 
 let allProducts = [];
+let currentPage = 1;
+const PAGE_SIZE = 9;
+
+function renderPagination(totalCount) {
+    const pagination = document.querySelector('.pagination');
+    const pageNumbers = pagination.querySelector('.page-numbers');
+    const prevBtn = pagination.querySelectorAll('.pagination-btn')[0];
+    const nextBtn = pagination.querySelectorAll('.pagination-btn')[1];
+    const totalPages = Math.ceil(totalCount / PAGE_SIZE);
+    pageNumbers.innerHTML = '';
+    for (let i = 1; i <= totalPages; i++) {
+        const span = document.createElement('span');
+        span.className = 'page-number' + (i === currentPage ? ' active' : '');
+        span.textContent = i;
+        span.onclick = () => {
+            if (currentPage !== i) {
+                currentPage = i;
+                applyFilters();
+            }
+        };
+        pageNumbers.appendChild(span);
+    }
+    prevBtn.disabled = currentPage === 1;
+    nextBtn.disabled = currentPage === totalPages || totalPages === 0;
+    prevBtn.onclick = () => {
+        if (currentPage > 1) {
+            currentPage--;
+            applyFilters();
+        }
+    };
+    nextBtn.onclick = () => {
+        if (currentPage < totalPages) {
+            currentPage++;
+            applyFilters();
+        }
+    };
+}
 
 function applyFilters() {
     let filtered = [...allProducts];
@@ -87,11 +123,12 @@ function applyFilters() {
     if (categoryFilter && categoryFilter.value && categoryFilter.value.toLowerCase() !== 'all') {
         filtered = filtered.filter(p => p.category === categoryFilter.value);
     }
-    // Stock status filter
-    if (stockFilter && stockFilter.value && stockFilter.value !== 'All') {
-        if (stockFilter.value === 'In Stock') filtered = filtered.filter(p => p.stock > 0);
-        if (stockFilter.value === 'Low Stock') filtered = filtered.filter(p => p.stock > 0 && p.stock < 5);
-        if (stockFilter.value === 'Out of Stock') filtered = filtered.filter(p => p.stock === 0);
+    // Stock status filter (case-insensitive, matches HTML values)
+    if (stockFilter && stockFilter.value && stockFilter.value.toLowerCase() !== 'all') {
+        const val = stockFilter.value.toLowerCase();
+        if (val === 'in-stock') filtered = filtered.filter(p => p.stock > 0);
+        if (val === 'low-stock') filtered = filtered.filter(p => p.stock > 0 && p.stock < 5);
+        if (val === 'out-of-stock') filtered = filtered.filter(p => p.stock === 0);
     }
     // Search
     if (searchInput && searchInput.value.trim()) {
@@ -102,16 +139,34 @@ function applyFilters() {
         );
     }
     // Sort
-    if (sortSelect && sortSelect.value) {
-        if (sortSelect.value === 'Name (A-Z)') filtered.sort((a, b) => a.name.localeCompare(b.name));
-        if (sortSelect.value === 'Name (Z-A)') filtered.sort((a, b) => b.name.localeCompare(a.name));
-        if (sortSelect.value === 'Price (Low-High)') filtered.sort((a, b) => a.price - b.price);
-        if (sortSelect.value === 'Price (High-Low)') filtered.sort((a, b) => b.price - a.price);
-        if (sortSelect.value === 'Stock (Low-High)') filtered.sort((a, b) => a.stock - b.stock);
-        if (sortSelect.value === 'Stock (High-Low)') filtered.sort((a, b) => b.stock - a.stock);
+    if (sortFilter && sortFilter.value) {
+        switch (sortFilter.value) {
+            case 'name-asc':
+                filtered.sort((a, b) => a.name.localeCompare(b.name));
+                break;
+            case 'name-desc':
+                filtered.sort((a, b) => b.name.localeCompare(a.name));
+                break;
+            case 'price-low':
+                filtered.sort((a, b) => a.price - b.price);
+                break;
+            case 'price-high':
+                filtered.sort((a, b) => b.price - a.price);
+                break;
+            case 'stock-low':
+                filtered.sort((a, b) => a.stock - b.stock);
+                break;
+            case 'stock-high':
+                filtered.sort((a, b) => b.stock - a.stock);
+                break;
+        }
     }
-    console.log('Filtered products after filters:', filtered);
-    renderProductTable(filtered);
+    // Pagination logic
+    const totalCount = filtered.length;
+    const start = (currentPage - 1) * PAGE_SIZE;
+    const end = start + PAGE_SIZE;
+    renderProductTable(filtered.slice(start, end));
+    renderPagination(totalCount);
 }
 
 // --- UI/UX Improvements: Loading, Error, and Success States ---
@@ -321,37 +376,13 @@ async function handleDeleteProduct(productId) {
     }
 }
 
-// --- Bulk Delete Button ---
-let bulkDeleteBtn = document.getElementById('bulk-delete-btn');
-if (!bulkDeleteBtn) {
-    bulkDeleteBtn = document.createElement('button');
-    bulkDeleteBtn.id = 'bulk-delete-btn';
-    bulkDeleteBtn.textContent = 'Delete Selected';
-    bulkDeleteBtn.className = 'btn btn-danger';
-    bulkDeleteBtn.style = 'margin-bottom: 1rem; margin-left: 0.5rem;';
-    const table = document.querySelector('.inventory-table');
-    if (table && table.parentNode) table.parentNode.insertBefore(bulkDeleteBtn, table);
-}
-bulkDeleteBtn.addEventListener('click', async () => {
-    const checked = Array.from(document.querySelectorAll('.inventory-table tbody input[type="checkbox"]:checked'));
-    if (!checked.length) return UI.showError('No products selected.', document.body);
-    if (!confirm('Are you sure you want to delete the selected products?')) return;
-    try {
-        await Promise.all(checked.map(cb => fetch(`${API_BASE}/${cb.dataset.id}`, { method: 'DELETE', headers: getCsrfHeaders() })));
-        loadProducts();
-        UI.showSuccess('Selected products deleted.', document.body);
-    } catch (err) {
-        UI.showError('Failed to delete selected products.', document.body);
-    }
-});
-
 // --- Import/Export Functionality ---
 // (Removed import/export functionality as per requirements)
 
 // --- Attach filter/sort/search events ---
 if (categoryFilter) categoryFilter.addEventListener('change', applyFilters);
 if (stockFilter) stockFilter.addEventListener('change', applyFilters);
-if (sortSelect) sortSelect.addEventListener('change', applyFilters);
+if (sortFilter) sortFilter.addEventListener('change', applyFilters);
 if (searchInput) searchInput.addEventListener('input', applyFilters);
 
 // --- Modal Close Logic (Optional) ---
@@ -375,7 +406,7 @@ function renderProductTable(products) {
     productTableBody.innerHTML = '';
     if (!products.length) {
         const tr = document.createElement('tr');
-        tr.innerHTML = `<td colspan="9" style="text-align:center;color:#aaa;">No products found.</td>`;
+        tr.innerHTML = `<td colspan="10" style="text-align:center;color:#aaa;">No products found.</td>`;
         productTableBody.appendChild(tr);
         return;
     }
@@ -394,7 +425,6 @@ function renderProductTable(products) {
         const tr = document.createElement('tr');
         tr.setAttribute('role', 'row');
         tr.innerHTML = `
-            <td><input type="checkbox" data-id="${product.id}" aria-label="Select product ${SecurityUtil.sanitizeInput(product.name)}"></td>
             <td><img src="${imageUrl}" class="product-thumbnail" alt="Product Image for ${SecurityUtil.sanitizeInput(product.name)}"></td>
             <td>${SecurityUtil.sanitizeInput(product.name)}</td>
             <td>${SecurityUtil.sanitizeInput(product.sku)}</td>
@@ -488,3 +518,19 @@ function formatDateCreated(dateString) {
     // Format as YYYY-MM-DD
     return date.toLocaleDateString('en-CA');
 }
+
+// --- Polling for Real-Time Inventory Updates ---
+let inventoryPollInterval = null;
+function startInventoryPolling() {
+    // Clear any existing interval to avoid duplicates
+    if (inventoryPollInterval) clearInterval(inventoryPollInterval);
+    inventoryPollInterval = setInterval(() => {
+        loadProducts();
+    }, 10000); // 10 seconds
+}
+// Start polling after initial load
+startInventoryPolling();
+// Optional: Stop polling when navigating away
+window.addEventListener('beforeunload', () => {
+    if (inventoryPollInterval) clearInterval(inventoryPollInterval);
+});

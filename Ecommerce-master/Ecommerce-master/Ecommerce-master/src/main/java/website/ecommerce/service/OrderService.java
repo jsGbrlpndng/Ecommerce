@@ -1,3 +1,9 @@
+/**
+ * OrderService provides business logic for creating and managing orders
+ * in the MelodyMatrix e-commerce platform.
+ *
+ * @author MelodyMatrix Team
+ */
 package website.ecommerce.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +18,9 @@ import website.ecommerce.repository.CustomerRepository;
 
 import java.util.UUID;
 
+/**
+ * Service for order creation and management.
+ */
 @Service
 public class OrderService {
 
@@ -24,6 +33,15 @@ public class OrderService {
     @Autowired
     private CustomerRepository customerRepository;
 
+    /**
+     * Creates a new order and associated checkout information for a customer.
+     *
+     * @param order the order to create
+     * @param checkoutInformation the checkout information to associate
+     * @param customerId the ID of the customer placing the order
+     * @return the generated or assigned order ID
+     * @throws IllegalArgumentException if any argument is null or customer not found
+     */
     @Transactional
     public String createOrder(Order order, CheckoutInformation checkoutInformation, Long customerId) {
         if (order == null) {
@@ -54,6 +72,10 @@ public class OrderService {
         // Save both entities to the database
         orderRepository.save(order);
         checkoutInformationRepository.save(checkoutInformation);
+
+        // Increment the customer's orders count and save
+        customer.setOrders(customer.getOrders() + 1);
+        customerRepository.save(customer);
 
         return orderId;
     }

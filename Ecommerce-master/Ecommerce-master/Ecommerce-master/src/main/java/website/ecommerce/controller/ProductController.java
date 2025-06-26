@@ -1,3 +1,13 @@
+/*
+ * ProductController.java
+ * MelodyMatrix E-commerce Platform
+ *
+ * Handles all product-related endpoints, including CRUD operations and image uploads.
+ *
+ * Author: MelodyMatrix Team
+ * Date: 2025-06-26
+ */
+
 package website.ecommerce.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +18,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
+/**
+ * Controller for product management endpoints (CRUD, image upload).
+ */
 @RestController
 @RequestMapping("/api/products")
 public class ProductController {
@@ -15,6 +28,11 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
+    /**
+     * Returns all products.
+     *
+     * @return List of all products
+     */
     @GetMapping
     public List<Product> getAllProducts() {
         try {
@@ -34,6 +52,18 @@ public class ProductController {
         }
     }
 
+    /**
+     * Adds a new product with optional image upload.
+     *
+     * @param name Product name
+     * @param sku Product SKU
+     * @param category Product category
+     * @param price Product price
+     * @param stock Product stock
+     * @param imageFile Optional image file
+     * @param description Optional description
+     * @return Created product
+     */
     @PostMapping
     public Product addProduct(
             @RequestParam("name") String name,
@@ -60,6 +90,19 @@ public class ProductController {
         return productService.saveProduct(product);
     }
 
+    /**
+     * Updates an existing product by ID (with optional image upload).
+     *
+     * @param id Product ID
+     * @param name Product name
+     * @param sku Product SKU
+     * @param category Product category
+     * @param price Product price
+     * @param stock Product stock
+     * @param imageFile Optional image file
+     * @param description Optional description
+     * @return Updated product
+     */
     @PutMapping("/{id}")
     public Product updateProduct(
             @PathVariable Long id,
@@ -89,12 +132,29 @@ public class ProductController {
         return productService.saveProduct(product);
     }
 
+    /**
+     * Test endpoint for debugging.
+     *
+     * @return Test OK string
+     */
     @PostMapping("/test")
     public String testEndpoint() {
         System.out.println("Test endpoint hit");
         return "Test OK";
     }
 
+    /**
+     * Updates a product by ID using POST (for legacy support).
+     *
+     * @param id Product ID
+     * @param name Product name
+     * @param sku Product SKU
+     * @param category Product category
+     * @param price Product price
+     * @param stock Product stock
+     * @param imageFile Optional image file
+     * @return Updated product
+     */
     @PostMapping("/{id}/update")
     public Product updateProductPost(
             @PathVariable Long id,
@@ -124,16 +184,33 @@ public class ProductController {
         return productService.saveProduct(product);
     }
 
+    /**
+     * Returns a product by ID.
+     *
+     * @param id Product ID
+     * @return Product
+     */
     @GetMapping("/{id}")
     public Product getProduct(@PathVariable Long id) {
         return productService.getProductById(id);
     }
 
+    /**
+     * Deletes a product by ID.
+     *
+     * @param id Product ID
+     */
     @DeleteMapping("/{id}")
     public void deleteProduct(@PathVariable Long id) {
         productService.deleteProduct(id);
     }
 
+    /**
+     * Saves an uploaded image file to the uploads directory.
+     *
+     * @param imageFile MultipartFile to save
+     * @return Path to saved image
+     */
     private String saveImageFile(MultipartFile imageFile) {
         try {
             // Use absolute path for uploads directory

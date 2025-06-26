@@ -140,6 +140,56 @@
     .profile-menu .profile-link:hover { color: #6a5acd !important; }
     .profile-menu #logout-btn:hover { color: #b71c1c !important; }
     .profile-menu input:focus { border-color: #8f5cf7 !important; outline: none; }
+    .partner-name {
+      display: block;
+      font-family: 'Montserrat', 'Poppins', Arial, sans-serif;
+      font-size: 2rem;
+      font-weight: 700;
+      color: #6a5acd;
+      letter-spacing: 1px;
+      text-align: center;
+      padding: 32px 0;
+      transition: color 0.2s;
+    }
+    .partner-logo {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 4px 24px rgba(106,90,205,0.07);
+      margin: 0;
+      min-width: 200px;
+      min-height: 100px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid #f3f0ff;
+      transition: border 0.2s;
+      flex: 1 1 200px;
+      max-width: 240px;
+    }
+    .partner-logo:hover .partner-name {
+      color: #fa8072;
+    }
+    .partner-logo:hover {
+      border: 2px solid #8f5cf7;
+    }
+    .partners-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 32px 36px;
+      max-width: 1200px;
+      margin: 0 auto 32px auto;
+      padding: 0 12px;
+    }
+    @media (max-width: 900px) {
+      .partners-grid { gap: 18px 12px; }
+      .partner-logo { min-width: 120px; min-height: 60px; max-width: 140px; }
+    }
+    @media (max-width: 600px) {
+      .partners-grid { gap: 10px 6px; }
+      .partner-logo { min-width: 90px; min-height: 40px; max-width: 100px; }
+    }
   </style>
 </head>
 <body>
@@ -164,7 +214,8 @@
                 <ul style="list-style: none; display: flex; gap: 24px; margin: 0; padding: 0; align-items: center;">
                     <li class="nav-item" id="cartNavItem" style="display:none;">
                       <a href="cart.html" class="nav-link" style="font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 1.3rem; color: #222; text-decoration: none; display: flex; align-items: center; gap: 8px;">
-                        <i class="fas fa-shopping-cart" style="font-size: 1.4rem; color: #6a5acd;"></i>
+                        <i class="fas fa-shopping-cart" style="font-size: 1.4rem; color: #6a5acd; position: relative;"></i>
+                        <span class="cart-count-badge" id="cart-count" style="position: absolute; top: -8px; right: -12px; background: #e53935; color: #fff; font-size: 0.95rem; font-weight: 700; border-radius: 50%; padding: 2px 7px; min-width: 22px; text-align: center; display: none; z-index: 2;"></span>
                         <span>Cart</span>
                       </a>
                     </li>
@@ -222,16 +273,16 @@
     <div class="container">
       <div class="about-content">
         <div class="about-image-container" data-aos="fade-right">
-          <img src="images/instruments/About.jpg" alt="Harmony Haven Store" class="about-main-image">
+          <img src="images/instruments/About.jpg" alt="Melody Matrix Store" class="about-main-image">
           <div class="about-experience">
             <span class="years">18</span>
             <span class="text">Years of Excellence</span>
           </div>
         </div>
         <div class="about-text-container" data-aos="fade-left">
-          <div class="section-subtitle">About Harmony Haven</div>
+          <div class="section-subtitle">About Melody Matrix </div>
           <h2 class="section-title">Your Trusted Music Instrument Partner Since 2005</h2>
-          <p class="about-description">Welcome to Harmony Haven, where passion for music meets exceptional quality. For over 18 years, we've been providing musicians of all levels with the finest instruments and accessories.</p>
+          <p class="about-description">Welcome to Melody Matrix, where passion for music meets exceptional quality. For over 18 years, we've been providing musicians of all levels with the finest instruments and accessories.</p>
           <p>Our journey began with a simple vision: to create a space where musicians could find instruments that inspire them to create beautiful music. Today, we're proud to be one of the leading music instrument retailers, serving customers worldwide.</p>
           <div class="about-stats">
             <div class="stat-item">
@@ -309,65 +360,7 @@
             <i class="fas fa-heart"></i>
           </div>
           <h3>Our Values</h3>
-          <p>Quality, integrity, passion for music, customer satisfaction, and continuous improvement guide everything we do at Harmony Haven.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-  
-  <!-- Our Team Section -->
-  <section class="team-section">
-    <div class="container">
-      <div class="section-header text-center">
-        <div class="section-subtitle">The People Behind Harmony Haven</div>
-        <h2 class="section-title">Meet Our Team</h2>
-        <p class="section-description">Our team of music enthusiasts is dedicated to providing you with the best musical instruments and exceptional service.</p>
-      </div>
-      <div class="team-grid">
-        <div class="team-member" data-aos="fade-up" data-aos-delay="100">
-          <div class="team-member-image">
-            <img src="images/instruments/john-doe.jpg" alt="John Doe - Founder & CEO" loading="lazy">
-            <div class="team-social">
-              <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
-              <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
-              <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
-            </div>
-          </div>
-          <div class="team-member-info">
-            <h3>John Doe</h3>
-            <p class="position">Founder & CEO</p>
-            <p class="bio">With over 20 years of experience as a professional guitarist, John founded Harmony Haven to share his passion for quality instruments.</p>
-          </div>
-        </div>
-        <div class="team-member" data-aos="fade-up" data-aos-delay="200">
-          <div class="team-member-image">
-            <img src="images/instruments/jane-smith.jpg" alt="Jane Smith - Head of Product Selection" loading="lazy">
-            <div class="team-social">
-              <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
-              <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
-              <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
-            </div>
-          </div>
-          <div class="team-member-info">
-            <h3>Jane Smith</h3>
-            <p class="position">Head of Product Selection</p>
-            <p class="bio">Jane is a classically trained pianist with a keen eye for quality. She personally selects each instrument in our collection.</p>
-          </div>
-        </div>
-        <div class="team-member" data-aos="fade-up" data-aos-delay="300">
-          <div class="team-member-image">
-            <img src="images/instruments/mike-johnson.jpg" alt="Mike Johnson - Customer Experience Manager" loading="lazy">
-            <div class="team-social">
-              <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
-              <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
-              <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
-            </div>
-          </div>
-          <div class="team-member-info">
-            <h3>Mike Johnson</h3>
-            <p class="position">Customer Experience Manager</p>
-            <p class="bio">Mike ensures that every customer has an exceptional experience, from browsing our collection to receiving their instrument.</p>
-          </div>
+          <p>Quality, integrity, passion for music, customer satisfaction, and continuous improvement guide everything we do at Melody Matrix.</p>
         </div>
       </div>
     </div>
@@ -379,7 +372,7 @@
       <div class="section-header text-center">
         <div class="section-subtitle">What Our Customers Say</div>
         <h2 class="section-title">Testimonials</h2>
-        <p class="section-description">Hear from our satisfied customers about their experience with Harmony Haven.</p>
+        <p class="section-description">Hear from our satisfied customers about their experience with Melody Matrix.</p>
       </div>
       <div class="testimonials-slider">
         <div class="testimonial-item" data-aos="fade-up" data-aos-delay="100">
@@ -387,7 +380,7 @@
             <div class="quote-icon">
               <i class="fas fa-quote-left"></i>
             </div>
-            <p class="testimonial-text">I've been buying instruments from Harmony Haven for years, and I'm always impressed by their quality and service. The team is knowledgeable and passionate about music.</p>
+            <p class="testimonial-text">I've been buying instruments from Melody Matrix for years, and I'm always impressed by their quality and service. The team is knowledgeable and passionate about music.</p>
             <div class="testimonial-author">
               <div class="author-info">
                 <h4>David Wilson</h4>
@@ -408,7 +401,7 @@
             <div class="quote-icon">
               <i class="fas fa-quote-left"></i>
             </div>
-            <p class="testimonial-text">As a music teacher, I recommend Harmony Haven to all my students. Their instruments are of exceptional quality, and their customer service is outstanding.</p>
+            <p class="testimonial-text">As a music teacher, I recommend Melody Matrix to all my students. Their instruments are of exceptional quality, and their customer service is outstanding.</p>
             <div class="testimonial-author">
               <div class="author-info">
                 <h4>Sarah Thompson</h4>
@@ -438,22 +431,22 @@
       </div>
       <div class="partners-grid">
         <div class="partner-logo" data-aos="fade-up" data-aos-delay="100">
-          <img src="/placeholder.svg?height=80&width=160" alt="Yamaha">
+          <span class="partner-name">Yamaha</span>
         </div>
         <div class="partner-logo" data-aos="fade-up" data-aos-delay="150">
-          <img src="/placeholder.svg?height=80&width=160" alt="Fender">
+          <span class="partner-name">Fender</span>
         </div>
         <div class="partner-logo" data-aos="fade-up" data-aos-delay="200">
-          <img src="/placeholder.svg?height=80&width=160" alt="Gibson">
+          <span class="partner-name">Gibson</span>
         </div>
         <div class="partner-logo" data-aos="fade-up" data-aos-delay="250">
-          <img src="/placeholder.svg?height=80&width=160" alt="Roland">
+          <span class="partner-name">Roland</span>
         </div>
         <div class="partner-logo" data-aos="fade-up" data-aos-delay="300">
-          <img src="/placeholder.svg?height=80&width=160" alt="Steinway">
+          <span class="partner-name">Steinway</span>
         </div>
         <div class="partner-logo" data-aos="fade-up" data-aos-delay="350">
-          <img src="/placeholder.svg?height=80&width=160" alt="Ibanez">
+          <span class="partner-name">Ibanez</span>
         </div>
       </div>
     </div>
@@ -462,12 +455,11 @@
   <!-- CTA Section -->
   <section class="cta-section">
     <div class="container">
-      <div class="cta-content">
+      <div class="cta-content" style="text-align: center;">
         <h2>Ready to Find Your Perfect Instrument?</h2>
         <p>Browse our collection of premium musical instruments and accessories.</p>
-        <div class="cta-buttons">
-          <a href="shop.html" class="btn btn-primary">Shop Now</a>
-          <a href="contact.html" class="btn btn-outline">Contact Us</a>
+        <div class="cta-buttons" style="display: flex; justify-content: center; align-items: center; gap: 0;">
+          <a href="shop.html" class="btn btn-primary" style="margin: 0 auto;">Shop Now</a>
         </div>
       </div>
     </div>

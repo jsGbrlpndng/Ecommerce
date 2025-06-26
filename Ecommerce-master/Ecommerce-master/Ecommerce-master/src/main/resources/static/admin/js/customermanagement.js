@@ -113,7 +113,12 @@ async function loadCustomers(page = 1) {
         if (sort) params.append('sort', sort);
         // Always fetch all customers for search
         const response = await fetch(`/api/admin/customers?${params.toString()}`, { credentials: 'include' });
-        if (!response.ok) throw new Error('Failed to load customers');
+        if (!response.ok) {
+            const errorText = await response.text();
+            console.error('Failed to load customers:', response.status, errorText);
+            showError(`Could not load customers. (${response.status}) ${errorText}`);
+            return;
+        }
         customersData = await response.json();
         // Filter in JS for search
         let filtered = customersData;
@@ -129,7 +134,8 @@ async function loadCustomers(page = 1) {
         displayCustomers(filtered.slice(0, PAGE_SIZE));
         renderPagination(filtered.length);
     } catch (error) {
-        showError('Could not load customers.');
+        console.error('Could not load customers (exception):', error);
+        showError('Could not load customers. ' + (error.message || ''));
     }
 }
 
@@ -221,18 +227,18 @@ function displayCustomers(customers) {
     customers.forEach(customer => {
         const row = document.createElement('tr');
         // Status toggle button
-        const isActive = customer.active === true || customer.active === 1;
+        const isStatus = customer.status === true || customer.status === 1;
         row.innerHTML = `
             <td>${customer.firstName} ${customer.lastName}</td>
             <td>${customer.email}</td>
             <td>${customer.id}</td>
             <td>
-                <button class="status-toggle-btn badge ${isActive ? 'badge-success' : 'badge-secondary'}" data-id="${customer.id}" data-active="${isActive}" title="Toggle status">
-                    ${isActive ? 'Active' : 'Inactive'}
+                <button class="status-toggle-btn badge ${isStatus ? 'badge-success' : 'badge-secondary'}" data-id="${customer.id}" data-status="${isStatus}" title="Toggle status">
+                    ${isStatus ? 'Active' : 'Inactive'}
                 </button>
             </td>
             <td>${formatDateCreated(customer.createdAt)}</td>
-            <td><button onclick="viewOrders(${customer.id})" class="btn btn-link view-orders-btn">View Orders</button></td>
+            <td><span class="order-count">${customer.orders ?? 0}</span> <button onclick="viewOrders(${customer.id})" class="btn btn-link view-orders-btn">View Orders</button></td>
             <td><div class="btn-group">
                 <button onclick="confirmDeleteCustomer(${customer.id})" class="btn btn-sm btn-outline-danger" title="Delete"><i class="fas fa-trash"></i></button>
             </div></td>
@@ -243,19 +249,19 @@ function displayCustomers(customers) {
     tbody.querySelectorAll('.status-toggle-btn').forEach(btn => {
         btn.addEventListener('click', async function() {
             const customerId = this.getAttribute('data-id');
-            const currentStatus = this.getAttribute('data-active') === 'true';
+            const currentStatus = this.getAttribute('data-status') === 'true';
             const newStatus = !currentStatus;
             // Optimistically update UI
             this.textContent = newStatus ? 'Active' : 'Inactive';
             this.classList.toggle('badge-success', newStatus);
             this.classList.toggle('badge-secondary', !newStatus);
-            this.setAttribute('data-active', newStatus);
+            this.setAttribute('data-status', newStatus);
             try {
                 const response = await fetch(`/api/admin/customers/${customerId}/status`, {
                     method: 'PATCH',
                     headers: { 'Content-Type': 'application/json' },
                     credentials: 'include',
-                    body: JSON.stringify({ active: newStatus })
+                    body: JSON.stringify({ status: newStatus })
                 });
                 if (!response.ok) throw new Error('Failed to update status');
             } catch (err) {
@@ -263,7 +269,7 @@ function displayCustomers(customers) {
                 this.textContent = currentStatus ? 'Active' : 'Inactive';
                 this.classList.toggle('badge-success', currentStatus);
                 this.classList.toggle('badge-secondary', !currentStatus);
-                this.setAttribute('data-active', currentStatus);
+                this.setAttribute('data-status', currentStatus);
                 showError('Could not update status. Please try again.');
             }
         });
@@ -327,16 +333,17 @@ function displayOrders(orders) {
     tbody.innerHTML = '';
 
     if (orders.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="5" class="text-center">No orders found</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="5" class="text-center">No orders found.</td></tr>';
         return;
     }
 
     orders.forEach(order => {
+        const total = (typeof order.total === 'number') ? order.total : (order.totals?.total ?? 0);
         const row = document.createElement('tr');
         row.innerHTML = `
             <td>${order.orderId}</td>
             <td>${new Date(order.orderDate).toLocaleDateString()}</td>
-            <td>₱${order.total.toFixed(2)}</td>
+            <td>${formatCurrency(total)}</td>
             <td>
                 <select class="order-status-dropdown" data-order-id="${order.orderId}">
                     <option value="Processing" ${order.status === 'Processing' ? 'selected' : ''}>Processing</option>
@@ -346,6 +353,20 @@ function displayOrders(orders) {
             </td>
             <td id="order-status-msg-${order.orderId}"></td>
         `;
+        row.classList.add('admin-order-row');
+        row.style.cursor = 'pointer';
+        row.addEventListener('click', async function(e) {
+            // Prevent status dropdown click from triggering row click
+            if (e.target.classList.contains('order-status-dropdown')) return;
+            try {
+                const response = await fetch(`/api/admin/orders/${order.orderId}`, { credentials: 'include' });
+                if (!response.ok) throw new Error('Failed to fetch order details');
+                const orderDetails = await response.json();
+                showAdminOrderDetailsModal(orderDetails);
+            } catch (err) {
+                showNotification('Could not load order details', 'error');
+            }
+        });
         tbody.appendChild(row);
     });
 
@@ -383,6 +404,130 @@ function displayOrders(orders) {
     });
 }
 
+// Admin order details modal rendering
+function showAdminOrderDetailsModal(order) {
+    const modalBody = document.getElementById('adminOrderDetailsBody');
+    if (!modalBody) return;
+    modalBody.innerHTML = generateAdminOrderCardHTML(order);
+    $('#adminOrderDetailsModal').modal('show');
+}
+
+function generateAdminOrderCardHTML(order) {
+    const items = Array.isArray(order.items) ? order.items.map(validateProductData).filter(Boolean) : [];
+    return `
+        <div class="order-card">
+            <div class="order-header">
+                <div class="order-meta">
+                    <h3>Order #${order.orderId || 'N/A'}</h3>
+                    <span class="status-badge ${getStatusBadgeClass(order.status)}">
+                        <i class="fas ${getStatusIcon(order.status)}"></i> 
+                        ${order.status || 'Processing'}
+                    </span>
+                </div>
+                <div class="order-date">
+                    <i class="far fa-calendar-alt"></i> 
+                    ${formatDate(order.orderDate)}
+                </div>
+            </div>
+            <div class="order-user-info">
+                <h3>Shipping & Contact Info</h3>
+                <p><strong>Name:</strong> ${order.firstName || ''} ${order.lastName || ''}</p>
+                <p><strong>Email:</strong> ${order.email || ''}</p>
+                <p><strong>Phone:</strong> ${order.phone || ''}</p>
+                <p><strong>Payment Method:</strong> ${order.paymentMethod || ''}</p>
+                <p><strong>Shipping Method:</strong> ${order.shippingMethod || ''}</p>
+                <p><strong>Address:</strong> ${order.address || ''}</p>
+            </div>
+            <div class="order-products">
+                ${generateProductsListHTML(items)}
+            </div>
+            <div class="order-footer">
+                ${generateOrderSummaryHTML(order)}
+            </div>
+        </div>
+    `;
+}
+
+// Helper functions for admin modal (copied from user side or adapted)
+function getStatusBadgeClass(status) {
+    switch ((status || '').toLowerCase()) {
+        case 'completed': return 'badge-success';
+        case 'pending': return 'badge-warning';
+        case 'cancelled': return 'badge-danger';
+        case 'processing': return 'badge-info';
+        default: return 'badge-secondary';
+    }
+}
+function getStatusIcon(status) {
+    switch ((status || '').toLowerCase()) {
+        case 'completed': return 'fa-check-circle';
+        case 'pending': return 'fa-hourglass-half';
+        case 'cancelled': return 'fa-times-circle';
+        case 'processing': return 'fa-sync-alt';
+        default: return 'fa-question-circle';
+    }
+}
+function formatDate(dateStr) {
+    if (!dateStr) return '';
+    const d = new Date(dateStr);
+    return d.toLocaleDateString() + ' ' + d.toLocaleTimeString();
+}
+function generateProductsListHTML(products) {
+    if (!products || products.length === 0) {
+        return '<p class="empty-products">No products in this order</p>';
+    }
+    return `
+        <table class="products-table">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th style="width: 100px">Price</th>
+                    <th style="width: 100px">Quantity</th>
+                    <th style="width: 120px">Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                ${products.map(product => `
+                    <tr>
+                        <td>
+                            <div class="product-cell">
+                                <img class="product-image" 
+                                     alt="${product.name}"
+                                     onload="this.classList.remove('error')"
+                                     src="${product.image || `/Images/instruments/${product.id}.jpg`}">
+                                <div class="product-info">
+                                    <h4>${product.name}</h4>
+                                </div>
+                            </div>
+                        </td>
+                        <td>₱${product.price}</td>
+                        <td>${product.quantity}</td>
+                        <td>₱${(product.price * product.quantity).toFixed(2)}</td>
+                    </tr>
+                `).join('')}
+            </tbody>
+        </table>
+    `;
+}
+function generateOrderSummaryHTML(order) {
+    // Always use backend-calculated values for subtotal, shipping, tax, and total. Never recalculate on the frontend.
+    const subtotal = Number(order.totals && order.totals.subtotal) || 0;
+    const shipping = Number(order.totals && order.totals.shipping) || 0;
+    const tax = Number(order.totals && order.totals.tax) || 0;
+    const total = Number(order.totals && order.totals.total) || 0;
+    return `
+        <div class="order-summary">
+            <div><span>Subtotal:</span> <span>${formatCurrency(subtotal)}</span></div>
+            <div><span>Shipping:</span> <span>${formatCurrency(shipping)}</span></div>
+            <div><span>Tax:</span> <span>${formatCurrency(tax)}</span></div>
+            <div class="order-summary-total"><span>Total:</span> <span>${formatCurrency(total)}</span></div>
+        </div>
+    `;
+}
+function validateProductData(product) {
+    if (!product || !product.name) return null;
+    return product;
+}
 function showNotification(message, type) {
     // Assuming you have a notification system
     if (typeof showToast === 'function') {
@@ -390,4 +535,27 @@ function showNotification(message, type) {
     } else {
         alert(message);
     }
+}
+
+// Currency formatting for PHP Peso, matching customer view
+function formatCurrency(amount) {
+    if (!amount && amount !== 0) return '₱0.00';
+    return new Intl.NumberFormat('en-PH', {
+        style: 'currency',
+        currency: 'PHP',
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    }).format(amount);
+}
+
+// Always use backend-calculated totals for display
+function renderOrderTotals(order) {
+    const subtotal = order.totals?.subtotal ?? 0;
+    const shipping = order.totals?.shipping ?? 0;
+    const tax = order.totals?.tax ?? 0;
+    const total = order.totals?.total ?? 0;
+    document.querySelector('.subtotal').textContent = formatCurrency(subtotal);
+    document.querySelector('.shipping').textContent = formatCurrency(shipping);
+    document.querySelector('.tax').textContent = formatCurrency(tax);
+    document.querySelector('.total').textContent = formatCurrency(total);
 }

@@ -51,17 +51,26 @@
             border-radius: 4px;
             color: #fff;
             font-size: 0.875rem;
+            display: inline-block;
+            font-weight: 600;
         }
-
-        .order-status-badge.Pending {
-            background-color: #ffc107;
+        .order-status-badge.Processing,
+        .order-status-badge.processing {
+            background-color: #4fc3f7; /* Light Blue */
+            color: #fff;
         }
-
-        .order-status-badge.Completed {
-            background-color: #28a745;
+        .order-status-badge.Shipping,
+        .order-status-badge.shipping {
+            background-color: #ffc107; /* Keep Shipping Yellow */
+            color: #fff;
         }
-
-        .order-status-badge.Cancelled {
+        .order-status-badge.Delivered,
+        .order-status-badge.delivered {
+            background-color: #1a237e; /* Dark Blue */
+            color: #fff;
+        }
+        .order-status-badge.Cancelled,
+        .order-status-badge.cancelled {
             background-color: #dc3545;
         }
 
@@ -150,6 +159,31 @@
           .logo img { height: 32px; width: 32px; }
           .logo > span:first-child { height: 40px; width: 40px; }
         }
+
+        /* Fix for hero section title being cut off under the header */
+        .page-hero {
+            margin-top: 64px; /* Add space to push hero below fixed header */
+            padding: 64px 0 32px 0;
+            background: linear-gradient(90deg, #8f5cf7 0%, #fa8072 100%);
+            text-align: center;
+            color: #fff;
+            position: relative;
+            z-index: 1;
+        }
+        .page-hero-title {
+            font-size: 2.8rem;
+            font-weight: 700;
+            margin: 0 0 8px 0;
+            color: #fff;
+            letter-spacing: 1px;
+            line-height: 1.1;
+        }
+        .page-hero-subtitle {
+            font-size: 1.3rem;
+            font-weight: 400;
+            margin: 0;
+            color: #f3f0ff;
+        }
     </style>
 </head>
 <body>
@@ -174,7 +208,8 @@
                 <ul style="list-style: none; display: flex; gap: 24px; margin: 0; padding: 0; align-items: center;">
                     <li class="nav-item" id="cartNavItem" style="display:none;">
                       <a href="cart.html" class="nav-link" style="font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 1.3rem; color: #222; text-decoration: none; display: flex; align-items: center; gap: 8px;">
-                        <i class="fas fa-shopping-cart" style="font-size: 1.4rem; color: #6a5acd;"></i>
+                        <i class="fas fa-shopping-cart" style="font-size: 1.4rem; color: #6a5acd; position: relative;"></i>
+                        <span class="cart-count-badge" id="cart-count" style="position: absolute; top: -8px; right: -12px; background: #e53935; color: #fff; font-size: 0.95rem; font-weight: 700; border-radius: 50%; padding: 2px 7px; min-width: 22px; text-align: center; display: none; z-index: 2;"></span>
                         <span>Cart</span>
                       </a>
                     </li>
@@ -225,6 +260,10 @@
             <p>Loading your orders...</p>
         </div>
         <div id="error-message" class="error-message" style="display: none;"></div>
+        <!-- Total Orders Count -->
+        <div id="total-orders-count" style="font-size:1.15rem;font-weight:600;color:#6a5acd;margin-bottom:18px;text-align:center;display:none;">
+            Total Orders: <span id="totalOrdersValue">0</span>
+        </div>
         <!-- Orders Table Preview -->
         <div id="orders-table-container">
             <table id="orders-table" class="orders-table">

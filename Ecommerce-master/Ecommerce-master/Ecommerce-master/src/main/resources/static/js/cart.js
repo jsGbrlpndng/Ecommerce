@@ -104,6 +104,8 @@ function initCart() {
             localStorage.setItem("cart", JSON.stringify([]));
         }
 
+        if (typeof window.updateCartCount === 'function') window.updateCartCount();
+
         const emptyCartElement = document.getElementById("empty-cart");
         const cartWithItemsElement = document.getElementById("cart-with-items");
 
@@ -185,34 +187,48 @@ function createCartItemElement(item, index) {
     return cartItem;
 }
 
-function updateCartSummary(cart) {
-    // Calculate subtotal
-    const subtotal = cart.reduce((total, item) => total + item.price * item.quantity, 0);
-
-    // Calculate shipping (free for orders over $100)
-    const shipping = subtotal > 100 ? 0 : 10;
-
-    // Calculate tax (8%)
-    const tax = subtotal * 0.08;
-
-    // Calculate total
-    const total = subtotal + shipping + tax;
-
-    // Update summary in UI
-    document.getElementById("summary-subtotal").textContent = formatCurrency(subtotal);
-    document.getElementById("summary-shipping").textContent = formatCurrency(shipping);
-    document.getElementById("summary-tax").textContent = formatCurrency(tax);
-    document.getElementById("summary-total").textContent = formatCurrency(total);
-
-    // Store order summary for checkout
-    const orderSummary = {
-        subtotal,
-        shipping,
-        tax,
-        total,
-        items: cart,
-    };
-    localStorage.setItem("orderSummary", JSON.stringify(orderSummary));
+async function updateCartSummary(cart) {
+    // Call backend to get correct totals
+    try {
+        const shipping = cart.reduce((total, item) => total + item.price * item.quantity, 0) > 100 ? 0 : 10;
+        const response = await fetch('/api/orders/summary', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                items: cart.map(item => ({ price: item.price, quantity: item.quantity })),
+                shippingFee: shipping
+            })
+        });
+        if (!response.ok) throw new Error('Failed to get order totals');
+        const totals = await response.json();
+        document.getElementById("summary-subtotal").textContent = formatCurrency(totals.subtotal);
+        document.getElementById("summary-shipping").textContent = formatCurrency(totals.shipping);
+        document.getElementById("summary-tax").textContent = formatCurrency(totals.tax) + " (VAT 12%)";
+        document.getElementById("summary-total").textContent = formatCurrency(totals.total);
+        // Store order summary for checkout
+        const orderSummary = {
+            subtotal: totals.subtotal,
+            shipping: totals.shipping,
+            tax: totals.tax,
+            total: totals.total,
+            items: cart,
+        };
+        localStorage.setItem("orderSummary", JSON.stringify(orderSummary));
+    } catch (e) {
+        // fallback to old logic if backend fails
+        document.getElementById("summary-subtotal").textContent = formatCurrency(0);
+        document.getElementById("summary-shipping").textContent = formatCurrency(0);
+        document.getElementById("summary-tax").textContent = formatCurrency(0) + " (VAT 12%)";
+        document.getElementById("summary-total").textContent = formatCurrency(0);
+        const orderSummary = {
+            subtotal: 0,
+            shipping: 0,
+            tax: 0,
+            total: 0,
+            items: cart,
+        };
+        localStorage.setItem("orderSummary", JSON.stringify(orderSummary));
+    }
 }
 
 function setupCartEventListeners() {

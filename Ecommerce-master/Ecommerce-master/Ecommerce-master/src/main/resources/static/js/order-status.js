@@ -1,8 +1,10 @@
 function formatCurrency(amount) {
-    if (!amount && amount !== 0) return '$0.00';
-    return new Intl.NumberFormat('en-US', {
+    if (!amount && amount !== 0) return '₱0.00';
+    return new Intl.NumberFormat('en-PH', {
         style: 'currency',
-        currency: 'USD'
+        currency: 'PHP',
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
     }).format(amount);
 }
 
@@ -49,7 +51,7 @@ function formatDate(dateString) {
 
 function formatProductPrice(price, quantity = 1) {
     const numericPrice = parseFloat(price);
-    return isNaN(numericPrice) ? '$0.00' : formatCurrency(numericPrice * quantity);
+    return isNaN(numericPrice) ? '₱0.00' : formatCurrency(numericPrice * quantity);
 }
 
 function validateProductData(item) {
@@ -90,7 +92,7 @@ function displayLoginPrompt() {
 }
 
 function handleProductImage(imgElement, product) {
-    const defaultImage = '/Images/instruments/placeholder.png';
+    const defaultImage = '/images/instruments/placeholder.png'; // fixed path: lowercase 'images'
     imgElement.onerror = function() {
         this.onerror = null;
         this.src = defaultImage;
@@ -98,7 +100,7 @@ function handleProductImage(imgElement, product) {
     };
     
     // If product has an image path, use it; otherwise, try to construct from ID
-    const imagePath = product.image || `/Images/instruments/${product.id}.jpg`;
+    const imagePath = product.image || `/images/instruments/${product.id}.jpg`; // fixed path: lowercase 'images'
     imgElement.src = imagePath;
     imgElement.classList.remove('error');
 }
@@ -141,10 +143,30 @@ async function loadOrderStatus() {
             if (errorMessage) errorMessage.style.display = 'none';
             renderOrdersTable(orders);
         }
+
+        // Show total orders count
+        const totalOrdersDiv = document.getElementById('total-orders-count');
+        const totalOrdersValue = document.getElementById('totalOrdersValue');
+        if (totalOrdersDiv && totalOrdersValue) {
+            let count = 0;
+            if (typeof customer.orders === 'number') {
+                count = customer.orders;
+            } else if (orders && Array.isArray(orders)) {
+                count = orders.length;
+            }
+            totalOrdersValue.textContent = count;
+            totalOrdersDiv.style.display = '';
+        }
     } catch (error) {
         console.error('Error in order-status.js:', error);
         if (errorMessage) {
-            errorMessage.textContent = error.message;
+            if (error.message === 'Not logged in' || error.message === 'User not found') {
+                errorMessage.innerHTML = displayLoginPrompt();
+            } else if (error.message && error.message.toLowerCase().includes('server error')) {
+                errorMessage.innerHTML = `<div class="order-status-card"><p style="text-align: center; color: #e74c3c; padding: 32px;"><i class="fas fa-exclamation-circle"></i> Server error. Please try again later.</p></div>`;
+            } else {
+                errorMessage.innerHTML = `<div class="order-status-card"><p style="text-align: center; color: #e74c3c; padding: 32px;"><i class="fas fa-exclamation-circle"></i> ${error.message || 'Error loading orders. Please try again later.'}</p></div>`;
+            }
             errorMessage.style.display = 'block';
         }
         if (ordersTableContainer) ordersTableContainer.style.display = 'none';
@@ -165,7 +187,7 @@ function renderOrdersTable(orders) {
             <td>${order.orderId || order.id || 'N/A'}</td>
             <td><span class="order-status-badge ${getStatusBadgeClass(order.status)}">${order.status || 'Processing'}</span></td>
             <td>${formatDate(order.orderDate || order.date)}</td>
-            <td>${formatCurrency(order.totals?.total || order.total)}</td>
+            <td>${formatCurrency(order.totals?.total ?? 0)}</td>
         `;
         tr.addEventListener('click', () => showOrderModal(order));
         tbody.appendChild(tr);
@@ -258,7 +280,9 @@ function generateOrderCardHTML(order) {
                 <p><strong>Name:</strong> ${order.firstName || ''} ${order.lastName || ''}</p>
                 <p><strong>Email:</strong> ${order.email || ''}</p>
                 <p><strong>Phone:</strong> ${order.phone || ''}</p>
-                <p><strong>Address:</strong> ${order.address || ''}, ${order.city || ''}, ${order.state || ''}, ${order.zip || ''}, ${order.country || ''}</p>
+                <p><strong>Payment Method:</strong> ${order.paymentMethod || ''}</p>
+                <p><strong>Shipping Method:</strong> ${order.shippingMethod || ''}</p>
+                <p><strong>Address:</strong> ${order.address || ''}</p>
             </div>
             <div class="order-products">
                 ${generateProductsListHTML(items)}
@@ -366,6 +390,9 @@ function handleLoadError(error, _, ordersElem) {
     if (elements.logout) elements.logout.style.display = 'none';
     if (elements.login) elements.login.style.display = '';
 }
+
+// Always use backend-calculated totals for all order displays
+// In all table and modal rendering, use order.totals.subtotal, order.totals.shipping, order.totals.tax, order.totals.total
 
 // Initialize order status page
 document.addEventListener('DOMContentLoaded', loadOrderStatus);

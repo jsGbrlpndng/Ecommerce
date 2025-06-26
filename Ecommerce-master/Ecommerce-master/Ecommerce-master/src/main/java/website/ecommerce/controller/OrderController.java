@@ -1,3 +1,13 @@
+/*
+ * OrderController.java
+ * MelodyMatrix E-commerce Platform
+ *
+ * Handles all order-related endpoints, including checkout, order details, and customer order history.
+ *
+ * Author: MelodyMatrix Team
+ * Date: 2025-06-26
+ */
+
 package website.ecommerce.controller;
 
 import java.util.*;
@@ -18,7 +28,12 @@ import website.ecommerce.repository.*;
 import website.ecommerce.service.OrderService;
 import website.ecommerce.dto.OrderDetailsDTO;
 import website.ecommerce.dto.OrderItemDTO;
+import website.ecommerce.dto.OrderTotalsDTO;
+import website.ecommerce.service.OrderCalculationService;
 
+/**
+ * Controller for order management, checkout, and order status endpoints.
+ */
 @RestController
 @RequestMapping("/api/orders")
 public class OrderController {
@@ -43,7 +58,16 @@ public class OrderController {
     @Autowired
     private ProductRepository productRepository;
 
-    // Endpoint to create an order (checkout)
+    @Autowired
+    private OrderCalculationService orderCalculationService;
+
+    /**
+     * Processes a new order (checkout) for the authenticated user.
+     *
+     * @param orderData Order data from frontend
+     * @param authentication Spring Security authentication
+     * @return ResponseEntity with result
+     */
     @PostMapping
     public ResponseEntity<String> processCheckout(@RequestBody Map<String, Object> orderData, Authentication authentication) {
         if (authentication == null || !authentication.isAuthenticated()) {
@@ -86,10 +110,6 @@ public class OrderController {
             checkoutInformation.setOrderId(orderData.get("orderId") != null ? orderData.get("orderId").toString() : UUID.randomUUID().toString());
             checkoutInformation.setCustomerId(customerId);
             checkoutInformation.setShippingAddress(shippingAddress);
-            checkoutInformation.setCity(orderData.get("city") != null ? orderData.get("city").toString() : null);
-            checkoutInformation.setState(orderData.get("state") != null ? orderData.get("state").toString() : null);
-            checkoutInformation.setZip(orderData.get("zip") != null ? orderData.get("zip").toString() : null);
-            checkoutInformation.setCountry(orderData.get("country") != null ? orderData.get("country").toString() : null);
             checkoutInformation.setShippingMethod(orderData.get("shippingMethod") != null ? orderData.get("shippingMethod").toString() : null);
             checkoutInformation.setPaymentMethod(orderData.get("paymentMethod") != null ? orderData.get("paymentMethod").toString() : null);
             checkoutInformation.setTermsAccepted(true); // Already validated in frontend
@@ -119,6 +139,17 @@ public class OrderController {
             } else {
                 throw new IllegalArgumentException("Unexpected total type: " + (totalValue != null ? totalValue.getClass().getName() : "null"));
             }
+
+            // Save shipping fee from frontend (default to 0 if not provided)
+            double shippingFee = 0.0;
+            if (orderData.get("shippingFee") != null) {
+                try {
+                    shippingFee = Double.parseDouble(orderData.get("shippingFee").toString());
+                } catch (Exception e) {
+                    shippingFee = 0.0;
+                }
+            }
+            order.setShippingFee(shippingFee);
 
             order.setStatus("Processing");
             order.setShippingAddress(shippingAddress);
@@ -197,6 +228,19 @@ public class OrderController {
                     }
 
                     orderItemRepository.save(orderItem);
+
+                    // --- Deduct product stock after saving order item ---
+                    if (orderItem.getProductId() != null) {
+                        Optional<Product> productOpt = productRepository.findById(orderItem.getProductId());
+                        if (productOpt.isPresent()) {
+                            Product product = productOpt.get();
+                            int currentStock = product.getStock() != null ? product.getStock() : 0;
+                            int newStock = currentStock - orderItem.getQuantity();
+                            if (newStock < 0) newStock = 0; // Prevent negative stock
+                            product.setStock(newStock);
+                            productRepository.save(product);
+                        }
+                    }
                 }
             }
 
@@ -209,6 +253,12 @@ public class OrderController {
         }
     }
 
+    /**
+     * Helper to set order item fields from cart data.
+     *
+     * @param orderItem OrderItem entity
+     * @param item Cart item data
+     */
     private void setOrderItemFromCartData(OrderItem orderItem, Map<String, Object> item) {
         // Set product ID if available
         if (item.get("id") != null) {
@@ -237,7 +287,13 @@ public class OrderController {
         }
     }
 
-    // Get order details by orderId
+    /**
+     * Returns order details for a specific order (authenticated user only).
+     *
+     * @param orderId Order ID
+     * @param authentication Spring Security authentication
+     * @return OrderDetailsDTO with order info
+     */
     @GetMapping("/checkout/{orderId}")
     public ResponseEntity<OrderDetailsDTO> getCheckoutInformationByOrderId(@PathVariable String orderId, Authentication authentication) {
         // Check authentication
@@ -278,11 +334,27 @@ public class OrderController {
         orderDetailsDTO.setStatus(order.getStatus());
         orderDetailsDTO.setShippingMethod(checkoutInformation.getShippingMethod());
         orderDetailsDTO.setPaymentMethod(checkoutInformation.getPaymentMethod());
-        orderDetailsDTO.setAddress(checkoutInformation.getShippingAddress());
-        orderDetailsDTO.setCity(checkoutInformation.getCity());
-        orderDetailsDTO.setState(checkoutInformation.getState());
-        orderDetailsDTO.setZip(checkoutInformation.getZip());
-        orderDetailsDTO.setCountry(checkoutInformation.getCountry());
+
+        // Compose a user-friendly address string
+        String address = checkoutInformation.getShippingAddress();
+        if (address == null || address.trim().isEmpty()) {
+            StringBuilder sb = new StringBuilder();
+            if (checkoutInformation.getCity() != null && !checkoutInformation.getCity().isEmpty()) sb.append(checkoutInformation.getCity());
+            if (checkoutInformation.getState() != null && !checkoutInformation.getState().isEmpty()) {
+                if (sb.length() > 0) sb.append(", ");
+                sb.append(checkoutInformation.getState());
+            }
+            if (checkoutInformation.getZip() != null && !checkoutInformation.getZip().isEmpty()) {
+                if (sb.length() > 0) sb.append(" ");
+                sb.append(checkoutInformation.getZip());
+            }
+            if (checkoutInformation.getCountry() != null && !checkoutInformation.getCountry().isEmpty()) {
+                if (sb.length() > 0) sb.append(", ");
+                sb.append(checkoutInformation.getCountry());
+            }
+            address = sb.toString();
+        }
+        orderDetailsDTO.setAddress(address);
         orderDetailsDTO.setFirstName(checkoutInformation.getFirstName());
         orderDetailsDTO.setLastName(checkoutInformation.getLastName());
         orderDetailsDTO.setEmail(checkoutInformation.getEmail());
@@ -291,7 +363,6 @@ public class OrderController {
         // Fetch order items and map to DTOs
         List<OrderItem> orderItems = orderItemRepository.findByOrder(order);
         List<OrderItemDTO> itemDTOs = new ArrayList<>();
-        double subtotal = 0.0;
         for (OrderItem item : orderItems) {
             OrderItemDTO itemDTO = new OrderItemDTO();
             itemDTO.setName(item.getName());
@@ -299,24 +370,19 @@ public class OrderController {
             itemDTO.setPrice(item.getPrice());
             itemDTO.setImage(item.getImage());
             itemDTOs.add(itemDTO);
-            subtotal += item.getPrice() * item.getQuantity();
         }
         orderDetailsDTO.setItems(itemDTOs);
-        // Calculate shipping, tax, and total (simple example)
-        double shipping = 0.0;
-        if (checkoutInformation != null && checkoutInformation.getShippingMethod() != null) {
-            shipping = 10.0;
-        }
-        double tax = subtotal * 0.10;
-        double total = subtotal + shipping + tax;
-        website.ecommerce.dto.OrderTotalsDTO totals = new website.ecommerce.dto.OrderTotalsDTO();
-        totals.setSubtotal(subtotal);
-        totals.setShipping(shipping);
-        totals.setTax(tax);
-        totals.setTotal(total);
+        // Use unified backend calculation for totals
+        OrderTotalsDTO totals = orderCalculationService.calculateTotals(orderItems, order.getShippingFee());
         orderDetailsDTO.setTotals(totals);
         return ResponseEntity.ok(orderDetailsDTO);
-    }    // Get all orders for a customer    
+    }    /**
+     * Returns all orders for a customer (authenticated user only).
+     *
+     * @param customerId Customer ID
+     * @param authentication Spring Security authentication
+     * @return List of OrderDetailsDTO
+     */
     @GetMapping("/customer/{customerId}")
     public ResponseEntity<List<OrderDetailsDTO>> getOrdersByCustomer(@PathVariable Long customerId, Authentication authentication) {
         if (customerId == null) {
@@ -359,30 +425,25 @@ public class OrderController {
             for (Order order : orders) {
                 try {
                     CheckoutInformation checkoutInfo = checkoutInformationRepository.findByOrderId(order.getOrderId());
+                    List<OrderItem> orderItems = orderItemRepository.findByOrder(order);
+                    logger.info("Order {}: {} items, shippingFee={}, status={}", order.getOrderId(), orderItems.size(), order.getShippingFee(), order.getStatus());
+                    for (OrderItem item : orderItems) {
+                        logger.info("  Item: name={}, price={}, qty={}", item.getName(), item.getPrice(), item.getQuantity());
+                    }
                     OrderDetailsDTO dto = new OrderDetailsDTO();
                     dto.setOrderId(order.getOrderId());
                     dto.setOrderDate(order.getOrderDate() != null ? order.getOrderDate().toString() : null);
                     dto.setStatus(order.getStatus());
-                    
-                    // Safely set checkout information fields
                     if (checkoutInfo != null) {
                         dto.setShippingMethod(checkoutInfo.getShippingMethod());
                         dto.setPaymentMethod(checkoutInfo.getPaymentMethod());
                         dto.setAddress(checkoutInfo.getShippingAddress());
-                        dto.setCity(checkoutInfo.getCity());
-                        dto.setState(checkoutInfo.getState());
-                        dto.setZip(checkoutInfo.getZip());
-                        dto.setCountry(checkoutInfo.getCountry());
                         dto.setFirstName(checkoutInfo.getFirstName());
                         dto.setLastName(checkoutInfo.getLastName());
                         dto.setEmail(checkoutInfo.getEmail());
                         dto.setPhone(checkoutInfo.getPhone());
                     }
-
-                    // Fetch order items and map to DTOs
-                    List<OrderItem> orderItems = orderItemRepository.findByOrder(order);
                     List<OrderItemDTO> itemDTOs = new ArrayList<>();
-                    double subtotal = 0.0;
                     for (OrderItem item : orderItems) {
                         try {
                             OrderItemDTO itemDTO = new OrderItemDTO();
@@ -391,34 +452,18 @@ public class OrderController {
                             itemDTO.setPrice(item.getPrice());
                             itemDTO.setImage(item.getImage());
                             itemDTOs.add(itemDTO);
-                            subtotal += item.getPrice() * item.getQuantity();
                         } catch (Exception e) {
                             logger.warn("Error processing order item for order {}: {}", order.getOrderId(), e.getMessage());
                         }
                     }
                     dto.setItems(itemDTOs);
-
-                    // Calculate shipping, tax, and total (simple example)
-                    double shipping = 0.0;
-                    if (checkoutInfo != null && checkoutInfo.getShippingMethod() != null) {
-                        // Example: flat shipping rate for demonstration
-                        shipping = 10.0;
-                    }
-                    double tax = subtotal * 0.10; // Example: 10% tax
-                    double total = subtotal + shipping + tax;
-
-                    website.ecommerce.dto.OrderTotalsDTO totals = new website.ecommerce.dto.OrderTotalsDTO();
-                    totals.setSubtotal(subtotal);
-                    totals.setShipping(shipping);
-                    totals.setTax(tax);
-                    totals.setTotal(total);
+                    website.ecommerce.dto.OrderTotalsDTO totals = orderCalculationService.calculateTotals(orderItems, order.getShippingFee());
+                    logger.info("Order {} totals: subtotal={}, shipping={}, tax={}, total={}", order.getOrderId(), totals.getSubtotal(), totals.getShipping(), totals.getTax(), totals.getTotal());
                     dto.setTotals(totals);
-
                     orderDetailsList.add(dto);
                 } catch (Exception e) {
                     logger.error("Error processing order {} for customerId {}: {}", 
                         order.getOrderId(), customerId, e.getMessage());
-                    // Continue processing other orders
                 }
             }
 
@@ -426,6 +471,51 @@ public class OrderController {
         } catch (Exception e) {
             logger.error("Error loading orders for customerId {}: {}", customerId, e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+    /**
+     * Calculates order totals (subtotal, shipping, tax, total) for a given cart and shipping fee.
+     * This endpoint is used by the frontend to ensure totals are always consistent with backend logic.
+     *
+     * Request body example:
+     * {
+     *   "items": [ { "price": 1000, "quantity": 2 }, ... ],
+     *   "shippingFee": 10
+     * }
+     *
+     * @param payload Map with keys: items (List<Map>), shippingFee (Double)
+     * @return OrderTotalsDTO with calculated totals
+     */
+    @PostMapping("/summary")
+    public ResponseEntity<OrderTotalsDTO> calculateOrderSummary(@RequestBody Map<String, Object> payload) {
+        try {
+            Object itemsObj = payload.get("items");
+            if (!(itemsObj instanceof List<?>)) {
+                return ResponseEntity.badRequest().build();
+            }
+            List<?> itemsRaw = (List<?>) itemsObj;
+            List<OrderItem> orderItems = new ArrayList<>();
+            for (Object itemObj : itemsRaw) {
+                if (!(itemObj instanceof Map)) {
+                    return ResponseEntity.badRequest().build();
+                }
+                Map<?, ?> item = (Map<?, ?>) itemObj;
+                OrderItem orderItem = new OrderItem();
+                Object priceObj = item.get("price");
+                Object quantityObj = item.get("quantity");
+                if (priceObj == null || quantityObj == null) {
+                    return ResponseEntity.badRequest().build();
+                }
+                orderItem.setPrice(Double.parseDouble(priceObj.toString()));
+                orderItem.setQuantity(Integer.parseInt(quantityObj.toString()));
+                orderItems.add(orderItem);
+            }
+            double shippingFee = payload.get("shippingFee") != null ? Double.parseDouble(payload.get("shippingFee").toString()) : 0.0;
+            OrderTotalsDTO totals = orderCalculationService.calculateTotals(orderItems, shippingFee);
+            return ResponseEntity.ok(totals);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
         }
     }
 }

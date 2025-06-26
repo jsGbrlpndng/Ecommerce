@@ -10,7 +10,7 @@ let state = {
     inStockOnly: false
   },
   currentPage: 1,
-  productsPerPage: 12,
+  productsPerPage: 8,
   totalPages: 1
 };
 
@@ -106,23 +106,23 @@ function sortProducts(products) {
 function renderProducts() {
   const productsGrid = document.getElementById('products-grid');
   if (!productsGrid) return;
+  let filtered = filterProducts();
+  filtered = sortProducts(filtered); // Ensure sorting is always applied
+  // Pagination logic
+  const totalPages = Math.ceil(filtered.length / state.productsPerPage) || 1;
+  state.totalPages = totalPages;
+  if (state.currentPage > totalPages) state.currentPage = totalPages;
+  const startIdx = (state.currentPage - 1) * state.productsPerPage;
+  const endIdx = startIdx + state.productsPerPage;
+  const pageProducts = filtered.slice(startIdx, endIdx);
   productsGrid.innerHTML = '';
-  let displayProducts = filterProducts();
-  displayProducts = sortProducts(displayProducts);
-  // Pagination
-  state.totalPages = Math.ceil(displayProducts.length / state.productsPerPage);
-  if (state.currentPage > state.totalPages) state.currentPage = 1;
-  const startIndex = (state.currentPage - 1) * state.productsPerPage;
-  const endIndex = startIndex + state.productsPerPage;
-  const currentPageProducts = displayProducts.slice(startIndex, endIndex);
-  if (currentPageProducts.length === 0) {
-    productsGrid.innerHTML = '<div class="no-products">No products found</div>';
-    renderPagination();
-    return;
+  if (pageProducts.length === 0) {
+    productsGrid.innerHTML = '<div class="no-products">No products found.</div>';
+  } else {
+    pageProducts.forEach(product => {
+      productsGrid.appendChild(createProductCard(product));
+    });
   }
-  currentPageProducts.forEach(product => {
-    productsGrid.appendChild(createProductCard(product));
-  });
   renderPagination();
 }
 
@@ -130,60 +130,48 @@ function renderPagination() {
   const paginationBar = document.getElementById('pagination-bar');
   if (!paginationBar) return;
   paginationBar.innerHTML = '';
-  if (state.totalPages <= 1) return; // No pagination needed
-
+  if (state.totalPages <= 1) return;
   // Previous button
   const prevBtn = document.createElement('button');
-  prevBtn.className = 'prev-page';
-  prevBtn.innerHTML = '<i class="fas fa-chevron-left"></i>';
+  prevBtn.textContent = 'Prev';
+  prevBtn.className = 'pagination-btn';
   prevBtn.disabled = state.currentPage === 1;
-  prevBtn.addEventListener('click', () => {
+  prevBtn.onclick = () => {
     if (state.currentPage > 1) {
       state.currentPage--;
       renderProducts();
-      renderPagination();
-      updateProductCount();
     }
-  });
+  };
   paginationBar.appendChild(prevBtn);
-
   // Page numbers
   for (let i = 1; i <= state.totalPages; i++) {
-    if (i === 1 || i === state.totalPages || Math.abs(i - state.currentPage) <= 2) {
-      const pageBtn = document.createElement('button');
-      pageBtn.className = (i === state.currentPage) ? 'active' : '';
-      pageBtn.textContent = i;
-      pageBtn.addEventListener('click', () => {
-        state.currentPage = i;
-        renderProducts();
-        renderPagination();
-        updateProductCount();
-      });
-      paginationBar.appendChild(pageBtn);
-    } else if (
-      (i === state.currentPage - 3 && state.currentPage > 4) ||
-      (i === state.currentPage + 3 && state.currentPage < state.totalPages - 3)
-    ) {
-      const dots = document.createElement('span');
-      dots.textContent = '...';
-      paginationBar.appendChild(dots);
-    }
+    const pageBtn = document.createElement('button');
+    pageBtn.textContent = i;
+    pageBtn.className = 'pagination-btn' + (i === state.currentPage ? ' active' : '');
+    pageBtn.onclick = () => {
+      state.currentPage = i;
+      renderProducts();
+    };
+    paginationBar.appendChild(pageBtn);
   }
-
   // Next button
   const nextBtn = document.createElement('button');
-  nextBtn.className = 'next-page';
-  nextBtn.innerHTML = '<i class="fas fa-chevron-right"></i>';
+  nextBtn.textContent = 'Next';
+  nextBtn.className = 'pagination-btn';
   nextBtn.disabled = state.currentPage === state.totalPages;
-  nextBtn.addEventListener('click', () => {
+  nextBtn.onclick = () => {
     if (state.currentPage < state.totalPages) {
       state.currentPage++;
       renderProducts();
-      renderPagination();
-      updateProductCount();
     }
-  });
+  };
   paginationBar.appendChild(nextBtn);
+}
+
+// When filters or sorts change, reset to page 1
+function resetToFirstPageAndRender() {
+  state.currentPage = 1;
+  renderProducts();
 }
 
 function updateProductCount() {
@@ -217,17 +205,8 @@ function addToCart(product) {
     cart.push({ ...product, quantity: 1 });
   }
   localStorage.setItem('cart', JSON.stringify(cart));
-  updateCartCount();
+  if (typeof window.updateCartCount === 'function') window.updateCartCount();
   showToast('Added to cart!');
-}
-
-function updateCartCount() {
-  const cart = JSON.parse(localStorage.getItem('cart') || '[]');
-  const count = cart.reduce((total, item) => total + (item.quantity || 1), 0);
-  const countElement = document.querySelector('.cart-count');
-  if (countElement) {
-    countElement.textContent = count;
-  }
 }
 
 function setupEventListeners() {
@@ -265,7 +244,7 @@ function setupEventListeners() {
   if (sortSelect) {
     sortSelect.addEventListener('change', () => {
       state.sortBy = sortSelect.value;
-      renderProducts();
+      resetToFirstPageAndRender();
     });
   }
 }
