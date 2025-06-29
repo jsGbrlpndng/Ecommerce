@@ -97,19 +97,45 @@ public class OrderController {
         }
 
         try {
-            // Extract shipping address (try both keys for compatibility)
-            String shippingAddress = orderData.get("shippingAddress") != null
+            // Compose full shipping address from individual fields
+            String street = orderData.get("shippingAddress") != null
                     ? orderData.get("shippingAddress").toString()
                     : (orderData.get("address") != null ? orderData.get("address").toString() : null);
-            if (shippingAddress == null) {
+            String city = orderData.get("city") != null ? orderData.get("city").toString() : null;
+            String state = orderData.get("state") != null ? orderData.get("state").toString() : null;
+            String zip = orderData.get("zip") != null ? orderData.get("zip").toString() : null;
+            String country = orderData.get("country") != null ? orderData.get("country").toString() : null;
+
+            if (street == null) {
                 return ResponseEntity.badRequest().body("Missing shipping address");
             }
+
+            // Build formatted address: Street, City, State ZIP, Country
+            StringBuilder addressBuilder = new StringBuilder();
+            if (street != null && !street.isEmpty()) addressBuilder.append(street);
+            if (city != null && !city.isEmpty()) {
+                if (addressBuilder.length() > 0) addressBuilder.append(", ");
+                addressBuilder.append(city);
+            }
+            if (state != null && !state.isEmpty()) {
+                if (addressBuilder.length() > 0) addressBuilder.append(", ");
+                addressBuilder.append(state);
+            }
+            if (zip != null && !zip.isEmpty()) {
+                if (addressBuilder.length() > 0) addressBuilder.append(" ");
+                addressBuilder.append(zip);
+            }
+            if (country != null && !country.isEmpty()) {
+                if (addressBuilder.length() > 0) addressBuilder.append(", ");
+                addressBuilder.append(country);
+            }
+            String fullShippingAddress = addressBuilder.toString();
 
             // Create CheckoutInformation
             CheckoutInformation checkoutInformation = new CheckoutInformation();
             checkoutInformation.setOrderId(orderData.get("orderId") != null ? orderData.get("orderId").toString() : UUID.randomUUID().toString());
             checkoutInformation.setCustomerId(customerId);
-            checkoutInformation.setShippingAddress(shippingAddress);
+            checkoutInformation.setShippingAddress(fullShippingAddress);
             checkoutInformation.setShippingMethod(orderData.get("shippingMethod") != null ? orderData.get("shippingMethod").toString() : null);
             checkoutInformation.setPaymentMethod(orderData.get("paymentMethod") != null ? orderData.get("paymentMethod").toString() : null);
             checkoutInformation.setTermsAccepted(true); // Already validated in frontend
@@ -119,6 +145,12 @@ public class OrderController {
             checkoutInformation.setLastName(orderData.get("lastName") != null ? orderData.get("lastName").toString() : null);
             checkoutInformation.setEmail(orderData.get("email") != null ? orderData.get("email").toString() : null);
             checkoutInformation.setPhone(orderData.get("phone") != null ? orderData.get("phone").toString() : null);
+
+            // Set city, country, state, and zip from orderData if present
+            checkoutInformation.setCity(city);
+            checkoutInformation.setCountry(country);
+            checkoutInformation.setState(state);
+            checkoutInformation.setZip(zip);
 
             // Create Order
             Order order = new Order();
@@ -152,7 +184,7 @@ public class OrderController {
             order.setShippingFee(shippingFee);
 
             order.setStatus("Processing");
-            order.setShippingAddress(shippingAddress);
+            order.setShippingAddress(fullShippingAddress);
             order.setOrderDate(new java.util.Date());            // Save order and checkout info
             String orderId = orderService.createOrder(order, checkoutInformation, customerId);
             Order savedOrder = orderRepository.findByOrderId(orderId);
