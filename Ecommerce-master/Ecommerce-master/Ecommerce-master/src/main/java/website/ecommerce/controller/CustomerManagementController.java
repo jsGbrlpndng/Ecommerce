@@ -126,38 +126,6 @@ public class CustomerManagementController {
         return customer.map(ResponseEntity::ok)
                       .orElse(ResponseEntity.notFound().build());
     }
-
-    /**
-     * Updates a customer (admin only).
-     *
-     * @param id Customer ID
-     * @param customerDetails Customer details to update
-     * @param session HttpSession for admin check
-     * @return ResponseEntity with update result
-     */
-    @PutMapping("/customers/{id}")
-    public ResponseEntity<?> updateCustomer(@PathVariable Long id, 
-                                          @RequestBody Customer customerDetails,
-                                          HttpSession session) {
-        if (!Boolean.TRUE.equals(session.getAttribute("isAdmin"))) {
-            return ResponseEntity.status(401).build();
-        }
-
-        Optional<Customer> customerOpt = customerRepository.findById(id);
-        if (!customerOpt.isPresent()) {
-            return ResponseEntity.notFound().build();
-        }
-
-        Customer customer = customerOpt.get();
-        customer.setFirstName(customerDetails.getFirstName());
-        customer.setLastName(customerDetails.getLastName());
-        customer.setEmail(customerDetails.getEmail());
-        customer.setPhone(customerDetails.getPhone());
-
-        customerRepository.save(customer);
-        return ResponseEntity.ok().build();
-    }
-
     /**
      * Deletes a customer by ID (admin only).
      *
@@ -173,6 +141,20 @@ public class CustomerManagementController {
 
         if (!customerRepository.existsById(id)) {
             return ResponseEntity.notFound().build();
+        }
+
+        // Get all orders for this customer
+        List<Order> orders = orderRepository.findByCustomerId(id);
+        boolean hasUndelivered = orders.stream()
+            .anyMatch(order -> !"Delivered".equalsIgnoreCase(order.getStatus()));
+
+        if (hasUndelivered) {
+            return ResponseEntity.status(409).body("Cannot delete customer with undelivered orders.");
+        }
+
+        // Delete all delivered orders for this customer
+        for (Order order : orders) {
+            orderRepository.delete(order);
         }
 
         customerRepository.deleteById(id);

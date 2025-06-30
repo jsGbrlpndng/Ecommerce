@@ -3,7 +3,7 @@ const SessionManager = {
     checkAuth() {
         const token = localStorage.getItem('adminToken');
         if (!token) {
-            window.location.href = '../admin-login.html';
+            window.location.href = '/admin/admin-login.html'; // Use absolute path for reliability
             return null;
         }
         return token;

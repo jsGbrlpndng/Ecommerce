@@ -1,3 +1,21 @@
+// --- Admin Session Check (Backend) ---
+async function checkAdminSession() {
+    try {
+        const response = await fetch('/api/admin/check-session', { credentials: 'include' });
+        if (!response.ok) {
+            window.location.href = '/admin/admin-login.html';
+        }
+    } catch (e) {
+        window.location.href = '/admin/admin-login.html';
+    }
+}
+
+// Run session check before anything else
+document.addEventListener('DOMContentLoaded', async function() {
+    await checkAdminSession();
+    SessionManager.checkAuth();
+    loadProducts();
+});
 // inventory.js - Admin Inventory Management
 // Handles fetching, adding, editing, and monitoring products for the admin panel
 
@@ -391,9 +409,7 @@ window.addEventListener('click', (e) => {
     if (editProductModal && e.target === editProductModal) editProductModal.style.display = 'none';
 });
 
-// --- Initial Load ---
-SessionManager.checkAuth();
-loadProducts();
+// --- Initial Load now handled in DOMContentLoaded above ---
 
 // --- Add global spinner animation ---
 const style = document.createElement('style');
@@ -520,17 +536,4 @@ function formatDateCreated(dateString) {
 }
 
 // --- Polling for Real-Time Inventory Updates ---
-let inventoryPollInterval = null;
-function startInventoryPolling() {
-    // Clear any existing interval to avoid duplicates
-    if (inventoryPollInterval) clearInterval(inventoryPollInterval);
-    inventoryPollInterval = setInterval(() => {
-        loadProducts();
-    }, 10000); // 10 seconds
-}
-// Start polling after initial load
-startInventoryPolling();
-// Optional: Stop polling when navigating away
-window.addEventListener('beforeunload', () => {
-    if (inventoryPollInterval) clearInterval(inventoryPollInterval);
-});
+// --- Polling removed: Products now only reload on page refresh or after add/edit/delete ---

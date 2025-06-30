@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (response.ok) {
                 window.location.href = 'index.html';
             } else {
-                const errorText = await response.text();
+                const errorText = await response.text(  );
                 errorDiv.textContent = errorText || 'Invalid credentials';
                 errorDiv.style.display = 'block';
             }

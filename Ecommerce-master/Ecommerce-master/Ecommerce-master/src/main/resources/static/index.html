@@ -547,7 +547,7 @@
       <div class="footer-content">
         <h2>Join the Harmony Family</h2>
         <p>Be the first to know about new arrivals, exclusive offers, and special events</p>
-        <a href="register.html" class="btn-primary">Create Account</a>
+        <a href="register.html" class="btn-primary" id="createAccountBtn">Create Account</a>
       </div>
     </div>
   </footer>
@@ -555,7 +555,7 @@
   <script src="js/main.js"></script>
   <script src="js/index.js"></script>
   <script>
-  // Toggle Login/Cart nav item based on user login state
+  // Toggle Login/Cart nav item and Create Account button based on user login state
   document.addEventListener('DOMContentLoaded', function() {
     fetch('/api/users/me', { credentials: 'include' })
       .then(res => {
@@ -565,10 +565,14 @@
       .then(data => {
         document.getElementById('loginNavItem').style.display = 'none';
         document.getElementById('cartNavItem').style.display = '';
+        var createAccountBtn = document.getElementById('createAccountBtn');
+        if (createAccountBtn) createAccountBtn.style.display = 'none';
       })
       .catch(() => {
         document.getElementById('loginNavItem').style.display = '';
         document.getElementById('cartNavItem').style.display = 'none';
+        var createAccountBtn = document.getElementById('createAccountBtn');
+        if (createAccountBtn) createAccountBtn.style.display = '';
       });
   });
   </script>

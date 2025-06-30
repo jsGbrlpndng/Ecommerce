@@ -298,14 +298,25 @@ async function deleteCustomer(id) {
         });
 
         if (!response.ok) {
-            throw new Error('Failed to delete customer');
+            // Try to get backend error message
+            let errorText = 'Failed to delete customer';
+            try {
+                errorText = await response.text();
+            } catch (e) {}
+            // Show specific warning if undelivered orders
+            if (errorText && errorText.toLowerCase().includes('undelivered')) {
+                showNotification(errorText, 'warning');
+            } else {
+                showNotification(errorText, 'error');
+            }
+            throw new Error(errorText);
         }
 
         loadCustomers();
         showNotification('Customer deleted successfully', 'success');
     } catch (error) {
         console.error('Error deleting customer:', error);
-        showNotification('Error deleting customer', 'error');
+        // showNotification already called above
     }
 }
 
